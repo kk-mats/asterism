@@ -15,10 +15,16 @@ public:
 	grid_coordinate(const file::id_t &x, const file::id_t &y) noexcept;
 	grid_coordinate(file::id_t &&x, file::id_t &&y) noexcept;
 
-	uint32_t to_1d(const uint32_t width) const noexcept;
+	uint32_t to_1d() const noexcept;
+
+	file::id_t x() const noexcept;
+	file::id_t y() const noexcept;
 
 private:
-	file::id_t x_, y_;
+	QPair<file::id_t, file::id_t> x_y_;
+
+	QPair<file::id_t, file::id_t> canonical(const file::id_t &x, const file::id_t &y) noexcept;
+	QPair<file::id_t, file::id_t> canonical(file::id_t &&x, file::id_t &&y) noexcept;
 };
 
 

@@ -52,7 +52,7 @@ QJsonValue fragment::to_qjson() const noexcept
 {
 	return QJsonObject
 	{
-		{"file_id", int(this->file_id_.index())},
+		{"file_id", int(this->file_id_.id())},
 		{"begin", int(this->begin_)},
 		{"end", int(this->end_)}
 	};

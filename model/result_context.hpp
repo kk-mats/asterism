@@ -14,7 +14,7 @@ enum class tool
 	undefined, ccvolti, ccfinderx, ccfindersw, nicad
 };
 
-class result_context
+class result_context final
 {
 public:
 	result_context();
@@ -25,7 +25,7 @@ public:
 	QString source() const noexcept;
 	QString tool_string() const noexcept;
 
-protected:
+private:
 	tool tool_;
 	QString source_;
 };

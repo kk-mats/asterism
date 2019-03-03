@@ -5,11 +5,11 @@ namespace asterism
 
 // constructor
 clone_pair::clone_pair(const fragment &fragment1, const fragment &fragment2, const unsigned int similarity) noexcept
-	: id_(new_id()), fragments_(normalize(fragment1, fragment2)), similairty_(similarity)
+	: id_(new_id()), fragments_(canonical(fragment1, fragment2)), similairty_(similarity)
 {}
 
 clone_pair::clone_pair(fragment &&fragment1, fragment &&fragment2, const unsigned int similarity) noexcept
-	: id_(new_id()), fragments_(normalize(fragment1, fragment2)), similairty_(similarity)
+	: id_(new_id()), fragments_(canonical(fragment1, fragment2)), similairty_(similarity)
 {}
 
 
@@ -42,24 +42,24 @@ QJsonValue clone_pair::to_qjson() const noexcept
 {
 	return QJsonObject
 	{
-		{"clone_pair_id", int(this->id_.index())},
-		{"similarity", int(this->similairty_)},
+		{"clone_pair_id", this->id_},
+		{"similarity", this->similairty_},
 		{"fragment1", this->fragment1().to_qjson()},
 		{"fragment2", this->fragment2().to_qjson()}
 	};
 }
 
-std::pair<fragment, fragment> clone_pair::normalize(const fragment &fragment1, const fragment &fragment2) noexcept
+QPair<fragment, fragment> clone_pair::canonical(const fragment &fragment1, const fragment &fragment2) noexcept
 {
 	fragment f1=fragment1, f2=fragment2;
-	return this->normalize(std::move(f1), std::move(f2));
+	return this->canonical(std::move(f1), std::move(f2));
 }
 
-std::pair<fragment, fragment> clone_pair::normalize(fragment &&fragment1, fragment &&fragment2) noexcept
+QPair<fragment, fragment> clone_pair::canonical(fragment &&fragment1, fragment &&fragment2) noexcept
 {
 	return fragment1<fragment2 ?
-				std::make_pair(fragment1, fragment2) :
-				std::make_pair(fragment2, fragment1);
+				qMakePair(fragment1, fragment2) :
+				qMakePair(fragment2, fragment1);
 }
 
 };

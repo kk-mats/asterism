@@ -43,7 +43,18 @@ SOURCES += \
     model/result_context.cpp \
     model/detection_result.cpp \
     model/file.cpp \
-    layer/clone_pairs_grid_layer.cpp
+    reader/jcln.cpp \
+    clone_format/jcln.cpp \
+    layer/file_separated_grid_layer.cpp \
+    model/clone_pair.cpp \
+    model/detection_result.cpp \
+    model/file.cpp \
+    model/fragment.cpp \
+    model/result_context.cpp \
+    main.cpp \
+    mainwindow.cpp \
+    core/utility.cpp \
+    layer/clone_pair_grid_layer.cpp
 
 HEADERS += \
         mainwindow.hpp \
@@ -61,7 +72,18 @@ HEADERS += \
     model/object_id_t.hpp \
     model/detection_result.hpp \
     model/file.hpp \
-    layer/clone_pairs_grid_layer.hpp
+    reader/jcln.hpp \
+    clone_format/jcln.hpp \
+    layer/file_separated_grid_layer.hpp \
+    model/clone_pair.hpp \
+    model/detection_result.hpp \
+    model/file.hpp \
+    model/fragment.hpp \
+    model/object_id_t.hpp \
+    model/result_context.hpp \
+    mainwindow.hpp \
+    core/utility.hpp \
+    layer/clone_pair_grid_layer.hpp
 
 FORMS += \
         mainwindow.ui

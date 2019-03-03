@@ -7,39 +7,50 @@ detection_result::detection_result() noexcept
 	: id_(new_id())
 {}
 
+detection_result::id_t detection_result::id() const noexcept
+{
+	return this->id_;
+}
+
 result_context detection_result::context() const noexcept
 {
 	return this->context_;
 }
 
-QVector<clone_pair> detection_result::clone_pairs() const noexcept
+QList<clone_pair> detection_result::clone_pairs() const noexcept
 {
-	return this->clone_pairs_;
+	return this->clone_pair_table_.values();
 }
 
-uint32_t detection_result::add(const clone_pair &clone_pair) noexcept
+clone_pair detection_result::clone_pair_of(const clone_pair::id_t &id) const noexcept
 {
-	this->clone_pairs_.append(clone_pair);
-	return this->clone_pairs_.size()-1;
+	return this->clone_pair_table_[id];
 }
 
-uint32_t detection_result::add(clone_pair &&clone_pair) noexcept
+clone_pair::id_t detection_result::add(const clone_pair &clone_pair) noexcept
 {
-	this->clone_pairs_.append(std::move(clone_pair));
-	return this->clone_pairs_.size()-1;
+	auto p=clone_pair;
+	return this->add(std::move(p));
+}
+
+clone_pair::id_t detection_result::add(clone_pair &&clone_pair) noexcept
+{
+	const auto id=clone_pair.id();
+	this->clone_pair_table_[id]=std::move(clone_pair);
+	return id;
 }
 
 QJsonValue detection_result::to_qjson() const noexcept
 {
 	QJsonArray json_clone_pairs_array;
-	for(const auto &p:this->clone_pairs_)
+	for(const auto &p:this->clone_pair_table_)
 	{
 		json_clone_pairs_array.append(p.to_qjson());
 	}
 
 	return QJsonObject
 	{
-		{"result_id", int(this->id_.index())},
+		{"result_id", int(this->id_)},
 		{"clone_pairs", json_clone_pairs_array}
 	};
 }
@@ -52,5 +63,45 @@ detection_result::id_t detection_result::new_id() noexcept
 	++id_ctr_;
 	return id;
 }
+
+detection_results::detection_results(const QString &target_path) noexcept
+{
+
+}
+
+file::id_t detection_results::add(file &&file) noexcept
+{
+	const auto id=file.id();
+	this->file_table_[id]=std::move(file);
+	return id;
+}
+
+detection_result::id_t detection_results::add(detection_result &&result) noexcept
+{
+	const auto id=result.id();
+	this->result_table_[id]=std::move(result);
+	return id;
+}
+
+QJsonValue detection_results::to_qjson() const noexcept
+{
+	QJsonArray files, results;
+	for(const auto &f:this->file_table_)
+	{
+		files.append(f.to_qjson());
+	}
+	for(const auto &r:this->result_table_)
+	{
+		results.append(r.to_qjson());
+	}
+
+	return QJsonObject
+	{
+		{"global",
+			{"target", 			}
+		}
+	};
+}
+
 
 }

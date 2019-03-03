@@ -6,7 +6,7 @@
 namespace asterism
 {
 
-class fragment
+class fragment final
 {
 public:
 	fragment(const file::id_t &file_id, const uint32_t begin, const uint32_t end) noexcept;

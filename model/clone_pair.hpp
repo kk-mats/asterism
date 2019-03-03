@@ -6,7 +6,7 @@
 namespace asterism
 {
 
-class clone_pair
+class clone_pair final
 {
 public:
 	using id_t=object_id_t<clone_pair>;
@@ -22,19 +22,20 @@ public:
 	unsigned int similarity() const noexcept;
 
 	QJsonValue to_qjson() const noexcept;
+
 private:
 	id_t id_;
-	std::pair<fragment, fragment> fragments_;
+	QPair<fragment, fragment> fragments_;
 	unsigned int similairty_;
 
 	static uint32_t id_ctr_;
 	static id_t new_id() noexcept;
 
-	std::pair<fragment, fragment> normalize(const fragment &fragment1, const fragment &fragment2) noexcept;
-	std::pair<fragment, fragment> normalize(fragment &&fragment1, fragment &&fragment2) noexcept;
+	QPair<fragment, fragment> canonical(const fragment &fragment1, const fragment &fragment2) noexcept;
+	QPair<fragment, fragment> canonical(fragment &&fragment1, fragment &&fragment2) noexcept;
 };
 
-using clone_pair_id_t=object_id_t<clone_pair>;
+
 }
 
 #endif // CLONE_PAIR_HPP

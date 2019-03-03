@@ -7,21 +7,21 @@ namespace asterism
 {
 
 template <class N>
-class object_id_t
+class object_id_t final
 {
 public:
-	object_id_t(const uint32_t index) noexcept
-		: index_(index)
+	object_id_t(const uint32_t id) noexcept
+		: id_(id)
 	{}
 
-	uint32_t index() const noexcept
+	uint32_t id() const noexcept
 	{
-		return this->index_;
+		return this->id_;
 	}
 
 	bool operator ==(const object_id_t<N> &other) const noexcept
 	{
-		return this->index_==other.index_;
+		return this->id_==other.id_;
 	}
 
 	bool operator !=(const object_id_t<N> &other) const noexcept
@@ -31,11 +31,16 @@ public:
 
 	bool operator <(const object_id_t<N> &other) const noexcept
 	{
-		return this->index_<other.index_;
+		return this->id_<other.id_;
+	}
+
+	operator int() const noexcept
+	{
+		return int(this->id_);
 	}
 
 private:
-	const uint32_t index_;
+	uint32_t id_;
 };
 
 }
