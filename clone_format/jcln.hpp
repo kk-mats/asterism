@@ -4,6 +4,8 @@
 #include <QDir>
 #include <QJsonDocument>
 
+#include <optional>
+
 #include "model/detection_result.hpp"
 
 namespace asterism
@@ -12,8 +14,8 @@ namespace asterism
 class jcln
 {
 public:
-	static detection_result parse(const QDir &path);
-	static bool write(const detection_results &results, const QDir &path);
+	static std::optional<detection_result> parse(const QString &path) noexcept;
+	static bool write(const detection_results &results, const QString &path) noexcept;
 
 };
 

@@ -54,7 +54,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     core/utility.cpp \
-    layer/clone_pair_grid_layer.cpp
+    layer/clone_pair_grid_layer.cpp \
+    core/log.cpp
 
 HEADERS += \
         mainwindow.hpp \
@@ -83,7 +84,8 @@ HEADERS += \
     model/result_context.hpp \
     mainwindow.hpp \
     core/utility.hpp \
-    layer/clone_pair_grid_layer.hpp
+    layer/clone_pair_grid_layer.hpp \
+    core/log.hpp
 
 FORMS += \
         mainwindow.ui
