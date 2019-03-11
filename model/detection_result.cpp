@@ -103,5 +103,9 @@ QJsonValue detection_results::to_qjson() const noexcept
 	};
 }
 
+bool detection_results::from_qjson(const QJsonObject &json) const noexcept
+{
+
+}
 
 }

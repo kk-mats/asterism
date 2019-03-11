@@ -2,11 +2,9 @@
 #define CONTEXT_HPP
 
 #include <QString>
-#include <QDir>
 
 namespace asterism
 {
-
 
 
 enum class tool

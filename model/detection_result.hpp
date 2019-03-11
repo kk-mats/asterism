@@ -48,6 +48,8 @@ public:
 	detection_result::id_t add(detection_result &&result) noexcept;
 
 	QJsonValue to_qjson() const noexcept;
+	bool from_qjson(const QJsonObject &json) const noexcept;
+
 
 private:
 	QString taget_path_;

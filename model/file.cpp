@@ -31,7 +31,7 @@ QJsonValue file::to_qjson() const noexcept
 {
 	return QJsonObject
 	{
-		{"file_id", this->id_},
+		{"file_id", int(this->id_)},
 		{"path", this->canonical_file_path_}
 	};
 }

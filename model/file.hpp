@@ -1,11 +1,12 @@
 #ifndef FILE_HPP
 #define FILE_HPP
 
-#include <QDir>
 #include <QHash>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
+
+#include <filesystem>
 
 #include "core/utility.hpp"
 #include "object_id_t.hpp"

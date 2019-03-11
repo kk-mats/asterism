@@ -18,9 +18,15 @@ public:
 	uint32_t end() const noexcept;
 
 	QJsonValue to_qjson() const noexcept;
+	bool from_qjson(const QJsonObject &json) noexcept;
+
 private:
 	file::id_t file_id_;
 	uint32_t begin_, end_;
+
+	static inline const QString FILE_ID="file_id";
+	static inline const QString BEGIN="begin";
+	static inline const QString END="end";
 };
 
 }

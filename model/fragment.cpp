@@ -52,10 +52,29 @@ QJsonValue fragment::to_qjson() const noexcept
 {
 	return QJsonObject
 	{
-		{"file_id", int(this->file_id_.id())},
+		{"file_id", int(this->file_id_)},
 		{"begin", int(this->begin_)},
 		{"end", int(this->end_)}
 	};
+}
+
+bool fragment::from_qjson(const QJsonObject &json) noexcept
+{
+	if(!json.contains(this->FILE_ID) || !json.contains(this->BEGIN) || !json.contains(this->END))
+	{
+		return false;
+	}
+
+	if(!json[this->FILE_ID].isDouble() || !json[this->BEGIN].isDouble() || !json[this->END].isDouble())
+	{
+		return false;
+	}
+
+	this->file_id_=json[this->FILE_ID].toInt();
+	this->begin_=json[this->BEGIN].toInt();
+	this->end_=json[this->END].toInt();
+
+	return true;
 }
 
 }

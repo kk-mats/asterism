@@ -22,11 +22,16 @@ public:
 	unsigned int similarity() const noexcept;
 
 	QJsonValue to_qjson() const noexcept;
+	bool from_qjson(const QJsonObject &json) noexcept;
 
 private:
 	id_t id_;
 	QPair<fragment, fragment> fragments_;
 	unsigned int similairty_;
+
+	static inline const QString SIMILARITY="similarity";
+	static inline const QString FRAGMENT1="fragment1";
+	static inline const QString FRAGMENT2="fragment2";
 
 	static uint32_t id_ctr_;
 	static id_t new_id() noexcept;

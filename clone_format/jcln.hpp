@@ -1,7 +1,6 @@
 #ifndef JCLN_HPP
 #define JCLN_HPP
 
-#include <QDir>
 #include <QJsonDocument>
 
 #include <optional>
@@ -14,7 +13,7 @@ namespace asterism
 class jcln
 {
 public:
-	static std::optional<detection_result> parse(const QString &path) noexcept;
+	static std::optional<detection_results> parse(const QString &path) noexcept;
 	static bool write(const detection_results &results, const QString &path) noexcept;
 
 };
