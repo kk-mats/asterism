@@ -18,6 +18,7 @@ public:
 	using id_t=object_id_t<detection_result>;
 
 	detection_result() noexcept;
+	detection_result(const id_t id, result_context &&context, QHash<clone_pair::id_t, clone_pair> &&clone_pair_table) noexcept;
 
 	id_t id() const noexcept;
 	result_context context() const noexcept;
@@ -27,14 +28,14 @@ public:
 	clone_pair::id_t add(const clone_pair &clone_pair) noexcept;
 	clone_pair::id_t add(clone_pair &&clone_pair) noexcept;
 
-	QJsonValue to_qjson() const noexcept;
+	const QHash<clone_pair::id_t, clone_pair>& clone_pair_table() const noexcept;
 
 private:
 	id_t id_;
 	result_context context_;
 	QHash<clone_pair::id_t, clone_pair> clone_pair_table_;
 
-	static uint32_t id_ctr_;
+	static inline uint32_t id_ctr_=0;
 	static id_t new_id() noexcept;
 };
 
@@ -47,9 +48,10 @@ public:
 	file::id_t add(file &&file) noexcept;
 	detection_result::id_t add(detection_result &&result) noexcept;
 
-	QJsonValue to_qjson() const noexcept;
 	bool from_qjson(const QJsonObject &json) const noexcept;
 
+	const QHash<file::id_t, file> file_table() const noexcept;
+	const QHash<detection_result::id_t, detection_result> result_table() const noexcept;
 
 private:
 	QString taget_path_;

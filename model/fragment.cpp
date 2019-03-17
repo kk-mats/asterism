@@ -48,16 +48,6 @@ uint32_t fragment::end() const noexcept
 	return this->end_;
 }
 
-QJsonValue fragment::to_qjson() const noexcept
-{
-	return QJsonObject
-	{
-		{"file_id", int(this->file_id_)},
-		{"begin", int(this->begin_)},
-		{"end", int(this->end_)}
-	};
-}
-
 bool fragment::from_qjson(const QJsonObject &json) noexcept
 {
 	if(!json.contains(this->FILE_ID) || !json.contains(this->BEGIN) || !json.contains(this->END))

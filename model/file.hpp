@@ -22,6 +22,9 @@ public:
 	file(const QString &canonical_file_path) noexcept;
 	file(QString &&canonical_file_path) noexcept;
 
+	file(const id_t id, const QString &canonical_file_path) noexcept;
+	file(const id_t id, QString &&canonical_file_path) noexcept;
+
 	id_t id() const noexcept;
 	QString canonical_file_path() const noexcept;
 
@@ -33,7 +36,7 @@ private:
 	id_t id_;
 	QString canonical_file_path_;
 
-	static uint32_t id_ctr_;
+	static inline uint32_t id_ctr_=0;
 	static id_t new_id() noexcept;
 
 };

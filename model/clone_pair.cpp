@@ -38,34 +38,6 @@ unsigned int clone_pair::similarity() const noexcept
 	return this->similairty_;
 }
 
-QJsonValue clone_pair::to_qjson() const noexcept
-{
-	return QJsonObject
-	{
-		{"clone_pair_id", int(this->id_)},
-		{"similarity", int(this->similairty_)},
-		{"fragment1", this->fragment1().to_qjson()},
-		{"fragment2", this->fragment2().to_qjson()}
-	};
-}
-
-bool clone_pair::from_qjson(const QJsonObject &json) noexcept
-{
-	if(!json.contains(this->SIMILARITY) || !json.contains(this->FRAGMENT1) || !json.contains(this->FRAGMENT2))
-	{
-		return false;
-	}
-
-	if(!json[this->SIMILARITY].isDouble() || !json[this->FRAGMENT1].isObject() || !json[this->FRAGMENT2].isObject())
-	{
-		return false;
-	}
-
-	this->similairty_=json[this->SIMILARITY].toInt();
-	return this->fragments_.first.from_qjson(json[this->FRAGMENT1].toObject()) &&
-			this->fragments_.second.from_qjson(json[this->FRAGMENT2].toObject());
-}
-
 QPair<fragment, fragment> clone_pair::canonical(const fragment &fragment1, const fragment &fragment2) noexcept
 {
 	fragment f1=fragment1, f2=fragment2;

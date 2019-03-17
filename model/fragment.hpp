@@ -17,7 +17,6 @@ public:
 	uint32_t begin() const noexcept;
 	uint32_t end() const noexcept;
 
-	QJsonValue to_qjson() const noexcept;
 	bool from_qjson(const QJsonObject &json) noexcept;
 
 private:
