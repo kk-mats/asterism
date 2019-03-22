@@ -13,7 +13,7 @@ namespace asterism
 class jcln
 {
 public:
-	static std::optional<detection_results> parse(const QString &path) noexcept;
+	static std::optional<detection_results> read(const QString &path) noexcept;
 	static bool write(const detection_results &results, const QString &path) noexcept;
 
 private:

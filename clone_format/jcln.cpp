@@ -4,7 +4,7 @@ namespace asterism
 {
 
 
-std::optional<detection_results> jcln::parse(const QString &path) noexcept
+std::optional<detection_results> jcln::read(const QString &path) noexcept
 {
 	QFile file(path);
 
@@ -14,19 +14,15 @@ std::optional<detection_results> jcln::parse(const QString &path) noexcept
 	}
 
 	auto json(QFileInfo(path).suffix()=="jcln" ?
-				QJsonDocument::fromJson(file.readAll()) : // file.jcln
-				QJsonDocument::fromBinaryData(file.readAll())); //file.bjcln
+				QJsonDocument::fromJson(file.readAll()) : // *.jcln
+				QJsonDocument::fromBinaryData(file.readAll())); // *.bjcln
 
 	if(!json.isObject())
 	{
 		return std::nullopt;
 	}
 
-	auto j=json.object();
-
-	if(j.contains("global") && )
-
-
+	return read_detection_results(json.object());
 }
 
 
@@ -34,8 +30,8 @@ QJsonValue jcln::to_qjson(const file &file) noexcept
 {
 	return QJsonObject
 	{
-		{"file_id", int(file.id())},
-		{"path", file.canonical_file_path()}
+		{FILE_ID, int(file.id())},
+		{PATH, file.canonical_file_path()}
 	};
 }
 
@@ -43,9 +39,9 @@ QJsonValue jcln::to_qjson(const fragment &fragment) noexcept
 {
 	return QJsonObject
 	{
-		{"file_id", int(fragment.file_id())},
-		{"begin", int(fragment.begin())},
-		{"end", int(fragment.end())}
+		{FILE_ID, int(fragment.file_id())},
+		{BEGIN, int(fragment.begin())},
+		{END, int(fragment.end())}
 	};
 }
 
@@ -53,10 +49,10 @@ QJsonValue jcln::to_qjson(const clone_pair &clone_pair) noexcept
 {
 	return QJsonObject
 	{
-		{"clone_pair_id", int(clone_pair.id())},
-		{"similarity", int(clone_pair.similarity())},
-		{"fragment1", to_qjson(clone_pair.fragment1())},
-		{"fragment2", to_qjson(clone_pair.fragment2())}
+		{CLONE_PAIR_ID, int(clone_pair.id())},
+		{SIMILARITY, int(clone_pair.similarity())},
+		{FRAGMENT1, to_qjson(clone_pair.fragment1())},
+		{FRAGMENT2, to_qjson(clone_pair.fragment2())}
 	};
 }
 
@@ -70,14 +66,14 @@ QJsonValue jcln::to_qjson(const detection_result &detection_result) noexcept
 
 	return QJsonObject
 	{
-		{"result_id", int(detection_result.id())},
-		{"clone_pairs", json_clone_pairs_array}
+		{RESULT_ID, int(detection_result.id())},
+		{CLONE_PAIR_ID, json_clone_pairs_array}
 	};
 }
 
 QJsonValue jcln::to_qjson(const detection_results &detection_results) noexcept
 {
-	QJsonArray files, results;
+	QJsonArray files, results, clone_pairs;
 	for(const auto &f:detection_results.file_table())
 	{
 		files.append(to_qjson(f));
@@ -86,13 +82,21 @@ QJsonValue jcln::to_qjson(const detection_results &detection_results) noexcept
 	for(const auto &r:detection_results.result_table())
 	{
 		results.append(to_qjson(r));
+		clone_pairs.append(QJsonObject{{RESULT_ID, int(r.id())}, {SIZE, r.clone_pairs().size()}});
 	}
 
 	return QJsonObject
 	{
-		{"global",
-			{"target", 			}
-		}
+		{GLOBAL, QJsonObject{
+				{SIZE, QJsonObject{
+					{RESULTS, detection_results.result_table().size()},
+					{FILE_TABLE, detection_results.file_table().size()},
+					{CLONE_PAIRS, clone_pairs}
+				}}
+			}
+		},
+		{FILE_TABLE, files},
+		{RESULTS, results}
 	};
 }
 

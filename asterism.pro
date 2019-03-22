@@ -43,7 +43,6 @@ SOURCES += \
     model/result_context.cpp \
     model/detection_result.cpp \
     model/file.cpp \
-    reader/jcln.cpp \
     clone_format/jcln.cpp \
     layer/file_separated_grid_layer.cpp \
     model/clone_pair.cpp \
@@ -73,7 +72,6 @@ HEADERS += \
     model/object_id_t.hpp \
     model/detection_result.hpp \
     model/file.hpp \
-    reader/jcln.hpp \
     clone_format/jcln.hpp \
     layer/file_separated_grid_layer.hpp \
     model/clone_pair.hpp \

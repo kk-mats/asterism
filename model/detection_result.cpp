@@ -26,7 +26,7 @@ QList<clone_pair> detection_result::clone_pairs() const noexcept
 	return this->clone_pair_table_.values();
 }
 
-clone_pair detection_result::clone_pair_of(const clone_pair::id_t &id) const noexcept
+clone_pair detection_result::operator [](const clone_pair::id_t &id) const&& noexcept
 {
 	return this->clone_pair_table_[id];
 }
@@ -57,9 +57,8 @@ detection_result::id_t detection_result::new_id() noexcept
 }
 
 detection_results::detection_results(const QString &target_path) noexcept
-{
-
-}
+	: target_path_(target_path)
+{}
 
 file::id_t detection_results::add(file &&file) noexcept
 {
@@ -75,9 +74,9 @@ detection_result::id_t detection_results::add(detection_result &&result) noexcep
 	return id;
 }
 
-bool detection_results::from_qjson(const QJsonObject &json) const noexcept
+QString detection_results::target_path() const noexcept
 {
-
+	return this->target_path_;
 }
 
 const QHash<file::id_t, file> detection_results::file_table() const noexcept

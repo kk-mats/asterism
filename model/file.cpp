@@ -4,6 +4,10 @@
 namespace asterism
 {
 
+file::file() noexcept
+	: id_(0), canonical_file_path_("invalid_constructor_call")
+{}
+
 file::file(const QString &canonical_file_path) noexcept
 	: id_(new_id()), canonical_file_path_(canonical_file_path)
 {}
@@ -40,6 +44,11 @@ file::id_t file::new_id() noexcept
 	auto id=file::id_t(id_ctr_);
 	++id_ctr_;
 	return id;
+}
+
+uint qHash(const file::id_t &key, uint seed) noexcept
+{
+	return key;
 }
 
 }

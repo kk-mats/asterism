@@ -47,7 +47,7 @@ tool result_context::from_string(const QString &tool) const noexcept
 	}
 	else if(tool=="CCFinderSW")
 	{
-		return tool::ccfindersw:
+		return tool::ccfindersw;
 	}
 	else if(tool=="NiCAD")
 	{

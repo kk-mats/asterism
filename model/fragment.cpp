@@ -4,6 +4,10 @@
 namespace asterism
 {
 // constructor, destructor
+fragment::fragment() noexcept
+	: file_id_(0), begin_(0), end_(0)
+{}
+
 fragment::fragment(const file::id_t &file_id, const uint32_t begin, const uint32_t end) noexcept
 	:file_id_(file_id), begin_(begin), end_(end)
 {}
@@ -46,25 +50,6 @@ uint32_t fragment::begin() const noexcept
 uint32_t fragment::end() const noexcept
 {
 	return this->end_;
-}
-
-bool fragment::from_qjson(const QJsonObject &json) noexcept
-{
-	if(!json.contains(this->FILE_ID) || !json.contains(this->BEGIN) || !json.contains(this->END))
-	{
-		return false;
-	}
-
-	if(!json[this->FILE_ID].isDouble() || !json[this->BEGIN].isDouble() || !json[this->END].isDouble())
-	{
-		return false;
-	}
-
-	this->file_id_=json[this->FILE_ID].toInt();
-	this->begin_=json[this->BEGIN].toInt();
-	this->end_=json[this->END].toInt();
-
-	return true;
 }
 
 }

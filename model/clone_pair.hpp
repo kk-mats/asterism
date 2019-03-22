@@ -11,6 +11,7 @@ class clone_pair final
 public:
 	using id_t=object_id_t<clone_pair>;
 
+	clone_pair() noexcept;
 	clone_pair(const fragment &fragment1, const fragment &fragment2, const unsigned int similarity) noexcept;
 	clone_pair(fragment &&fragment1, fragment &&fragment2, const unsigned int similarity) noexcept;
 
@@ -37,6 +38,7 @@ private:
 	QPair<fragment, fragment> canonical(fragment &&fragment1, fragment &&fragment2) noexcept;
 };
 
+uint qHash(const clone_pair::id_t &key, uint seed) noexcept;
 
 }
 

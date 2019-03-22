@@ -19,6 +19,7 @@ class file final
 public:
 	using id_t=object_id_t<file>;
 
+	file() noexcept;
 	file(const QString &canonical_file_path) noexcept;
 	file(QString &&canonical_file_path) noexcept;
 
@@ -41,6 +42,7 @@ private:
 
 };
 
+uint qHash(const file::id_t &key, uint seed) noexcept;
 }
 
 #endif // FILE_HPP

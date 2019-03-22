@@ -23,7 +23,7 @@ public:
 	id_t id() const noexcept;
 	result_context context() const noexcept;
 	QList<clone_pair> clone_pairs() const noexcept;
-	clone_pair clone_pair_of(const clone_pair::id_t &id) const noexcept;
+	clone_pair operator [](const clone_pair::id_t &id) const&& noexcept;
 
 	clone_pair::id_t add(const clone_pair &clone_pair) noexcept;
 	clone_pair::id_t add(clone_pair &&clone_pair) noexcept;
@@ -48,13 +48,12 @@ public:
 	file::id_t add(file &&file) noexcept;
 	detection_result::id_t add(detection_result &&result) noexcept;
 
-	bool from_qjson(const QJsonObject &json) const noexcept;
-
+	QString target_path() const noexcept;
 	const QHash<file::id_t, file> file_table() const noexcept;
 	const QHash<detection_result::id_t, detection_result> result_table() const noexcept;
 
 private:
-	QString taget_path_;
+	QString target_path_;
 	QHash<file::id_t, file> file_table_;
 	QHash<detection_result::id_t, detection_result> result_table_;
 };

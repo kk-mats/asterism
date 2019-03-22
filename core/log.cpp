@@ -11,7 +11,7 @@ log::log(const log::redirection_stdout_) noexcept
 
 log& log::instance(const log::redirection_stdout_) noexcept
 {
-	static log log(log::redirection_stdout);
+	static log log(redirection_stdout);
 	return log;
 }
 
@@ -38,6 +38,11 @@ void log::info(const QString &message) noexcept
 }
 
 void log::debug(const QString &message) noexcept
+{
+
+}
+
+void log::output(const QString &message) noexcept
 {
 
 }
