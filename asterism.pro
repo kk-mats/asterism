@@ -25,65 +25,34 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++1z
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    model/clone_pair.cpp \
-    model/fragment.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    model/clone_pair.cpp \
-    model/fragment.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    model/clone_pair.cpp \
-    model/fragment.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    layer/file_separated_grid_layer.cpp \
-    model/result_context.cpp \
-    model/detection_result.cpp \
-    model/file.cpp \
     clone_format/jcln.cpp \
-    layer/file_separated_grid_layer.cpp \
-    model/clone_pair.cpp \
-    model/detection_result.cpp \
-    model/file.cpp \
-    model/fragment.cpp \
-    model/result_context.cpp \
-    main.cpp \
-    mainwindow.cpp \
+    core/log.cpp \
     core/utility.cpp \
     layer/clone_pair_grid_layer.cpp \
-    core/log.cpp
+    layer/file_separated_grid_layer.cpp \
+    model/clone_pair.cpp \
+    model/detection_result.cpp \
+    model/file.cpp \
+    model/fragment.cpp \
+    model/result_context.cpp \
+    main.cpp \
+    mainwindow.cpp
+
 
 HEADERS += \
-        mainwindow.hpp \
-    model/clone_pair.hpp \
-    model/fragment.hpp \
-    mainwindow.hpp \
-    model/clone_pair.hpp \
-    model/fragment.hpp \
-    mainwindow.hpp \
-    model/clone_pair.hpp \
-    model/fragment.hpp \
-    mainwindow.hpp \
-    model/result_context.hpp \
-    layer/file_separated_grid_layer.hpp \
-    model/object_id_t.hpp \
-    model/detection_result.hpp \
-    model/file.hpp \
     clone_format/jcln.hpp \
-    layer/file_separated_grid_layer.hpp \
-    model/clone_pair.hpp \
-    model/detection_result.hpp \
-    model/file.hpp \
-    model/fragment.hpp \
-    model/object_id_t.hpp \
-    model/result_context.hpp \
-    mainwindow.hpp \
+    core/log.hpp \
     core/utility.hpp \
     layer/clone_pair_grid_layer.hpp \
-    core/log.hpp
+    layer/file_separated_grid_layer.hpp \
+    model/clone_pair.hpp \
+    model/detection_result.hpp \
+    model/file.hpp \
+    model/fragment.hpp \
+    model/object_id_t.hpp \
+    model/result_context.hpp \
+    mainwindow.hpp
+
 
 FORMS += \
         mainwindow.ui

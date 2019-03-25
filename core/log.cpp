@@ -19,27 +19,27 @@ log& log::instance(const log::redirection_stdout_) noexcept
 
 void log::fatal(const QString &message) noexcept
 {
-	output("[fatal] "+message);
+	output("[Fatal] "+message);
 }
 
 void log::error(const QString &message) noexcept
 {
-
+	output("[Error] "+message);
 }
 
 void log::warn(const QString &message) noexcept
 {
-
+	output("[Warn] "+message);
 }
 
 void log::info(const QString &message) noexcept
 {
-
+	output("[Info] "+message);
 }
 
 void log::debug(const QString &message) noexcept
 {
-
+	output("[Debug] "+message);
 }
 
 void log::output(const QString &message) noexcept

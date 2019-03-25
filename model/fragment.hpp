@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef FRAGMENT_HPP
+#define FRAGMENT_HPP
 
 #include "file.hpp"
 
@@ -24,3 +24,5 @@ private:
 };
 
 }
+
+#endif // FRAGMENT_HPP

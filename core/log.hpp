@@ -16,8 +16,8 @@ public:
 	struct redirection_file_
 	{};
 
-	static redirection_stdout_ redirection_stdout;
-	static redirection_file_ redirection_file;
+	static inline redirection_stdout_ redirection_stdout;
+	static inline redirection_file_ redirection_file;
 
 	log(const log &)=delete;
 	log& operator =(const log &)=delete;
