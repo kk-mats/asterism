@@ -3,37 +3,29 @@
 namespace asterism
 {
 
-
-void logger::fatal(const message_code &message_code, const QString &message) noexcept
+void asterism_message_output(QtMsgType type, const QMessageLogContext &context, const QString &message) noexcept
 {
-	qFatal()<<"[Fatal]"<<print(message_code, message);
-}
-
-void logger::error(const message_code &message_code, const QString &message) noexcept
-{
-	qWarning()<<"[Warn]"<<print(message_code, message);
-}
-
-void logger::debug(const message_code &message_code, const QString &message) noexcept
-{
-	qDebug()<<"[Debug]"<<print(message_code, message);
-}
-
-void logger::trace(const message_code &message_code, const QString &message) noexcept
-{
-	qInfo()<<"[Info]"<<print(message_code, message);
-}
-
-QString logger::print(const message_code &message_code, const QString &message) noexcept
-{
-	QString r;
-	switch(message_code)
+	QByteArray localMsg=message.toLocal8Bit();
+	const char *file=context.file ? context.file : "";
+	const char *function=context.function ? context.function : "";
+	switch(type)
 	{
-		case message_code::file_not_found : r="file not found"; break;
-		case message_code::invalid_file_format : r="invalid file format"; break;
+		case QtDebugMsg:
+			fprintf(stderr, "[Debug] at %s in %s(%u) - %s\n", function, file, context.line, localMsg.constData());
+			break;
+		case QtInfoMsg:
+			fprintf(stderr, "[Info] at %s in %s(%u) - %s\n", function, file, context.line, localMsg.constData());
+			break;
+		case QtWarningMsg:
+			fprintf(stderr, "[Warn] at %s in %s(%u) - %s\n", function, file, context.line, localMsg.constData());
+			break;
+		case QtCriticalMsg:
+			fprintf(stderr, "[Critical] at %s in %s(%u) - %s\n", function, file, context.line, localMsg.constData());
+			break;
+		case QtFatalMsg:
+			fprintf(stderr, "[Fatal] at %s in %s(%u) - %s\n", function, file, context.line, localMsg.constData());
+			break;
 	}
-
-	return r+message;
 }
 
 }
