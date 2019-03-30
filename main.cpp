@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {
 	qInstallMessageHandler(asterism::asterism_message_output);
 
-	auto j=asterism::jcln::read("ref.jcln");
+	auto j=asterism::jcln::read("X:\\projects\\asterism\\ref.jcln");
 	if(j)
 	{
 		asterism::jcln::write(j.value(), "loaded.jcln");

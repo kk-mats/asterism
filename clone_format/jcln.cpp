@@ -38,6 +38,7 @@ bool jcln::write(const detection_results &results, const QString &path) noexcept
 	}
 
 	file.write(QJsonDocument(to_qjson(results).toObject()).toJson());
+	qInfo()<<"write to "<<path;
 	return true;
 }
 
@@ -80,10 +81,21 @@ QJsonValue jcln::to_qjson(const detection_result &detection_result) noexcept
 		json_clone_pairs_array.append(to_qjson(p));
 	}
 
+	QJsonObject json_parameters;
+	const auto parameters=detection_result.context().parameters();
+	for(const auto &k:parameters.keys())
+	{
+		json_parameters[k]=parameters[k];
+	}
+
 	return QJsonObject
 	{
-		{RESULT_ID, int(detection_result.id())},
-		{CLONE_PAIR_ID, json_clone_pairs_array}
+		{CLONE_PAIRS, json_clone_pairs_array},
+		{ENVIRONMENT, QJsonObject{
+			{SOURCE, detection_result.context().source()},
+			{PARAMETERS, json_parameters}
+		}},
+		{RESULT_ID, int(detection_result.id())}
 	};
 }
 
@@ -104,12 +116,12 @@ QJsonValue jcln::to_qjson(const detection_results &detection_results) noexcept
 	return QJsonObject
 	{
 		{GLOBAL, QJsonObject{
-				{SIZE, QJsonObject{
-					{RESULTS, detection_results.result_table().size()},
-					{FILE_TABLE, detection_results.file_table().size()},
-					{CLONE_PAIRS, clone_pairs}
-				}}
-			}
+			{SIZE, QJsonObject{
+				{RESULTS, detection_results.result_table().size()},
+				{FILE_TABLE, detection_results.file_table().size()},
+				{CLONE_PAIRS, clone_pairs}
+			}},
+			{TARGET, detection_results.target_path()}}
 		},
 		{FILE_TABLE, files},
 		{RESULTS, results}
@@ -190,7 +202,7 @@ std::optional<detection_result> jcln::read_detection_result(const QJsonObject &j
 		return std::nullopt;
 	}
 
-	auto context=result_context(clone_detector[NAME].toString(), environment[SOURCE].toString());
+	auto context=result_environment(clone_detector[NAME].toString(), environment[SOURCE].toString());
 
 	QHash<clone_pair::id_t, clone_pair> clone_pair_table;
 	for(auto pj:json[CLONE_PAIRS].toArray())
@@ -242,7 +254,7 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 		}
 
 		auto f=fj.toObject();
-		if(!f.contains(FILE_ID) || !f.contains(PATH) || !f[FILE_ID].isDouble() || f[PATH].isString())
+		if(!f.contains(FILE_ID) || !f.contains(PATH) || !f[FILE_ID].isDouble() || !f[PATH].isString())
 		{
 			qCritical()<<message_code::invalid_file_format;
 			return std::nullopt;

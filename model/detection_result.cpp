@@ -7,7 +7,7 @@ detection_result::detection_result() noexcept
 	: id_(new_id())
 {}
 
-detection_result::detection_result(const id_t id, result_context &&context, QHash<clone_pair::id_t, clone_pair> &&clone_pair_table) noexcept
+detection_result::detection_result(const id_t id, result_environment &&context, QHash<clone_pair::id_t, clone_pair> &&clone_pair_table) noexcept
 	: id_(id), context_(std::move(context)), clone_pair_table_(std::move(clone_pair_table))
 {}
 
@@ -16,7 +16,7 @@ detection_result::id_t detection_result::id() const noexcept
 	return this->id_;
 }
 
-result_context detection_result::context() const noexcept
+result_environment detection_result::context() const noexcept
 {
 	return this->context_;
 }

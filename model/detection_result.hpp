@@ -5,7 +5,7 @@
 #include <QHash>
 #include <QJsonArray>
 
-#include "result_context.hpp"
+#include "result_environment.hpp"
 #include "layer/clone_pair_grid_layer.hpp"
 
 namespace asterism
@@ -18,10 +18,10 @@ public:
 	using id_t=object_id_t<detection_result>;
 
 	detection_result() noexcept;
-	detection_result(const id_t id, result_context &&context, QHash<clone_pair::id_t, clone_pair> &&clone_pair_table) noexcept;
+	detection_result(const id_t id, result_environment &&context, QHash<clone_pair::id_t, clone_pair> &&clone_pair_table) noexcept;
 
 	id_t id() const noexcept;
-	result_context context() const noexcept;
+	result_environment context() const noexcept;
 	QList<clone_pair> clone_pairs() const noexcept;
 	clone_pair operator [](const clone_pair::id_t &id) const&& noexcept;
 
@@ -32,7 +32,7 @@ public:
 
 private:
 	id_t id_;
-	result_context context_;
+	result_environment context_;
 	QHash<clone_pair::id_t, clone_pair> clone_pair_table_;
 
 	static inline uint32_t id_ctr_=0;

@@ -33,10 +33,10 @@ SOURCES += \
     model/detection_result.cpp \
     model/file.cpp \
     model/fragment.cpp \
-    model/result_context.cpp \
     main.cpp \
     mainwindow.cpp \
-    core/logger.cpp
+    core/logger.cpp \
+    model/result_environment.cpp
 
 
 HEADERS += \
@@ -49,10 +49,10 @@ HEADERS += \
     model/file.hpp \
     model/fragment.hpp \
     model/object_id_t.hpp \
-    model/result_context.hpp \
     mainwindow.hpp \
     clone_format/format_tags.hpp \
-    core/logger.hpp
+    core/logger.hpp \
+    model/result_environment.hpp
 
 
 FORMS += \
