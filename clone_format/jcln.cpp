@@ -8,8 +8,9 @@ std::optional<detection_results> jcln::read(const QString &path) noexcept
 {
 	QFile file(path);
 
-	if(QFile file(path); !file.open(QIODevice::ReadOnly))
+	if(!file.open(QIODevice::ReadOnly))
 	{
+		qCritical()<<message_code::file_not_found<<path;
 		return std::nullopt;
 	}
 
@@ -23,6 +24,21 @@ std::optional<detection_results> jcln::read(const QString &path) noexcept
 	}
 
 	return read_detection_results(json.object());
+}
+
+
+bool jcln::write(const detection_results &results, const QString &path) noexcept
+{
+	QFile file(path);
+
+	if(!file.open(QIODevice::WriteOnly))
+	{
+		qCritical()<<message_code::file_not_found<<path;
+		return false;
+	}
+
+	file.write(QJsonDocument(to_qjson(results).toObject()).toJson());
+	return true;
 }
 
 
@@ -104,11 +120,13 @@ std::optional<fragment> jcln::read_fragment(const QJsonObject &json) noexcept
 {
 	if(!json.contains(FILE_ID) || !json.contains(BEGIN) || !json.contains(END))
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
 	if(!json[FILE_ID].isDouble() || !json[BEGIN].isDouble() || !json[END].isDouble())
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
@@ -119,11 +137,13 @@ std::optional<clone_pair> jcln::read_clone_pair(const QJsonObject &json) noexcep
 {
 	if(!json.contains(SIMILARITY) || !json.contains(FRAGMENT1) || !json.contains(FRAGMENT2))
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
 	if(!json[SIMILARITY].isDouble() || !json[FRAGMENT1].isObject() || !json[FRAGMENT2].isObject())
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
@@ -138,11 +158,13 @@ std::optional<detection_result> jcln::read_detection_result(const QJsonObject &j
 {
 	if(!json.contains(ENVIRONMENT) || !json.contains(RESULT_ID) || !json.contains(CLONE_PAIRS))
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
 	if(!json[ENVIRONMENT].isObject() || !json[RESULT_ID].isDouble() || !json[CLONE_PAIRS].isArray())
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
@@ -150,11 +172,13 @@ std::optional<detection_result> jcln::read_detection_result(const QJsonObject &j
 	const auto environment=json[ENVIRONMENT].toObject();
 	if(!environment.contains(SOURCE) || !environment.contains(CLONE_DETECTOR))
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
 	if(!environment[SOURCE].isString() || !environment[CLONE_DETECTOR].isObject())
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
@@ -162,13 +186,14 @@ std::optional<detection_result> jcln::read_detection_result(const QJsonObject &j
 	const auto clone_detector=environment[CLONE_DETECTOR].toObject();
 	if(!clone_detector.contains(NAME) || !clone_detector[NAME].isString())
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
 	auto context=result_context(clone_detector[NAME].toString(), environment[SOURCE].toString());
 
 	QHash<clone_pair::id_t, clone_pair> clone_pair_table;
-	for(const auto &pj:json[CLONE_PAIRS].toArray())
+	for(auto pj:json[CLONE_PAIRS].toArray())
 	{
 		std::optional<clone_pair> p;
 		if(!pj.isObject() || !(p=read_clone_pair(pj.toObject())))
@@ -186,11 +211,13 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 {
 	if(!json.contains(GLOBAL) || !json.contains(FILE_TABLE) || !json.contains(RESULTS))
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
 	if(!json[GLOBAL].isObject() || !json[FILE_TABLE].isArray() || !json[RESULTS].isArray())
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
@@ -198,6 +225,7 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 	const auto global=json[GLOBAL].toObject();
 	if(!global.contains(TARGET) || !global[TARGET].isString())
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
@@ -209,12 +237,14 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 	{
 		if(!fj.isObject())
 		{
+			qCritical()<<message_code::invalid_file_format;
 			return std::nullopt;
 		}
 
 		auto f=fj.toObject();
 		if(!f.contains(FILE_ID) || !f.contains(PATH) || !f[FILE_ID].isDouble() || f[PATH].isString())
 		{
+			qCritical()<<message_code::invalid_file_format;
 			return std::nullopt;
 		}
 
@@ -227,12 +257,14 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 	{
 		if(!rj.isObject())
 		{
+			qCritical()<<message_code::invalid_file_format;
 			return std::nullopt;
 		}
 
 		auto r=read_detection_result(rj.toObject());
 		if(!r)
 		{
+			qCritical()<<message_code::invalid_file_format;
 			return std::nullopt;
 		}
 

@@ -26,7 +26,6 @@ CONFIG += c++1z
 
 SOURCES += \
     clone_format/jcln.cpp \
-    core/log.cpp \
     core/utility.cpp \
     layer/clone_pair_grid_layer.cpp \
     layer/file_separated_grid_layer.cpp \
@@ -36,12 +35,12 @@ SOURCES += \
     model/fragment.cpp \
     model/result_context.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    core/logger.cpp
 
 
 HEADERS += \
     clone_format/jcln.hpp \
-    core/log.hpp \
     core/utility.hpp \
     layer/clone_pair_grid_layer.hpp \
     layer/file_separated_grid_layer.hpp \
@@ -51,7 +50,9 @@ HEADERS += \
     model/fragment.hpp \
     model/object_id_t.hpp \
     model/result_context.hpp \
-    mainwindow.hpp
+    mainwindow.hpp \
+    clone_format/format_tags.hpp \
+    core/logger.hpp
 
 
 FORMS += \

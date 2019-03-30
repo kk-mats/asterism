@@ -27,10 +27,6 @@ private:
 	QPair<fragment, fragment> fragments_;
 	unsigned int similairty_;
 
-	static inline const QString SIMILARITY="similarity";
-	static inline const QString FRAGMENT1="fragment1";
-	static inline const QString FRAGMENT2="fragment2";
-
 	static inline uint32_t id_ctr_=0;
 	static id_t new_id() noexcept;
 
