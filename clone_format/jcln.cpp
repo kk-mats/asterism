@@ -20,6 +20,7 @@ std::optional<detection_results> jcln::read(const QString &path) noexcept
 
 	if(!json.isObject())
 	{
+		qCritical()<<message_code::invalid_file_format;
 		return std::nullopt;
 	}
 
@@ -210,6 +211,7 @@ std::optional<detection_result> jcln::read_detection_result(const QJsonObject &j
 		std::optional<clone_pair> p;
 		if(!pj.isObject() || !(p=read_clone_pair(pj.toObject())))
 		{
+			qCritical()<<message_code::invalid_file_format;
 			return std::nullopt;
 		}
 

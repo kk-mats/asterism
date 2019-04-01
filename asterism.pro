@@ -36,7 +36,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     core/logger.cpp \
-    model/result_environment.cpp
+    model/result_environment.cpp \
+    core/matching_pair_table.cpp
 
 
 HEADERS += \
@@ -52,7 +53,8 @@ HEADERS += \
     mainwindow.hpp \
     clone_format/format_tags.hpp \
     core/logger.hpp \
-    model/result_environment.hpp
+    model/result_environment.hpp \
+    core/matching_pair_table.hpp
 
 
 FORMS += \
@@ -62,3 +64,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    ref.jcln

@@ -6,7 +6,7 @@
 #include <QJsonArray>
 
 #include "result_environment.hpp"
-#include "layer/clone_pair_grid_layer.hpp"
+#include "model/clone_pair.hpp"
 
 namespace asterism
 {
