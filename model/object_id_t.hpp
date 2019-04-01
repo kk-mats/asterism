@@ -19,6 +19,32 @@ public:
 		return this->id_;
 	}
 
+	object_id_t<N>& operator ++() noexcept
+	{
+		++this->id_;
+		return *this;
+	}
+
+	object_id_t<N>& operator --() noexcept
+	{
+		--this->id_;
+		return *this;
+	}
+
+	object_id_t<N> operator ++(int) noexcept
+	{
+		auto t=*this;
+		++(*this);
+		return t;
+	}
+
+	object_id_t<N> operator --(int) noexcept
+	{
+		auto t=*this;
+		--(*this);
+		return t;
+	}
+
 	bool operator ==(const object_id_t<N> &other) const noexcept
 	{
 		return this->id_==other.id_;

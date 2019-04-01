@@ -12,13 +12,23 @@ namespace asterism
 class grid_coordinate
 {
 public:
-	grid_coordinate(const file::id_t &x, const file::id_t &y) noexcept;
-	grid_coordinate(file::id_t &&x, file::id_t &&y) noexcept;
+	virtual uint32_t to_linear() const noexcept=0;
+};
 
-	uint32_t to_1d() const noexcept;
+class grid_2d_coordinate final
+	: public grid_coordinate
+{
+public:
+	grid_2d_coordinate(const file::id_t &x, const file::id_t &y) noexcept;
+	grid_2d_coordinate(file::id_t &&x, file::id_t &&y) noexcept;
 
 	file::id_t x() const noexcept;
 	file::id_t y() const noexcept;
+
+	uint32_t to_linear() const noexcept override;
+
+	bool operator ==(const grid_2d_coordinate &other) const noexcept;
+	bool operator !=(const grid_2d_coordinate &other) const noexcept;
 
 private:
 	QPair<file::id_t, file::id_t> x_y_;
@@ -27,6 +37,28 @@ private:
 	QPair<file::id_t, file::id_t> canonical(file::id_t &&x, file::id_t &&y) noexcept;
 };
 
+class grid_1d_coordinate final
+	: public grid_coordinate
+{
+public:
+	grid_1d_coordinate(const file::id_t &i) noexcept;
+	grid_1d_coordinate(file::id_t &&i) noexcept;
+
+	file::id_t index() const noexcept;
+
+	uint32_t to_linear() const noexcept override;
+
+	grid_1d_coordinate& operator ++() noexcept;
+	grid_1d_coordinate& operator --() noexcept;
+	grid_1d_coordinate operator ++(int) noexcept;
+	grid_1d_coordinate operator --(int) noexcept;
+
+	bool operator ==(const grid_1d_coordinate &other) const noexcept;
+	bool operator !=(const grid_1d_coordinate &other) const noexcept;
+
+private:
+	file::id_t i_;
+};
 
 template <class val_T>
 class file_separated_grid_layer
@@ -40,34 +72,44 @@ public:
 		: width_(width), values_(width*(width+1)/2, initial)
 	{}
 
-	auto begin() noexcept
+	auto begin() const noexcept
 	{
 		return this->values_.begin();
 	}
 
-	auto cbegin() const noexcept
+	auto& begin() noexcept
 	{
-		return this->values_.cbegin();
+		return this->values_.begin();
 	}
 
-	auto end() noexcept
+	auto begin1d() const noexcept
+	{
+		return grid_1d_coordinate(0);
+	}
+
+	auto end() const noexcept
 	{
 		return this->values_.end();
 	}
 
-	auto cend() const noexcept
+	auto& end() noexcept
 	{
-		return this->values_.cend();
+		return this->values_.end();
+	}
+
+	auto end1d() const noexcept
+	{
+		return grid_1d_coordinate(this->values_.size()-1);
 	}
 
 	val_T& operator [](const grid_coordinate &coordinate)
 	{
-		return this->values_[coordinate.to_1d(this->width_)];
+		return this->values_[coordinate.to_linear()];
 	}
 
 	const val_T& operator [](const grid_coordinate &coordiante) const
 	{
-		return this->values_[coordiante.to_1d(this->width_)];
+		return this->values_[coordiante.to_linear()];
 	}
 
 	uint32_t width() const noexcept
