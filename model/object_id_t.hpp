@@ -10,6 +10,10 @@ template <class N>
 class object_id_t final
 {
 public:
+	object_id_t() noexcept
+		: id_(0)
+	{}
+
 	object_id_t(const uint32_t id) noexcept
 		: id_(id)
 	{}

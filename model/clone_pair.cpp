@@ -16,6 +16,10 @@ clone_pair::clone_pair(fragment &&fragment1, fragment &&fragment2, const unsigne
 	: id_(new_id()), fragments_(canonical(fragment1, fragment2)), similairty_(similarity)
 {}
 
+bool clone_pair::operator ==(const clone_pair &other) const noexcept
+{
+	return this->id_==other.id_;
+}
 
 bool clone_pair::operator <(const clone_pair &other) const noexcept
 {
@@ -65,6 +69,24 @@ QPair<fragment, fragment> clone_pair::canonical(fragment &&fragment1, fragment &
 uint qHash(const clone_pair::id_t &key, uint seed) noexcept
 {
 	return key;
+}
+
+uint qHash(const clone_pair &key, uint seed) noexcept
+{
+	return key.id();
+}
+
+float good(const clone_pair &p1, const clone_pair &p2) noexcept
+{
+	return std::min(overlap(p1.fragments_.first, p2.fragments_.first), overlap(p1.fragments_.second, p2.fragments_.second));
+}
+
+float ok(const clone_pair &p1, const clone_pair &p2) noexcept
+{
+	return std::min(
+		std::max(contained(p1.fragments_.first, p2.fragments_.first), contained(p2.fragments_.first, p1.fragments_.first)),
+		std::max(contained(p1.fragments_.second, p2.fragments_.second), contained(p2.fragments_.second, p1.fragments_.second))
+	);
 }
 
 };

@@ -15,12 +15,16 @@ public:
 	clone_pair(const fragment &fragment1, const fragment &fragment2, const unsigned int similarity) noexcept;
 	clone_pair(fragment &&fragment1, fragment &&fragment2, const unsigned int similarity) noexcept;
 
+	bool operator ==(const clone_pair &other) const noexcept;
 	bool operator <(const clone_pair &other) const noexcept;
 
 	id_t id() const noexcept;
 	fragment fragment1() const noexcept;
 	fragment fragment2() const noexcept;
 	unsigned int similarity() const noexcept;
+
+	friend float good(const clone_pair &p1, const clone_pair &p2) noexcept;
+	friend float ok(const clone_pair &p1, const clone_pair &p2) noexcept;
 
 private:
 	id_t id_;
@@ -35,6 +39,10 @@ private:
 };
 
 uint qHash(const clone_pair::id_t &key, uint seed) noexcept;
+uint qHash(const clone_pair &key, uint seed) noexcept;
+
+float good(const clone_pair &p1, const clone_pair &p2) noexcept;
+float ok(const clone_pair &p1, const clone_pair &p2) noexcept;
 
 }
 

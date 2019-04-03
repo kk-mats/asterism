@@ -36,6 +36,15 @@ bool fragment::operator <(const fragment &other) const noexcept
 	return false;
 }
 
+uint32_t fragment::operator &(const fragment &other) const noexcept
+{
+	return std::min(this->end_, other.end_)-std::max(this->begin_, other.begin_);
+}
+
+uint32_t fragment::operator |(const fragment &other) const noexcept
+{
+	return std::max(this->end_, other.end_)-std::min(this->begin_, other.begin_);
+}
 
 file::id_t fragment::file_id() const noexcept
 {
@@ -50,6 +59,16 @@ uint32_t fragment::begin() const noexcept
 uint32_t fragment::end() const noexcept
 {
 	return this->end_;
+}
+
+float overlap(const fragment &f1, const fragment &f2) noexcept
+{
+	return float(f1&f2)/(f1|f2);
+}
+
+float contained(const fragment &f1, const fragment &f2) noexcept
+{
+	return float(f1&f2)/(f1.end_-f1.begin_);
 }
 
 }

@@ -8,7 +8,7 @@ clone_pair_grid_layer::clone_pair_grid_layer(const detection_result &result, con
 {
 	for(const auto &p:result.clone_pairs())
 	{
-		this->values_[grid_coordinate(p.fragment1().file_id(), p.fragment2().file_id()).to_1d()].append(p);
+		this->values_[grid_2d_coordinate(p.fragment1().file_id(), p.fragment2().file_id()).to_linear()].append(p);
 	}
 }
 
