@@ -44,9 +44,19 @@ clone_pair::id_t detection_result::add(clone_pair &&clone_pair) noexcept
 	return id;
 }
 
+void detection_result::make_layer(const uint32_t layer_width) noexcept
+{
+	this->clone_pair_layer_.make_layer(this->clone_pair_table_.values(), layer_width);
+}
+
 const QHash<clone_pair::id_t, clone_pair>& detection_result::clone_pair_table() const noexcept
 {
 	return this->clone_pair_table_;
+}
+
+const clone_pair_grid_layer detection_result::clone_pair_layer() const noexcept
+{
+	return this->clone_pair_layer_;
 }
 
 detection_result::id_t detection_result::new_id() noexcept

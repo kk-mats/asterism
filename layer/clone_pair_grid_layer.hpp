@@ -1,8 +1,10 @@
 #ifndef CLONE_PAIR_GRID_LAYER_HPP
 #define CLONE_PAIR_GRID_LAYER_HPP
 
+#include <QList>
+
 #include "file_separated_grid_layer.hpp"
-#include "model/detection_result.hpp"
+#include "model/clone_pair.hpp"
 
 namespace asterism
 {
@@ -11,12 +13,10 @@ class clone_pair_grid_layer final
 	: public file_separated_grid_layer<QVector<clone_pair>>
 {
 public:
-	clone_pair_grid_layer(const detection_result &result, const uint32_t width) noexcept;
+	clone_pair_grid_layer() noexcept;
+	clone_pair_grid_layer(const QList<clone_pair> &clone_pairs, const uint32_t width) noexcept;
 
-	detection_result::id_t result_id() const noexcept;
-
-private:
-	detection_result::id_t result_id_;
+	void make_layer(const QList<clone_pair> &clone_pairs, const uint32_t width) noexcept;
 };
 
 }

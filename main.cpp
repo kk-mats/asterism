@@ -1,4 +1,4 @@
-#include "mainwindow.hpp"
+#include "gui/mainwindow.hpp"
 #include <QApplication>
 
 #include "clone_format/jcln.hpp"

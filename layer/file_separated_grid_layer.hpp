@@ -64,6 +64,9 @@ template <class val_T>
 class file_separated_grid_layer
 {
 public:
+	file_separated_grid_layer() noexcept
+	{}
+
 	file_separated_grid_layer(const uint32_t width) noexcept
 		: width_(width), values_(width*(width+1)/2)
 	{}

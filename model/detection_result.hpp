@@ -6,7 +6,7 @@
 #include <QJsonArray>
 
 #include "result_environment.hpp"
-#include "model/clone_pair.hpp"
+#include "layer/clone_pair_grid_layer.hpp"
 
 namespace asterism
 {
@@ -20,20 +20,24 @@ public:
 	detection_result() noexcept;
 	detection_result(const id_t id, result_environment &&context, QHash<clone_pair::id_t, clone_pair> &&clone_pair_table) noexcept;
 
+	clone_pair::id_t add(const clone_pair &clone_pair) noexcept;
+	clone_pair::id_t add(clone_pair &&clone_pair) noexcept;
+
+	void make_layer(const uint32_t layer_width) noexcept;
+
 	id_t id() const noexcept;
 	result_environment context() const noexcept;
 	QList<clone_pair> clone_pairs() const noexcept;
 	clone_pair operator [](const clone_pair::id_t &id) const&& noexcept;
 
-	clone_pair::id_t add(const clone_pair &clone_pair) noexcept;
-	clone_pair::id_t add(clone_pair &&clone_pair) noexcept;
-
 	const QHash<clone_pair::id_t, clone_pair>& clone_pair_table() const noexcept;
+	const clone_pair_grid_layer clone_pair_layer() const noexcept;
 
 private:
 	id_t id_;
 	result_environment context_;
 	QHash<clone_pair::id_t, clone_pair> clone_pair_table_;
+	clone_pair_grid_layer clone_pair_layer_;
 
 	static inline uint32_t id_ctr_=0;
 	static id_t new_id() noexcept;

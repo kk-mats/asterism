@@ -3,8 +3,8 @@
 namespace asterism
 {
 
-matching_pair_table::matching_pair_table(const clone_pair_grid_layer &left, const clone_pair_grid_layer &right, const float t) noexcept
-	: left_result_id_(left.result_id()), right_result_id_(right.result_id()), matching_list_(this->bidirectional_matching(left, right, t))
+matching_pair_table::matching_pair_table(const detection_result &left, const detection_result &right, const float t) noexcept
+	: left_result_id_(left.id()), right_result_id_(right.id()), matching_list_(this->bidirectional_matching(left, right, t))
 {}
 
 std::optional<clone_pair::id_t> matching_pair_table::has_left_clone_pair_of(const clone_pair::id_t &right_clone_pair_id) const noexcept
@@ -76,47 +76,49 @@ bool matching_pair_table::better(const float ok_v, const float ok_max, const flo
 	return (good_v>=t && good_v>=good_max) || (good_v==good_max && ok_v>ok_max) || (ok_v>=t && ok_max<t);
 }
 
-QVector<QPair<clone_pair::id_t, clone_pair::id_t>> matching_pair_table::unidirectional_matching(const clone_pair_grid_layer &first, const clone_pair_grid_layer &second, const float t) const noexcept
+QVector<QPair<clone_pair::id_t, clone_pair::id_t>> matching_pair_table::unidirectional_matching(const detection_result &first, const detection_result &second, const float t) const noexcept
 {
-	QHash<clone_pair, clone_pair> uni_match;
+	QHash<clone_pair, clone_pair> matched;
 
-	for(auto i=first.begin1d(), end=first.end1d(); i!=end; ++i)
+	for(auto i=first.clone_pair_layer().begin1d(), end=first.clone_pair_layer().end1d(); i!=end; ++i)
 	{
-		const auto &pairs_first=first[i];
-		const auto &pairs_second=second[i];
+		const auto &pairs_first=first.clone_pair_layer()[i];
+		const auto &pairs_second=second.clone_pair_layer()[i];
 
 		for(const auto &r:pairs_first)
 		{
 			for(const auto &c:pairs_second)
 			{
-				if(!uni_match.contains(r))
+				if(matched.contains(r))
 				{
-					uni_match[r]=c;
+					auto ok_max=ok(c, matched[r]);
+					auto good_max=good(c, matched[r]);
+					auto ok_v=ok(c, r);
+					auto good_v=good(c, r);
+
+					if(this->better(ok_v, ok_max, good_v, good_max, t))
+					{
+						matched[c]=r;
+					}
 				}
-
-				auto ok_max=ok(c, uni_match[r]);
-				auto good_max=good(c, uni_match[r]);
-				auto ok_v=ok(c, r);
-				auto good_v=good(c, r);
-
-				if(this->better(ok_v, ok_max, good_v, good_max, t))
+				else
 				{
-					uni_match[c]=r;
+					matched[r]=c;
 				}
 			}
 		}
 	}
 
 	QVector<QPair<clone_pair::id_t, clone_pair::id_t>> r;
-	for(auto &&key:uni_match.keys())
+	for(auto &&key:matched.keys())
 	{
-		r.push_back(qMakePair(key.id(), uni_match[key].id()));
+		r.push_back(qMakePair(key.id(), matched[key].id()));
 	}
 
 	return r;
 }
 
-QVector<QPair<clone_pair::id_t, clone_pair::id_t>> matching_pair_table::bidirectional_matching(const clone_pair_grid_layer &left, const clone_pair_grid_layer &right, const float t) const noexcept
+QVector<QPair<clone_pair::id_t, clone_pair::id_t>> matching_pair_table::bidirectional_matching(const detection_result &left, const detection_result &right, const float t) const noexcept
 {
 	auto left_right=this->unidirectional_matching(left, right, t);
 	auto right_left=this->unidirectional_matching(right, left, t);

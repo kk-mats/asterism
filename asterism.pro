@@ -24,41 +24,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++1z
 
-SOURCES += \
-    clone_format/jcln.cpp \
-    core/utility.cpp \
-    layer/clone_pair_grid_layer.cpp \
-    layer/file_separated_grid_layer.cpp \
-    model/clone_pair.cpp \
-    model/detection_result.cpp \
-    model/file.cpp \
-    model/fragment.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    core/logger.cpp \
-    model/result_environment.cpp \
-    core/matching_pair_table.cpp
-
-
-HEADERS += \
-    clone_format/jcln.hpp \
-    core/utility.hpp \
-    layer/clone_pair_grid_layer.hpp \
-    layer/file_separated_grid_layer.hpp \
-    model/clone_pair.hpp \
-    model/detection_result.hpp \
-    model/file.hpp \
-    model/fragment.hpp \
-    model/object_id_t.hpp \
-    mainwindow.hpp \
-    clone_format/format_tags.hpp \
-    core/logger.hpp \
-    model/result_environment.hpp \
-    core/matching_pair_table.hpp
-
-
-FORMS += \
-        mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -66,4 +31,38 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    ref.jcln
+    ref.jcln \
+
+FORMS += \
+    gui/mainwindow.ui
+
+HEADERS += \
+    clone_format/format_tags.hpp \
+    clone_format/jcln.hpp \
+    core/logger.hpp \
+    core/matching_pair_table.hpp \
+    core/utility.hpp \
+    gui/mainwindow.hpp \
+    layer/clone_pair_grid_layer.hpp \
+    layer/file_separated_grid_layer.hpp \
+    model/clone_pair.hpp \
+    model/detection_result.hpp \
+    model/file.hpp \
+    model/fragment.hpp \
+    model/object_id_t.hpp \
+    model/result_environment.hpp
+
+SOURCES += \
+    clone_format/jcln.cpp \
+    core/logger.cpp \
+    core/matching_pair_table.cpp \
+    core/utility.cpp \
+    gui/mainwindow.cpp \
+    layer/clone_pair_grid_layer.cpp \
+    layer/file_separated_grid_layer.cpp \
+    model/clone_pair.cpp \
+    model/detection_result.cpp \
+    model/file.cpp \
+    model/fragment.cpp \
+    model/result_environment.cpp \
+    main.cpp
