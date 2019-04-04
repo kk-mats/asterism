@@ -6,12 +6,28 @@
 namespace asterism
 {
 
-class message_code
+class error_code final
 {
 public:
-	static inline const QString file_not_found="file not found";
-	static inline const QString invalid_file_format="invalid file format";
+	error_code(const QString &base, const QString &error_code_string) noexcept;
 
+	friend QDebug operator <<(QDebug logger, const error_code &code) noexcept;
+
+private:
+	const QString base_;
+	const QString error_code_string_;
+};
+
+QDebug operator <<(QDebug logger, const error_code &code) noexcept;
+
+class code_clone_loading_error final
+{
+private:
+	static inline const auto base=QStringLiteral("loading code clones");
+
+public:
+	static inline const auto file_not_found=error_code(base, QStringLiteral("file not found"));
+	static inline const auto invalid_file_format=error_code(base, QStringLiteral("invalid file format"));
 };
 
 
