@@ -50,7 +50,9 @@ HEADERS += \
     model/file.hpp \
     model/fragment.hpp \
     model/object_id_t.hpp \
-    model/result_environment.hpp
+    model/result_environment.hpp \
+    gui/scatter_plot_scene.hpp \
+    gui/scatter_plot_view.hpp
 
 SOURCES += \
     clone_format/jcln.cpp \
@@ -65,4 +67,6 @@ SOURCES += \
     model/file.cpp \
     model/fragment.cpp \
     model/result_environment.cpp \
-    main.cpp
+    main.cpp \
+    gui/scatter_plot_scene.cpp \
+    gui/scatter_plot_view.cpp
