@@ -22,12 +22,11 @@ void scatter_plot_scene::drawBackground(QPainter *painter, const QRectF &rect)
 	const auto plot_bottom=top+plot_size;
 	const auto plot_right=left+plot_size;
 
-	for(auto c=left; c<plot_size; c+=grid_size)
+	for(auto c=left; c<=plot_right; c+=grid_size)
 	{
 		painter->drawLine(c, top, c, plot_bottom);
 	}
-
-	for(auto c=top; c<plot_size; c+=grid_size)
+	for(auto c=top; c<=plot_bottom; c+=grid_size)
 	{
 		painter->drawLine(left, c, plot_right, c);
 	}

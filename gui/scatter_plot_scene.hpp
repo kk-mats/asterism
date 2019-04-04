@@ -4,6 +4,8 @@
 #include <QGraphicsScene>
 #include <QPainter>
 
+#include "core/logger.hpp"
+
 namespace asterism
 {
 
