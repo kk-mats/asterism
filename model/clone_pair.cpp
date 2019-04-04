@@ -66,12 +66,12 @@ QPair<fragment, fragment> clone_pair::canonical(fragment &&fragment1, fragment &
 				qMakePair(fragment2, fragment1);
 }
 
-uint qHash(const clone_pair::id_t &key, uint seed) noexcept
+uint qHash(const clone_pair::id_t &key, [[maybe_unused]]uint seed) noexcept
 {
 	return key;
 }
 
-uint qHash(const clone_pair &key, uint seed) noexcept
+uint qHash(const clone_pair &key, [[maybe_unused]]uint seed) noexcept
 {
 	return key.id();
 }

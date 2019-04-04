@@ -46,7 +46,7 @@ file::id_t file::new_id() noexcept
 	return id;
 }
 
-uint qHash(const file::id_t &key, uint seed) noexcept
+uint qHash(const file::id_t &key, [[maybe_unused]]uint seed) noexcept
 {
 	return key;
 }
