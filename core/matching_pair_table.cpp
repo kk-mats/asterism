@@ -73,7 +73,7 @@ QVector<clone_pair::id_t> matching_pair_table::right_clone_pair_of(const clone_p
 
 bool matching_pair_table::better(const float ok_v, const float ok_max, const float good_v, const float good_max, const float t) const noexcept
 {
-	return (good_v>=t && good_v>=good_max) || (good_v==good_max && ok_v>ok_max) || (ok_v>=t && ok_max<t);
+	return (good_v>=t && good_v>=good_max) || (qFuzzyCompare(good_v, good_max) && ok_v>ok_max) || (ok_v>=t && ok_max<t);
 }
 
 QVector<QPair<clone_pair::id_t, clone_pair::id_t>> matching_pair_table::unidirectional_matching(const detection_result &first, const detection_result &second, const float t) const noexcept
