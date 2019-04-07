@@ -1,20 +1,17 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
-#include "scatter_plot_view.hpp"
-#include "scatter_plot_scene.hpp"
-
 #include <QMainWindow>
+#include <QHBoxLayout>
 
-
-namespace Ui {
-class MainWindow;
-}
+#include "scatter_plot_view.hpp"
+#include "scatter_plot_model.hpp"
 
 namespace asterism
 {
 
-class MainWindow : public QMainWindow
+class MainWindow
+	: public QMainWindow
 {
 	Q_OBJECT
 
@@ -23,9 +20,8 @@ public:
 	~MainWindow();
 
 private:
-	Ui::MainWindow *ui;
-
-	scatter_plot_scene *scatter_plot_scene_;
+	scatter_plot_view *scatter_plot_view_;
+	scatter_plot_model *scatter_plot_model_;
 };
 
 }

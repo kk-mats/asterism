@@ -3,21 +3,30 @@
 namespace asterism
 {
 
-bool scatter_plot_view::hasHeightForWidth() const
+void scatter_plot_delegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	return true;
+	if(index.data().canConvert<QColor>())
+	{
+		painter->fillRect(option.rect, index.data().value<QColor>());
+	}
 }
 
-int scatter_plot_view::heightForWidth(int w) const
+
+QSize scatter_plot_delegate::sizeHint(const QStyleOptionViewItem &option[[maybe_unused]], const QModelIndex &index[[maybe_unused]]) const
 {
-	return w;
+	return QSize(grid_size, grid_size);
 }
 
-void scatter_plot_view::resizeEvent(QResizeEvent *e)
+scatter_plot_view::scatter_plot_view(QWidget* parent)
+	: QTableView(parent)
 {
-	e->accept();
-	const auto size=std::min(this->size().height(), this->size().width());
-	this->resize(size, size);
+
+	this->verticalHeader()->hide();
+	this->horizontalHeader()->hide();
+	this->verticalHeader()->setMinimumSectionSize(grid_size);
+	this->horizontalHeader()->setMinimumSectionSize(grid_size);
+	this->verticalHeader()->setDefaultSectionSize(grid_size);
+	this->horizontalHeader()->setDefaultSectionSize(grid_size);
 }
 
 }
