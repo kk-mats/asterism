@@ -30,6 +30,14 @@ public:
 	static inline const auto invalid_file_format=error_code(base, QStringLiteral("invalid file format"));
 };
 
+class heatmap_conversion_error final
+{
+private:
+	static inline const auto base=QStringLiteral("heatmap conversion");
+
+public:
+	static inline const auto color_index_out_of_range=error_code(base, QStringLiteral("color index out of range"));
+};
 
 void asterism_message_output(QtMsgType type, const QMessageLogContext &context, const QString &message) noexcept;
 

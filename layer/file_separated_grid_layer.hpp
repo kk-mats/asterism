@@ -65,6 +65,7 @@ class file_separated_grid_layer
 {
 public:
 	file_separated_grid_layer() noexcept
+		: width_(0)
 	{}
 
 	file_separated_grid_layer(const uint32_t width) noexcept

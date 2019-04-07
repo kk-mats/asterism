@@ -33,9 +33,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     ref.jcln \
 
-FORMS += \
-    gui/mainwindow.ui
-
 HEADERS += \
     clone_format/format_tags.hpp \
     clone_format/jcln.hpp \
@@ -51,8 +48,10 @@ HEADERS += \
     model/fragment.hpp \
     model/object_id_t.hpp \
     model/result_environment.hpp \
-    gui/scatter_plot_scene.hpp \
-    gui/scatter_plot_view.hpp
+    gui/scatter_plot_view.hpp \
+    gui/scatter_plot_model.hpp \
+    layer/heatmap_layer.hpp \
+    gui/color_selector.hpp
 
 SOURCES += \
     clone_format/jcln.cpp \
@@ -68,5 +67,7 @@ SOURCES += \
     model/fragment.cpp \
     model/result_environment.cpp \
     main.cpp \
-    gui/scatter_plot_scene.cpp \
-    gui/scatter_plot_view.cpp
+    gui/scatter_plot_view.cpp \
+    gui/scatter_plot_model.cpp \
+    layer/heatmap_layer.cpp \
+    gui/color_selector.cpp
