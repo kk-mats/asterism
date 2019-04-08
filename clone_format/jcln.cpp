@@ -4,7 +4,7 @@ namespace asterism
 {
 
 
-std::optional<detection_results> jcln::read(const QString &path) noexcept
+std::optional<detection_results> jcln::read(const QString &path, const bool is_binary) noexcept
 {
 	QFile file(path);
 
@@ -14,7 +14,7 @@ std::optional<detection_results> jcln::read(const QString &path) noexcept
 		return std::nullopt;
 	}
 
-	auto json(QFileInfo(path).suffix()=="jcln" ?
+	auto json(is_binary ?
 				QJsonDocument::fromJson(file.readAll()) : // *.jcln
 				QJsonDocument::fromBinaryData(file.readAll())); // *.bjcln
 

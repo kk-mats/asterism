@@ -16,7 +16,7 @@ class jcln final
 	: public format_tags
 {
 public:
-	static std::optional<detection_results> read(const QString &path) noexcept;
+	static std::optional<detection_results> read(const QString &path, const bool is_binary) noexcept;
 	static bool write(const detection_results &results, const QString &path) noexcept;
 
 private:
