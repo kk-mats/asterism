@@ -47,6 +47,7 @@ private:
 class detection_results final
 {
 public:
+	detection_results() noexcept;
 	detection_results(const QString &target_path) noexcept;
 
 	file::id_t add(file &&file) noexcept;
@@ -58,6 +59,7 @@ public:
 	detection_result& operator [](const detection_result::id_t &id) noexcept;
 	const detection_result operator [](const detection_result::id_t &id) const noexcept;
 
+	void set_target_path(const QString &target_path) noexcept;
 	QString target_path() const noexcept;
 	const QHash<file::id_t, file> file_table() const noexcept;
 	const QHash<detection_result::id_t, detection_result> result_table() const noexcept;

@@ -66,6 +66,9 @@ detection_result::id_t detection_result::new_id() noexcept
 	return id;
 }
 
+detection_results::detection_results() noexcept
+{}
+
 detection_results::detection_results(const QString &target_path) noexcept
 	: target_path_(target_path)
 {}
@@ -119,5 +122,9 @@ const detection_result detection_results::operator [](const detection_result::id
 	return this->result_table_[id];
 }
 
+void detection_results::set_target_path(const QString &target_path) noexcept
+{
+	this->target_path_=target_path;
+}
 
 }

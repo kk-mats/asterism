@@ -1,7 +1,5 @@
 #include "gui/mainwindow.hpp"
 
-#include "clone_format/jcln.hpp"
-
 int main(int argc, char *argv[])
 {
 	qInstallMessageHandler(asterism::asterism_message_output);

@@ -3,6 +3,9 @@
 namespace asterism
 {
 
+matching_table_unit::matching_table_unit() noexcept
+{}
+
 matching_table_unit::matching_table_unit(const detection_result &left, const detection_result &right, const float t) noexcept
 	: left_result_id_(left.id()), right_result_id_(right.id()), matching_list_(this->bidirectional_matching(left, right, t))
 {}
@@ -71,9 +74,9 @@ QVector<clone_pair::id_t> matching_table_unit::right_clone_pair_of(const clone_p
 	return r;
 }
 
-bool matching_table_unit::better(const float ok_v, const float ok_max, const float good_v, const float good_max, const float t) const noexcept
+bool matching_table_unit::better(const float ok_v, const float good_v, QPair<float, float> &&ok_good_max, const float t) const noexcept
 {
-	return (good_v>=t && good_v>=good_max) || (qFuzzyCompare(good_v, good_max) && ok_v>ok_max) || (ok_v>=t && ok_max<t);
+	return (good_v>=t && good_v>=ok_good_max.second) || (qFuzzyCompare(good_v, ok_good_max.second) && ok_v>ok_good_max.first) || (ok_v>=t && ok_good_max.first<t);
 }
 
 QVector<QPair<clone_pair::id_t, clone_pair::id_t>> matching_table_unit::unidirectional_matching(const detection_result &first, const detection_result &second, const float t) const noexcept
@@ -89,21 +92,13 @@ QVector<QPair<clone_pair::id_t, clone_pair::id_t>> matching_table_unit::unidirec
 		{
 			for(const auto &c:pairs_second)
 			{
-				if(matched.contains(r))
-				{
-					auto ok_max=ok(c, matched[r]);
-					auto good_max=good(c, matched[r]);
-					auto ok_v=ok(c, r);
-					auto good_v=good(c, r);
+				auto ok_good_max=matched.contains(r) ? qMakePair(ok(c, matched[r]), good(c, matched[r])) : qMakePair(t, t);
+				auto ok_v=ok(c, r);
+				auto good_v=good(c, r);
 
-					if(this->better(ok_v, ok_max, good_v, good_max, t))
-					{
-						matched[c]=r;
-					}
-				}
-				else
+				if(this->better(ok_v, good_v, std::move(ok_good_max), t))
 				{
-					matched[r]=c;
+					matched[c]=r;
 				}
 			}
 		}
@@ -162,7 +157,7 @@ bool matching_table::map_mutually(const detection_results &detection_results, co
 				continue;
 			}
 
-			this->units_[{key1, key2}]=matching_table_unit(detection_results[key1], detection_results[key2], this->threshold_);
+			this->units_.insert({key1, key2}, matching_table_unit(detection_results[key1], detection_results[key2], this->threshold_));
 		}
 	}
 
@@ -171,7 +166,7 @@ bool matching_table::map_mutually(const detection_results &detection_results, co
 
 const matching_table_unit matching_table::operator [](const key &key) const noexcept
 {
-	return this->units_[key];
+	return this->units_.value(key);
 }
 
 matching_table_unit& matching_table::operator [](const key &key) noexcept
@@ -187,7 +182,7 @@ void matching_table::set_threshold(const float threshold, const detection_result
 
 uint qHash(const matching_table::key &key, uint seed) noexcept
 {
-	return key.key1_^seed+key.key2_;
+	return uint(key.key1_)^seed+uint(key.key2_);
 }
 
 }

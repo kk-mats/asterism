@@ -37,7 +37,6 @@ HEADERS += \
     clone_format/format_tags.hpp \
     clone_format/jcln.hpp \
     core/logger.hpp \
-    core/matching_pair_table.hpp \
     core/utility.hpp \
     gui/mainwindow.hpp \
     layer/clone_pair_grid_layer.hpp \
@@ -51,12 +50,14 @@ HEADERS += \
     gui/scatter_plot_view.hpp \
     gui/scatter_plot_model.hpp \
     layer/heatmap_layer.hpp \
-    gui/color_selector.hpp
+    gui/color_selector.hpp \
+    clone_format/clone_io.hpp \
+    core/results_operator.hpp \
+    core/matching_table.hpp
 
 SOURCES += \
     clone_format/jcln.cpp \
     core/logger.cpp \
-    core/matching_pair_table.cpp \
     core/utility.cpp \
     gui/mainwindow.cpp \
     layer/clone_pair_grid_layer.cpp \
@@ -70,4 +71,7 @@ SOURCES += \
     gui/scatter_plot_view.cpp \
     gui/scatter_plot_model.cpp \
     layer/heatmap_layer.cpp \
-    gui/color_selector.cpp
+    gui/color_selector.cpp \
+    clone_format/clone_io.cpp \
+    core/results_operator.cpp \
+    core/matching_table.cpp

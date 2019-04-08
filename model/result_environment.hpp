@@ -1,5 +1,5 @@
-#ifndef CONTEXT_HPP
-#define CONTEXT_HPP
+#ifndef RESULT_ENVIRONMENT_HPP
+#define RESULT_ENVIRONMENT_HPP
 
 #include <QString>
 #include <QHash>
@@ -55,4 +55,4 @@ private:
 
 }
 
-#endif // CONTEXT_HPP
+#endif // RESULT_ENVIRONMENT_HPP

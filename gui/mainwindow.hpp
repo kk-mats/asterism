@@ -8,9 +8,9 @@
 #include <QApplication>
 #include <QFileDialog>
 
-#include "scatter_plot_view.hpp"
-#include "scatter_plot_model.hpp"
-#include "clone_format/clone_io.hpp"
+#include "core/results_operator.hpp"
+#include "gui/scatter_plot_view.hpp"
+#include "gui/scatter_plot_model.hpp"
 
 namespace asterism
 {

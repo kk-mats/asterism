@@ -39,10 +39,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::open()
 {
-	auto results=clone_io::read(QFileDialog::getOpenFileName(this, tr("open file"), "", tr("JSON Base Files (*.jcln *.bjcln)")));
+	auto results=clone_io::read(QFileDialog::getOpenFileName(this, tr("open file"), QDir::currentPath(), tr("Asterism Project (*.jcln)")));
 	if(results)
 	{
-
+		this->results_=std::move(results.value());
 	}
 }
 

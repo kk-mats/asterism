@@ -5,7 +5,6 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
-#include <QDir>
 
 #include "core/utility.hpp"
 #include "object_id_t.hpp"
