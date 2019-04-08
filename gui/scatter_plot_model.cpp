@@ -27,7 +27,7 @@ QVariant scatter_plot_model::data(const QModelIndex &index, int role) const noex
 	return QVariant();
 }
 
-QVariant scatter_plot_model::headerData(int section, Qt::Orientation orientation, int role) const noexcept
+QVariant scatter_plot_model::headerData(int section[[maybe_unused]], Qt::Orientation orientation[[maybe_unused]], int role) const noexcept
 {
 	if(role==Qt::SizeHintRole)
 	{

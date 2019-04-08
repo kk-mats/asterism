@@ -1,11 +1,16 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
+#include <QAction>
+#include <QMenuBar>
 #include <QMainWindow>
 #include <QHBoxLayout>
+#include <QApplication>
+#include <QFileDialog>
 
 #include "scatter_plot_view.hpp"
 #include "scatter_plot_model.hpp"
+#include "clone_format/clone_io.hpp"
 
 namespace asterism
 {
@@ -19,9 +24,21 @@ public:
 	explicit MainWindow(QWidget *parent=nullptr);
 	~MainWindow();
 
+private slots:
+	void open();
+
 private:
+	detection_results results_;
+
 	scatter_plot_view *scatter_plot_view_;
 	scatter_plot_model *scatter_plot_model_;
+	QMenu *file_menu_;
+	QAction *open_act_;
+	QAction *quit_act_;
+
+	void create_actions();
+	void create_menus();
+
 };
 
 }

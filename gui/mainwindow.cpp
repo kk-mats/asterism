@@ -22,18 +22,51 @@ MainWindow::MainWindow(QWidget *parent)
 	auto *main_layout=new QHBoxLayout;
 	main_layout->addWidget(this->scatter_plot_view_);
 
-	qDebug()<<this->scatter_plot_view_->verticalHeader()->sectionSize(0);
-	qDebug()<<this->scatter_plot_view_->horizontalHeader()->sectionSize(0);
-
 	auto *central_widget=new QWidget;
 	central_widget->setLayout(main_layout);
 	this->setCentralWidget(central_widget);
+
+	this->create_actions();
+	this->create_menus();
 
 	this->setWindowTitle("Asterism");
 }
 
 MainWindow::~MainWindow()
 {
+}
+
+
+void MainWindow::open()
+{
+	auto results=clone_io::read(QFileDialog::getOpenFileName(this, tr("open file"), "", tr("JSON Base Files (*.jcln *.bjcln)")));
+	if(results)
+	{
+
+	}
+}
+
+
+void MainWindow::create_actions()
+{
+	this->open_act_=new QAction(tr("&Open"), this);
+	this->open_act_->setShortcuts(QKeySequence::Open);
+	this->open_act_->setStatusTip(tr("Open a file"));
+	connect(this->open_act_, &QAction::triggered, this, &MainWindow::open);
+
+	this->quit_act_=new QAction(tr("&Quit"), this);
+	this->quit_act_->setShortcuts(QKeySequence::Quit);
+	this->quit_act_->setStatusTip(tr("Quit"));
+	connect(this->quit_act_, &QAction::triggered, this, &QApplication::quit);
+
+}
+
+void MainWindow::create_menus()
+{
+	this->file_menu_=this->menuBar()->addMenu(tr("&File"));
+	this->file_menu_->addAction(this->open_act_);
+	this->file_menu_->addSeparator();
+	this->file_menu_->addAction(this->quit_act_);
 }
 
 }
