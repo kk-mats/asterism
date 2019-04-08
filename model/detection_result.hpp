@@ -23,51 +23,24 @@ public:
 	clone_pair::id_t add(const clone_pair &clone_pair) noexcept;
 	clone_pair::id_t add(clone_pair &&clone_pair) noexcept;
 
-	void make_layer(const uint32_t layer_width) noexcept;
+	void update_layer(const uint32_t layer_width) noexcept;
 
-	id_t id() const noexcept;
-	result_environment context() const noexcept;
-	QList<clone_pair> clone_pairs() const noexcept;
 	clone_pair operator [](const clone_pair::id_t &id) const&& noexcept;
 
+	id_t id() const noexcept;
+	const result_environment& context() const noexcept;
+	QList<clone_pair> clone_pairs() const noexcept;
+	const clone_pair_grid_layer& clone_pair_layer() const noexcept;
 	const QHash<clone_pair::id_t, clone_pair>& clone_pair_table() const noexcept;
-	const clone_pair_grid_layer clone_pair_layer() const noexcept;
 
 private:
 	id_t id_;
 	result_environment context_;
 	QHash<clone_pair::id_t, clone_pair> clone_pair_table_;
-	clone_pair_grid_layer clone_pair_layer_;
+	clone_pair_grid_layer clone_pair_grid_layer_;
 
 	static inline uint32_t id_ctr_=0;
 	static id_t new_id() noexcept;
-};
-
-
-class detection_results final
-{
-public:
-	detection_results() noexcept;
-	detection_results(const QString &target_path) noexcept;
-
-	file::id_t add(file &&file) noexcept;
-	detection_result::id_t add(detection_result &&result) noexcept;
-
-	QList<detection_result::id_t> result_ids() const noexcept;
-	bool contains(const detection_result::id_t &id) const noexcept;
-
-	detection_result& operator [](const detection_result::id_t &id) noexcept;
-	const detection_result operator [](const detection_result::id_t &id) const noexcept;
-
-	void set_target_path(const QString &target_path) noexcept;
-	QString target_path() const noexcept;
-	const QHash<file::id_t, file> file_table() const noexcept;
-	const QHash<detection_result::id_t, detection_result> result_table() const noexcept;
-
-private:
-	QString target_path_;
-	QHash<file::id_t, file> file_table_;
-	QHash<detection_result::id_t, detection_result> result_table_;
 };
 
 }

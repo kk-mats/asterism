@@ -59,12 +59,12 @@ public:
 		const detection_result::id_t key1_, key2_;
 	};
 
-	bool map_mutually(const detection_results &detection_results, const QList<detection_result::id_t> &target_ids) noexcept;
+	bool map_mutually(const QHash<detection_result::id_t, detection_result> &detection_results, const QList<detection_result::id_t> &target_ids) noexcept;
 
 	const matching_table_unit operator [](const key &key) const noexcept;
 	matching_table_unit& operator [](const key &key) noexcept;
 
-	void set_threshold(const float threshold, const detection_results &detection_results) noexcept;
+	void set_threshold(const float threshold, const QHash<detection_result::id_t, detection_result> &detection_results) noexcept;
 
 private:
 	float threshold_=0.8f;

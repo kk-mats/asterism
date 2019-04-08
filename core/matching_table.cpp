@@ -139,7 +139,7 @@ bool matching_table::key::operator ==(const key &other) const noexcept
 	return (this->key1_==other.key1_ && this->key2_==other.key2_) || (this->key1_==other.key2_ && this->key2_==other.key2_);
 }
 
-bool matching_table::map_mutually(const detection_results &detection_results, const QList<detection_result::id_t> &target_ids) noexcept
+bool matching_table::map_mutually(const QHash<detection_result::id_t, detection_result> &detection_results, const QList<detection_result::id_t> &target_ids) noexcept
 {
 	for(auto &&key1:target_ids)
 	{
@@ -174,10 +174,10 @@ matching_table_unit& matching_table::operator [](const key &key) noexcept
 	return this->units_[key];
 }
 
-void matching_table::set_threshold(const float threshold, const detection_results &detection_results) noexcept
+void matching_table::set_threshold(const float threshold, const QHash<detection_result::id_t, detection_result> &detection_results) noexcept
 {
 	this->threshold_=threshold;
-	this->map_mutually(detection_results, detection_results.result_ids());
+	this->map_mutually(detection_results, detection_results.keys());
 }
 
 uint qHash(const matching_table::key &key, uint seed) noexcept
