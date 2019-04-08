@@ -16,7 +16,7 @@ class heatmap_layer
 public:
 	using file_separated_grid_layer::file_separated_grid_layer;
 
-	static heatmap_layer colorized_by_clone_pair_size(const clone_pair_grid_layer &source) noexcept;
+	static std::optional<heatmap_layer> colorized_by_clone_pair_size(const clone_pair_grid_layer &source) noexcept;
 };
 
 }

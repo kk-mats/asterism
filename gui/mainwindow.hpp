@@ -8,7 +8,8 @@
 #include <QApplication>
 #include <QFileDialog>
 
-#include "core/results_operator.hpp"
+#include "clone_format/clone_io.hpp"
+#include "core/detection_results.hpp"
 #include "gui/scatter_plot_view.hpp"
 #include "gui/scatter_plot_model.hpp"
 

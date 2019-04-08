@@ -3,7 +3,7 @@
 namespace asterism
 {
 
-heatmap_layer heatmap_layer::colorized_by_clone_pair_size(const clone_pair_grid_layer &source) noexcept
+std::optional<heatmap_layer> heatmap_layer::colorized_by_clone_pair_size(const clone_pair_grid_layer &source) noexcept
 {
 	heatmap_layer r(source.width());
 
@@ -24,7 +24,7 @@ heatmap_layer heatmap_layer::colorized_by_clone_pair_size(const clone_pair_grid_
 		if(auto color=selector.color_at(source[i].size()); !color)
 		{
 			qCritical()<<heatmap_generating_error::color_index_out_of_range;
-			return heatmap_layer();
+			return std::nullopt;
 		}
 		else
 		{

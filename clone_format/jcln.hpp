@@ -7,7 +7,7 @@
 
 #include "format_tags.hpp"
 #include "core/logger.hpp"
-#include "model/detection_result.hpp"
+#include "core/detection_results.hpp"
 
 namespace asterism
 {

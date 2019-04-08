@@ -52,8 +52,8 @@ HEADERS += \
     layer/heatmap_layer.hpp \
     gui/color_selector.hpp \
     clone_format/clone_io.hpp \
-    core/results_operator.hpp \
-    core/matching_table.hpp
+    core/matching_table.hpp \
+    core/detection_results.hpp
 
 SOURCES += \
     clone_format/jcln.cpp \
@@ -73,5 +73,5 @@ SOURCES += \
     layer/heatmap_layer.cpp \
     gui/color_selector.cpp \
     clone_format/clone_io.cpp \
-    core/results_operator.cpp \
-    core/matching_table.cpp
+    core/matching_table.cpp \
+    core/detection_results.cpp

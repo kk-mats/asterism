@@ -15,8 +15,8 @@ std::optional<detection_results> jcln::read(const QString &path, const bool is_b
 	}
 
 	auto json(is_binary ?
-				QJsonDocument::fromJson(file.readAll()) : // *.jcln
-				QJsonDocument::fromBinaryData(file.readAll())); // *.bjcln
+				QJsonDocument::fromBinaryData(file.readAll()) : // *.jcln
+				QJsonDocument::fromJson(file.readAll())); // *.bjcln
 
 	if(!json.isObject())
 	{
@@ -282,10 +282,10 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 			return std::nullopt;
 		}
 
-		rs.add(std::move(r.value()));
+		rs.add(r.value());
 	}
 
-	return std::move(rs);
+	return std::make_optional(rs);
 }
 
 }

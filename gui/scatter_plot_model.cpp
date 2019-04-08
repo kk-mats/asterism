@@ -37,9 +37,11 @@ QVariant scatter_plot_model::headerData(int section[[maybe_unused]], Qt::Orienta
 }
 
 
-void scatter_plot_model::set_heatmap_layer(const heatmap_layer &heatmap_layer) noexcept
+void scatter_plot_model::set_heatmap_layer(heatmap_layer &&heatmap_layer) noexcept
 {
+	this->beginResetModel();
 	this->heatmap_layer_=heatmap_layer;
+	this->endResetModel();
 }
 
 }

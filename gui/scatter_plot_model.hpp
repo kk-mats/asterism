@@ -23,7 +23,7 @@ public:
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const noexcept override;
 	QVariant headerData(int section, Qt::Orientation orientation, int role=Qt::DisplayRole) const noexcept override;
 
-	void set_heatmap_layer(const heatmap_layer &heatmap_layer) noexcept;
+	void set_heatmap_layer(heatmap_layer &&heatmap_layer) noexcept;
 
 private:
 	heatmap_layer heatmap_layer_;

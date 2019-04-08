@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 	h[grid_1d_coordinate(file::id_t(2))]=QColor(0, 255, 0);
 
 	this->scatter_plot_model_=new scatter_plot_model(this);
-	this->scatter_plot_model_->set_heatmap_layer(h);
+	this->scatter_plot_model_->set_heatmap_layer(std::move(h));
 
 	this->scatter_plot_view_=new scatter_plot_view;
 	this->scatter_plot_view_->setModel(this->scatter_plot_model_);
@@ -43,6 +43,11 @@ void MainWindow::open()
 	if(results)
 	{
 		this->results_=std::move(results.value());
+		auto h=this->results_.clone_pair_size_heatmap(this->results_.result_ids()[0]);
+		if(h)
+		{
+			this->scatter_plot_model_->set_heatmap_layer(std::move(h.value()));
+		}
 	}
 }
 
