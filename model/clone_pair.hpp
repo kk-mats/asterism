@@ -23,6 +23,9 @@ public:
 	fragment fragment2() const noexcept;
 	unsigned int similarity() const noexcept;
 
+	friend uint qHash(const clone_pair::id_t &key, uint seed) noexcept;
+	friend uint qHash(const clone_pair &key, uint seed) noexcept;
+
 	friend float good(const clone_pair &p1, const clone_pair &p2) noexcept;
 	friend float ok(const clone_pair &p1, const clone_pair &p2) noexcept;
 

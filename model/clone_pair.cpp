@@ -73,7 +73,7 @@ uint qHash(const clone_pair::id_t &key, [[maybe_unused]]uint seed) noexcept
 
 uint qHash(const clone_pair &key, [[maybe_unused]]uint seed) noexcept
 {
-	return key.id();
+	return key.id_;
 }
 
 float good(const clone_pair &p1, const clone_pair &p2) noexcept

@@ -5,8 +5,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
-
-#include <filesystem>
+#include <QDir>
 
 #include "core/utility.hpp"
 #include "object_id_t.hpp"
@@ -33,13 +32,14 @@ public:
 
 	bool operator ==(const QString &path_) const;
 
+	friend uint qHash(const file::id_t &key, uint seed) noexcept;
+
 private:
 	id_t id_;
 	QString canonical_file_path_;
 
 	static inline uint32_t id_ctr_=0;
 	static id_t new_id() noexcept;
-
 };
 
 uint qHash(const file::id_t &key, uint seed) noexcept;
