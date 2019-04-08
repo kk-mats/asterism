@@ -1,20 +1,23 @@
-#ifndef MATCHING_PAIR_TABLE_HPP
-#define MATCHING_PAIR_TABLE_HPP
+#ifndef MATCHING_TABLE_HPP
+#define MATCHING_TABLE_HPP
 
 #include <algorithm>
 #include <optional>
-#include <QMultiHash>
 
+#include <QVector>
+#include <QHash>
+
+#include "core/logger.hpp"
 #include "model/detection_result.hpp"
 #include "layer/clone_pair_grid_layer.hpp"
 
 namespace asterism
 {
 
-class matching_pair_table
+class matching_table_unit final
 {
 public:
-	matching_pair_table(const detection_result &left, const detection_result &right, const float t) noexcept;
+	matching_table_unit(const detection_result &left, const detection_result &right, const float t) noexcept;
 
 	std::optional<clone_pair::id_t> has_left_clone_pair_of(const clone_pair::id_t &right_clone_pair_id) const noexcept;
 	std::optional<clone_pair::id_t> has_right_clone_pair_of(const clone_pair::id_t &left_clone_pair_id) const noexcept;
@@ -37,6 +40,39 @@ private:
 	QVector<QPair<clone_pair::id_t, clone_pair::id_t>> bidirectional_matching(const detection_result &left, const detection_result &right, const float t) const noexcept;
 };
 
+
+class matching_table
+{
+public:
+	class key final
+	{
+	public:
+		key(const detection_result::id_t &key1, const detection_result::id_t &key2) noexcept;
+		key(const std::pair<detection_result::id_t, detection_result::id_t> &key) noexcept;
+
+		bool operator ==(const key &other) const noexcept;
+
+		friend uint qHash(const matching_table::key &key, uint seed) noexcept;
+
+	private:
+		const detection_result::id_t key1_, key2_;
+	};
+
+	bool map_mutually(const detection_results &detection_results, const QList<detection_result::id_t> &target_ids) noexcept;
+
+	const matching_table_unit operator [](const key &key) const noexcept;
+	matching_table_unit& operator [](const key &key) noexcept;
+
+	void set_threshold(const float threshold, const detection_results &detection_results) noexcept;
+
+private:
+	float threshold_=0.8;
+	QHash<key, matching_table_unit> units_;
+
+};
+
+uint qHash(const matching_table::key &key, uint seed) noexcept;
+
 }
 
-#endif // MATCHING_PAIR_TABLE_HPP
+#endif // MATCHING_TABLE_HPP
