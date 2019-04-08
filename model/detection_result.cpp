@@ -84,6 +84,16 @@ detection_result::id_t detection_results::add(detection_result &&result) noexcep
 	return id;
 }
 
+QList<detection_result::id_t> detection_results::result_ids() const noexcept
+{
+	return this->result_table_.keys();
+}
+
+bool detection_results::contains(const detection_result::id_t &id) const noexcept
+{
+	return this->result_table_.contains(id);
+}
+
 QString detection_results::target_path() const noexcept
 {
 	return this->target_path_;
@@ -98,5 +108,16 @@ const QHash<detection_result::id_t, detection_result> detection_results::result_
 {
 	return this->result_table_;
 }
+
+detection_result& detection_results::operator [](const detection_result::id_t &id) noexcept
+{
+	return this->result_table_[id];
+}
+
+const detection_result detection_results::operator [](const detection_result::id_t &id) const noexcept
+{
+	return this->result_table_[id];
+}
+
 
 }

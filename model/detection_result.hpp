@@ -52,6 +52,12 @@ public:
 	file::id_t add(file &&file) noexcept;
 	detection_result::id_t add(detection_result &&result) noexcept;
 
+	QList<detection_result::id_t> result_ids() const noexcept;
+	bool contains(const detection_result::id_t &id) const noexcept;
+
+	detection_result& operator [](const detection_result::id_t &id) noexcept;
+	const detection_result operator [](const detection_result::id_t &id) const noexcept;
+
 	QString target_path() const noexcept;
 	const QHash<file::id_t, file> file_table() const noexcept;
 	const QHash<detection_result::id_t, detection_result> result_table() const noexcept;
