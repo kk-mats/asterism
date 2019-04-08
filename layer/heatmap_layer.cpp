@@ -23,7 +23,7 @@ heatmap_layer heatmap_layer::colorized_by_clone_pair_size(const clone_pair_grid_
 	{
 		if(auto color=selector.color_at(source[i].size()); !color)
 		{
-			qCritical()<<heatmap_conversion_error::color_index_out_of_range;
+			qCritical()<<heatmap_generating_error::color_index_out_of_range;
 			return heatmap_layer();
 		}
 		else
