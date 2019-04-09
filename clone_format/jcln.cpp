@@ -129,7 +129,7 @@ QJsonValue jcln::to_qjson(const detection_results &detection_results) noexcept
 	};
 }
 
-std::optional<fragment> jcln::read_fragment(const QJsonObject &json) noexcept
+std::optional<fragment> jcln::read_fragment(const QJsonObject &json, const shared_map<int, file> &id_file_ptr_map) noexcept
 {
 	if(!json.contains(FILE_ID) || !json.contains(BEGIN) || !json.contains(END))
 	{
@@ -143,10 +143,17 @@ std::optional<fragment> jcln::read_fragment(const QJsonObject &json) noexcept
 		return std::nullopt;
 	}
 
-	return fragment(file::id_t(json[FILE_ID].toInt()), json[BEGIN].toInt(), json[END].toInt());
+	auto file_id=json[FILE_ID].toInt();
+	if(!id_file_ptr_map.contains(file_id))
+	{
+		qCritical()<<code_clone_loading_error::invalid_file_format;
+		return std::nullopt;
+	}
+
+	return fragment(id_file_ptr_map[file_id], json[BEGIN].toInt(), json[END].toInt());
 }
 
-std::optional<clone_pair> jcln::read_clone_pair(const QJsonObject &json) noexcept
+std::optional<clone_pair> jcln::read_clone_pair(const QJsonObject &json, const shared_map<int, file> &id_file_ptr_map) noexcept
 {
 	if(!json.contains(SIMILARITY) || !json.contains(FRAGMENT1) || !json.contains(FRAGMENT2))
 	{
@@ -160,14 +167,14 @@ std::optional<clone_pair> jcln::read_clone_pair(const QJsonObject &json) noexcep
 		return std::nullopt;
 	}
 
-	auto f1=read_fragment(json[FRAGMENT1].toObject());
-	auto f2=read_fragment(json[FRAGMENT2].toObject());
+	auto f1=read_fragment(json[FRAGMENT1].toObject(), id_file_ptr_map);
+	auto f2=read_fragment(json[FRAGMENT2].toObject(), id_file_ptr_map);
 
 	return f1 && f2 ? std::make_optional(clone_pair(std::move(f1.value()), std::move(f2.value()), json[SIMILARITY].toInt())) : std::nullopt;
 }
 
 
-std::optional<detection_result> jcln::read_detection_result(const QJsonObject &json) noexcept
+std::optional<detection_result> jcln::read_detection_result(const QJsonObject &json, const shared_map<int, file> &id_file_ptr_map) noexcept
 {
 	if(!json.contains(ENVIRONMENT) || !json.contains(RESULT_ID) || !json.contains(CLONE_PAIRS))
 	{
@@ -205,20 +212,20 @@ std::optional<detection_result> jcln::read_detection_result(const QJsonObject &j
 
 	auto context=result_environment(clone_detector[NAME].toString(), environment[SOURCE].toString());
 
-	QHash<clone_pair::id_t, clone_pair> clone_pair_table;
+	shared_set<clone_pair> clone_pairs;
 	for(auto pj:json[CLONE_PAIRS].toArray())
 	{
 		std::optional<clone_pair> p;
-		if(!pj.isObject() || !(p=read_clone_pair(pj.toObject())))
+		if(!pj.isObject() || !(p=read_clone_pair(pj.toObject(), id_file_ptr_map)))
 		{
 			qCritical()<<code_clone_loading_error::invalid_file_format;
 			return std::nullopt;
 		}
 
-		clone_pair_table[p.value().id()]=std::move(p.value());
+		clone_pairs.insert(std::make_shared<clone_pair>(std::move(p.value())));
 	}
 
-	return detection_result(json[RESULT_ID].toInt(), std::move(context), std::move(clone_pair_table));
+	return detection_result(std::move(context), std::move(clone_pairs));
 }
 
 std::optional<detection_results> jcln::read_detection_results(const QJsonObject &json) noexcept
@@ -245,6 +252,8 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 
 	detection_results rs(global[TARGET].toString());
 
+	shared_map<int, file> id_file_ptr_map;
+
 	// file_table
 	const auto file_table=json[FILE_TABLE].toArray();
 	for(const auto &fj:file_table)
@@ -262,7 +271,7 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 			return std::nullopt;
 		}
 
-		rs.add(file(f[FILE_ID].toInt(), to_canonical_file_path(f[PATH].toString())));
+		id_file_ptr_map[f[FILE_ID].toInt()]=rs.add(to_canonical_file_path(f[PATH].toString()));
 	}
 
 	// results
@@ -275,7 +284,7 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 			return std::nullopt;
 		}
 
-		auto r=read_detection_result(rj.toObject());
+		auto r=read_detection_result(rj.toObject(), id_file_ptr_map);
 		if(!r)
 		{
 			qCritical()<<code_clone_loading_error::invalid_file_format;

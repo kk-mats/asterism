@@ -5,22 +5,22 @@ namespace asterism
 {
 // constructor, destructor
 fragment::fragment() noexcept
-	: file_id_(0), begin_(0), end_(0)
+	: file_(nullptr), begin_(0), end_(0)
 {}
 
-fragment::fragment(const file::id_t &file_id, const uint32_t begin, const uint32_t end) noexcept
-	:file_id_(file_id), begin_(begin), end_(end)
+fragment::fragment(const std::shared_ptr<file> &file, const uint32_t begin, const uint32_t end) noexcept
+	:file_(file), begin_(begin), end_(end)
 {}
 
 // operator
 bool fragment::operator <(const fragment &other) const noexcept
 {
-	if(this->file_id_<other.file_id_)
+	if(this->file_.owner_before(other.file_))
 	{
 		return true;
 	}
 
-	if(this->file_id_==other.file_id_)
+	if(this->file_==other.file_)
 	{
 		if(this->begin_<other.begin_)
 		{
@@ -46,9 +46,9 @@ uint32_t fragment::operator |(const fragment &other) const noexcept
 	return std::max(this->end_, other.end_)-std::min(this->begin_, other.begin_);
 }
 
-file::id_t fragment::file_id() const noexcept
+std::shared_ptr<file> fragment::file_ptr() const noexcept
 {
-	return this->file_id_;
+	return this->file_;
 }
 
 uint32_t fragment::begin() const noexcept

@@ -26,9 +26,9 @@ private:
 	static QJsonValue to_qjson(const detection_result &detection_result) noexcept;
 	static QJsonValue to_qjson(const detection_results &detection_results) noexcept;
 
-	static std::optional<fragment> read_fragment(const QJsonObject &json) noexcept;
-	static std::optional<clone_pair> read_clone_pair(const QJsonObject &json) noexcept;
-	static std::optional<detection_result> read_detection_result(const QJsonObject &json) noexcept;
+	static std::optional<fragment> read_fragment(const QJsonObject &json, const shared_map<int, file> &id_file_ptr_map) noexcept;
+	static std::optional<clone_pair> read_clone_pair(const QJsonObject &json, const shared_map<int, file> &id_file_ptr_map) noexcept;
+	static std::optional<detection_result> read_detection_result(const QJsonObject &json, const shared_map<int, file> &id_file_ptr_map) noexcept;
 	static std::optional<detection_results> read_detection_results(const QJsonObject &json) noexcept;
 
 };

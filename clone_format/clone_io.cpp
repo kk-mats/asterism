@@ -11,18 +11,9 @@ clone_io::clone_io()
 }
 
 
-std::optional<detection_results> clone_io::read(const QString &file) noexcept
+std::optional<detection_results> clone_io::read_jcln(const QString &file, const bool is_binary) noexcept
 {
-	if(auto info=QFileInfo(file); info.suffix()=="jcln")
-	{
-		return jcln::read(file, false);
-	}
-	else if(info.suffix()=="bjcln")
-	{
-		return jcln::read(file, true);
-	}
-
-	return std::nullopt;
+	return jcln::read(file, is_binary);
 }
 
 

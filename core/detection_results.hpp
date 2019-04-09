@@ -9,17 +9,16 @@
 namespace asterism
 {
 
-template <class T>
-using shared_set=QSet<std::shared_ptr<T>>;
-
-template <class T>
-using shared_list=QList<std::shared_ptr<T>>;
-
 class detection_results final
 {
 public:
 	detection_results() noexcept;
 	detection_results(const QString &target_path) noexcept;
+
+	std::shared_ptr<file> add(QString &&canonical_file_path) noexcept;
+
+	template<class ...Args>
+	bool emplace_detection_result(Args&& ...args) noexcept;
 
 	bool insert_result(const QString &path) noexcept;
 	bool remove_result(const std::shared_ptr<detection_result> &ptr) noexcept;

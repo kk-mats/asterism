@@ -5,23 +5,23 @@ namespace asterism
 {
 
 file::file() noexcept
-	: id_(0), canonical_file_path_("invalid_constructor_call")
+	: canonical_file_path_("invalid_constructor_call")
 {}
 
 file::file(const QString &canonical_file_path) noexcept
-	: id_(new_id()), canonical_file_path_(canonical_file_path)
+	: canonical_file_path_(canonical_file_path)
 {}
 
 file::file(QString &&canonical_file_path) noexcept
-	: id_(new_id()), canonical_file_path_(std::move(canonical_file_path))
+	: canonical_file_path_(std::move(canonical_file_path))
 {}
 
 file::file(const id_t id, const QString &canonical_file_path) noexcept
-	: id_(id), canonical_file_path_(canonical_file_path)
+	: canonical_file_path_(canonical_file_path)
 {}
 
 file::file(const id_t id, QString &&canonical_file_path) noexcept
-	: id_(id), canonical_file_path_(std::move(canonical_file_path))
+	: canonical_file_path_(std::move(canonical_file_path))
 {}
 
 QString file::canonical_file_path() const noexcept
@@ -51,9 +51,9 @@ file::id_t file::new_id() noexcept
 	return id;
 }
 
-uint qHash(const file &key, [[maybe_unused]]uint seed) noexcept
+uint qHash(const file &key, uint seed) noexcept
 {
-	return key.id_;
+	return qHash(key.canonical_file_path_, seed);
 }
 
 }

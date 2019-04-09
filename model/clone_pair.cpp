@@ -5,30 +5,20 @@ namespace asterism
 
 // constructor
 clone_pair::clone_pair() noexcept
-	: id_(0), fragments_(qMakePair(fragment(), fragment())), similairty_(0)
+	: fragments_(qMakePair(fragment(), fragment())), similairty_(0)
 {}
 
 clone_pair::clone_pair(const fragment &fragment1, const fragment &fragment2, const unsigned int similarity) noexcept
-	: id_(new_id()), fragments_(canonical(fragment1, fragment2)), similairty_(similarity)
+	: fragments_(canonical(fragment1, fragment2)), similairty_(similarity)
 {}
 
 clone_pair::clone_pair(fragment &&fragment1, fragment &&fragment2, const unsigned int similarity) noexcept
-	: id_(new_id()), fragments_(canonical(fragment1, fragment2)), similairty_(similarity)
+	: fragments_(canonical(fragment1, fragment2)), similairty_(similarity)
 {}
-
-bool clone_pair::operator ==(const clone_pair &other) const noexcept
-{
-	return this->id_==other.id_;
-}
 
 bool clone_pair::operator <(const clone_pair &other) const noexcept
 {
 	return this->fragments_.first<other.fragments_.first;
-}
-
-clone_pair::id_t clone_pair::id() const noexcept
-{
-	return this->id_;
 }
 
 fragment clone_pair::fragment1() const noexcept
@@ -46,13 +36,6 @@ unsigned int clone_pair::similarity() const noexcept
 	return this->similairty_;
 }
 
-clone_pair::id_t clone_pair::new_id() noexcept
-{
-	auto id=clone_pair::id_t(id_ctr_);
-	++id_ctr_;
-	return id;
-}
-
 QPair<fragment, fragment> clone_pair::canonical(const fragment &fragment1, const fragment &fragment2) noexcept
 {
 	fragment f1=fragment1, f2=fragment2;
@@ -66,14 +49,9 @@ QPair<fragment, fragment> clone_pair::canonical(fragment &&fragment1, fragment &
 				qMakePair(fragment2, fragment1);
 }
 
-uint qHash(const clone_pair::id_t &key, [[maybe_unused]]uint seed) noexcept
-{
-	return key;
-}
-
 uint qHash(const clone_pair &key, [[maybe_unused]]uint seed) noexcept
 {
-	return key.id_;
+	return key.fragments_.first.begin()+key.fragments_.second.begin();
 }
 
 float good(const clone_pair &p1, const clone_pair &p2) noexcept

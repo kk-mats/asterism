@@ -11,36 +11,21 @@
 namespace asterism
 {
 
-
 class detection_result final
 {
 public:
-	using id_t=object_id_t<detection_result>;
-
 	detection_result() noexcept;
-	detection_result(const id_t id, result_environment &&context, QHash<clone_pair::id_t, clone_pair> &&clone_pair_table) noexcept;
+	detection_result(result_environment &&context, shared_set<clone_pair> &&clone_pairs) noexcept;
 
-	clone_pair::id_t add(const clone_pair &clone_pair) noexcept;
-	clone_pair::id_t add(clone_pair &&clone_pair) noexcept;
+	clone_pair_grid_layer to_layer(const shared_list<file> &header) const noexcept;
 
-	void update_layer(const uint32_t layer_width) noexcept;
-
-	clone_pair operator [](const clone_pair::id_t &id) const&& noexcept;
-
-	id_t id() const noexcept;
 	const result_environment& context() const noexcept;
-	QList<clone_pair> clone_pairs() const noexcept;
-	const clone_pair_grid_layer& clone_pair_layer() const noexcept;
-	const QHash<clone_pair::id_t, clone_pair>& clone_pair_table() const noexcept;
+	shared_set<clone_pair>& clone_pairs() noexcept;
+	const shared_set<clone_pair>& clone_pairs() const noexcept;
 
 private:
-	id_t id_;
 	result_environment context_;
-	QHash<clone_pair::id_t, clone_pair> clone_pair_table_;
-	clone_pair_grid_layer clone_pair_grid_layer_;
-
-	static inline uint32_t id_ctr_=0;
-	static id_t new_id() noexcept;
+	shared_set<clone_pair> clone_pairs_;
 };
 
 }

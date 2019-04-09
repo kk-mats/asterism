@@ -1,6 +1,8 @@
 #ifndef FRAGMENT_HPP
 #define FRAGMENT_HPP
 
+#include <memory>
+
 #include "file.hpp"
 
 namespace asterism
@@ -10,13 +12,13 @@ class fragment final
 {
 public:
 	fragment() noexcept;
-	fragment(const file::id_t &file_id, const uint32_t begin, const uint32_t end) noexcept;
+	fragment(const std::shared_ptr<file> &file, const uint32_t begin, const uint32_t end) noexcept;
 
 	bool operator <(const fragment &other) const noexcept;
 	uint32_t operator &(const fragment &other) const noexcept;
 	uint32_t operator |(const fragment &other) const noexcept;
 
-	file::id_t file_id() const noexcept;
+	std::shared_ptr<file> file_ptr() const noexcept;
 	uint32_t begin() const noexcept;
 	uint32_t end() const noexcept;
 
@@ -24,7 +26,7 @@ public:
 	friend float contained(const fragment &f1, const fragment &f2) noexcept;
 
 private:
-	file::id_t file_id_;
+	std::shared_ptr<file> file_;
 	uint32_t begin_, end_;
 };
 
