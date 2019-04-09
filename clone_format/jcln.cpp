@@ -255,8 +255,7 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 	shared_map<int, file> id_file_ptr_map;
 
 	// file_table
-	const auto file_table=json[FILE_TABLE].toArray();
-	for(const auto &fj:file_table)
+	for(const auto fj:json[FILE_TABLE].toArray())
 	{
 		if(!fj.isObject())
 		{
@@ -275,8 +274,7 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 	}
 
 	// results
-	const auto results=json[RESULTS].toArray();
-	for(const auto &rj:results)
+	for(const auto rj:json[RESULTS].toArray())
 	{
 		if(!rj.isObject())
 		{
@@ -290,9 +288,10 @@ std::optional<detection_results> jcln::read_detection_results(const QJsonObject 
 			qCritical()<<code_clone_loading_error::invalid_file_format;
 			return std::nullopt;
 		}
-
-		rs.add(r.value());
+		results.insert(std::make_shared<detection_result>(std::move(r)));
 	}
+
+	rs.emplace_detection_result();
 
 	return std::make_optional(rs);
 }
