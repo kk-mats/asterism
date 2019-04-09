@@ -1,12 +1,19 @@
 #ifndef DETECTION_RESULTS_HPP
 #define DETECTION_RESULTS_HPP
 
+#include <memory>
+
 #include "matching_table.hpp"
 #include "layer/heatmap_layer.hpp"
 
 namespace asterism
 {
 
+template <class T>
+using shared_set=QSet<std::shared_ptr<T>>;
+
+template <class T>
+using shared_list=QList<std::shared_ptr<T>>;
 
 class detection_results final
 {
@@ -14,26 +21,18 @@ public:
 	detection_results() noexcept;
 	detection_results(const QString &target_path) noexcept;
 
-	file::id_t add(file &&file) noexcept;
-	detection_result::id_t add(const detection_result &result) noexcept;
+	bool insert_result(const QString &path) noexcept;
+	bool remove_result(const std::shared_ptr<detection_result> &ptr) noexcept;
 
-	std::optional<heatmap_layer> clone_pair_size_heatmap(const detection_result::id_t &id) const noexcept;
-
-	detection_result& operator [](const detection_result::id_t &id) noexcept;
-	const detection_result operator [](const detection_result::id_t &id) const noexcept;
-
-	QList<detection_result::id_t> result_ids() const noexcept;
-	bool contains(const detection_result::id_t &id) const noexcept;
+	shared_list<detection_result> results() const noexcept;
 
 	void set_target_path(const QString &target_path) noexcept;
 	QString target_path() const noexcept;
-	const QHash<file::id_t, file>& file_table() const noexcept;
-	const QHash<detection_result::id_t, detection_result>& result_table() const noexcept;
 
 private:
 	QString target_path_;
-	QHash<file::id_t, file> file_table_;
-	QHash<detection_result::id_t, detection_result> result_table_;
+	shared_set<file> files_;
+	shared_set<detection_result> results_;
 };
 
 }

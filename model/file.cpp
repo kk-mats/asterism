@@ -34,9 +34,14 @@ file::id_t file::id() const noexcept
 	return this->id_;
 }
 
-bool file::operator ==(const QString &path) const
+bool file::operator ==(const QString &path) const noexcept
 {
 	return this->canonical_file_path_==to_canonical_file_path(path);
+}
+
+bool file::operator ==(const file &other) const noexcept
+{
+	return this->id_==other.id_;
 }
 
 file::id_t file::new_id() noexcept
@@ -46,9 +51,9 @@ file::id_t file::new_id() noexcept
 	return id;
 }
 
-uint qHash(const file::id_t &key, [[maybe_unused]]uint seed) noexcept
+uint qHash(const file &key, [[maybe_unused]]uint seed) noexcept
 {
-	return key;
+	return key.id_;
 }
 
 }

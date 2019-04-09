@@ -27,11 +27,10 @@ public:
 	id_t id() const noexcept;
 	QString canonical_file_path() const noexcept;
 
-	QJsonValue to_qjson() const noexcept;
+	bool operator ==(const QString &path) const noexcept;
+	bool operator ==(const file &other) const noexcept;
 
-	bool operator ==(const QString &path_) const;
-
-	friend uint qHash(const file::id_t &key, uint seed) noexcept;
+	friend uint qHash(const file &key, uint seed) noexcept;
 
 private:
 	id_t id_;
@@ -41,7 +40,7 @@ private:
 	static id_t new_id() noexcept;
 };
 
-uint qHash(const file::id_t &key, uint seed) noexcept;
+uint qHash(const file &key, uint seed) noexcept;
 }
 
 #endif // FILE_HPP
