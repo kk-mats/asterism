@@ -20,10 +20,10 @@ public:
 	static bool write(const detection_results &results, const QString &path) noexcept;
 
 private:
-	static QJsonValue to_qjson(const file &file) noexcept;
-	static QJsonValue to_qjson(const fragment &fragment) noexcept;
-	static QJsonValue to_qjson(const clone_pair &clone_pair) noexcept;
-	static QJsonValue to_qjson(const detection_result &detection_result) noexcept;
+	static QJsonValue to_qjson(const std::shared_ptr<file> &file_ptr, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept;
+	static QJsonValue to_qjson(const fragment &fragment, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept;
+	static QJsonValue to_qjson(const std::shared_ptr<clone_pair> &clone_pair, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept;
+	static QJsonValue to_qjson(const std::shared_ptr<detection_result> &detection_result, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept;
 	static QJsonValue to_qjson(const detection_results &detection_results) noexcept;
 
 	static std::optional<fragment> read_fragment(const QJsonObject &json, const shared_map<int, file> &id_file_ptr_map) noexcept;

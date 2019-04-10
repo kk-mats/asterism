@@ -71,4 +71,9 @@ QHash<QString, QString> result_environment::parameters() const noexcept
 	return this->parameters_;
 }
 
+bool result_environment::operator ==(const result_environment &other) const noexcept
+{
+	return this->source_==other.source_;
+}
+
 }

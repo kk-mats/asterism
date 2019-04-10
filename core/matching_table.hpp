@@ -13,32 +13,28 @@
 namespace asterism
 {
 
-
+/*
 class matching_table_unit final
 {
 public:
 	matching_table_unit() noexcept;
 	matching_table_unit(const detection_result &left, const detection_result &right, const float t) noexcept;
 
-	std::optional<clone_pair::id_t> has_left_clone_pair_of(const clone_pair::id_t &right_clone_pair_id) const noexcept;
-	std::optional<clone_pair::id_t> has_right_clone_pair_of(const clone_pair::id_t &left_clone_pair_id) const noexcept;
+	std::optional<std::shared_ptr<clone_pair>> has_left_clone_pair_of(const std::shared_ptr<clone_pair> &ptr) const noexcept;
+	std::optional<std::shared_ptr<clone_pair>> has_right_clone_pair_of(const std::shared_ptr<clone_pair> &ptr) const noexcept;
 
-	int count_left_clone_pair_of(const clone_pair::id_t &right_clone_pair_id) const noexcept;
-	int count_right_clone_pair_of(const clone_pair::id_t &left_clone_pair_id) const noexcept;
+	int count_left_clone_pair_of(const std::shared_ptr<clone_pair> &ptr) const noexcept;
+	int count_right_clone_pair_of(const std::shared_ptr<clone_pair> &ptr) const noexcept;
 
-	detection_result::id_t left_result_id() const noexcept;
-	detection_result::id_t right_result_id() const noexcept;
-
-	QVector<clone_pair::id_t> left_clone_pair_of(const clone_pair::id_t &right_clone_pair_id) const noexcept;
-	QVector<clone_pair::id_t> right_clone_pair_of(const clone_pair::id_t &left_clone_pair_id) const noexcept;
+	shared_vector<clone_pair> left_clone_pair_of(const std::shared_ptr<clone_pair> &ptr) const noexcept;
+	shared_vector<clone_pair> right_clone_pair_of(const std::shared_ptr<clone_pair> &ptr) const noexcept;
 
 private:
-	detection_result::id_t left_result_id_, right_result_id_;
-	QVector<QPair<clone_pair::id_t, clone_pair::id_t>> matching_list_;
+	QVector<QPair<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>>> matching_list_;
 
 	bool better(const float ok_v, const float good_v, QPair<float, float> &&ok_good_max, const float t) const noexcept;
-	QVector<QPair<clone_pair::id_t, clone_pair::id_t>> unidirectional_matching(const detection_result &first, const detection_result &second, const float t) const noexcept;
-	QVector<QPair<clone_pair::id_t, clone_pair::id_t>> bidirectional_matching(const detection_result &left, const detection_result &right, const float t) const noexcept;
+	QVector<QPair<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>>> unidirectional_matching(const detection_result &first, const detection_result &second, const float t) const noexcept;
+	QVector<QPair<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>>> bidirectional_matching(const detection_result &left, const detection_result &right, const float t) const noexcept;
 };
 
 
@@ -73,7 +69,7 @@ private:
 };
 
 uint qHash(const matching_table::key &key, uint seed) noexcept;
-
+*/
 }
 
 #endif // MATCHING_TABLE_HPP

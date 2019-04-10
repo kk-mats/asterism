@@ -12,6 +12,24 @@
 namespace asterism
 {
 
+template <class T>
+uint qHash(const std::shared_ptr<T> &t, uint seed) noexcept
+{
+	return qHash(*t, seed);
+}
+
+template <class T>
+using shared_set=QSet<std::shared_ptr<T>>;
+
+template <class T>
+using shared_list=QList<std::shared_ptr<T>>;
+
+template <class T>
+using shared_vector=QVector<std::shared_ptr<T>>;
+
+template <class K, class V>
+using shared_map=QMap<K, std::shared_ptr<V>>;
+
 class file final
 {
 public:
@@ -21,12 +39,10 @@ public:
 	file(const QString &canonical_file_path) noexcept;
 	file(QString &&canonical_file_path) noexcept;
 
-	file(const id_t id, const QString &canonical_file_path) noexcept;
-	file(const id_t id, QString &&canonical_file_path) noexcept;
-
 	id_t id() const noexcept;
 	QString canonical_file_path() const noexcept;
 
+	bool operator <(const file &other) const noexcept;
 	bool operator ==(const QString &path) const noexcept;
 	bool operator ==(const file &other) const noexcept;
 
@@ -41,6 +57,7 @@ private:
 };
 
 uint qHash(const file &key, uint seed) noexcept;
+uint qHash(const std::shared_ptr<file> &key, uint seed) noexcept;
 }
 
 #endif // FILE_HPP

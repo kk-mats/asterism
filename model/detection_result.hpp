@@ -15,18 +15,22 @@ class detection_result final
 {
 public:
 	detection_result() noexcept;
-	detection_result(result_environment &&context, shared_set<clone_pair> &&clone_pairs) noexcept;
+	detection_result(result_environment &&environment, shared_set<clone_pair> &&clone_pairs) noexcept;
 
-	clone_pair_grid_layer to_layer(const shared_list<file> &header) const noexcept;
+	clone_pair_grid_layer to_layer(const QMap<std::shared_ptr<file>, int> file_index_map) const noexcept;
 
-	const result_environment& context() const noexcept;
+	const result_environment& environment() const noexcept;
 	shared_set<clone_pair>& clone_pairs() noexcept;
 	const shared_set<clone_pair>& clone_pairs() const noexcept;
 
+	bool operator ==(const detection_result &detection_result) const noexcept;
+
 private:
-	result_environment context_;
+	result_environment environment_;
 	shared_set<clone_pair> clone_pairs_;
 };
 
+uint qHash(const detection_result &key, uint seed) noexcept;
+uint qHash(const std::shared_ptr<detection_result> &key, uint seed) noexcept;
 }
 #endif // DETECTION_RESULT_HPP

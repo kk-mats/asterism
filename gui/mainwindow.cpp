@@ -39,6 +39,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::open()
 {
+	/*
 	auto results=clone_io::read(QFileDialog::getOpenFileName(this, tr("open file"), QDir::currentPath(), tr("Asterism Project (*.jcln)")));
 	if(results)
 	{
@@ -49,6 +50,7 @@ void MainWindow::open()
 			this->scatter_plot_model_->set_heatmap_layer(std::move(h.value()));
 		}
 	}
+	*/
 }
 
 

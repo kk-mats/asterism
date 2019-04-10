@@ -2,7 +2,7 @@
 
 namespace asterism
 {
-
+/*
 matching_table_unit::matching_table_unit() noexcept
 {}
 
@@ -184,5 +184,5 @@ uint qHash(const matching_table::key &key, uint seed) noexcept
 {
 	return uint(key.key1_)^seed+uint(key.key2_);
 }
-
+*/
 }

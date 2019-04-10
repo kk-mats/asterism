@@ -15,7 +15,7 @@ fragment::fragment(const std::shared_ptr<file> &file, const uint32_t begin, cons
 // operator
 bool fragment::operator <(const fragment &other) const noexcept
 {
-	if(this->file_.owner_before(other.file_))
+	if(this->file_<other.file_)
 	{
 		return true;
 	}

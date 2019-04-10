@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include <QMap>
 #include <QHash>
 #include <QList>
 
@@ -12,26 +13,14 @@
 namespace asterism
 {
 
-template <class T>
-using shared_set=QSet<std::shared_ptr<T>>;
-
-template <class T>
-using shared_list=QList<std::shared_ptr<T>>;
-
-template <class T>
-using shared_vector=QVector<std::shared_ptr<T>>;
-
-template <class K, class V>
-using shared_map=QMap<K, std::shared_ptr<V>>;
-
 class clone_pair_grid_layer final
 	: public file_separated_grid_layer<shared_vector<clone_pair>>
 {
 public:
 	clone_pair_grid_layer() noexcept;
-	clone_pair_grid_layer(const shared_set<clone_pair> &clone_pairs, const uint32_t width) noexcept;
+	clone_pair_grid_layer(const shared_set<clone_pair> &clone_pairs, const QMap<std::shared_ptr<file>, int> file_index_map) noexcept;
 
-	void make_layer(const QList<clone_pair> &clone_pairs, const uint32_t width) noexcept;
+	void make_layer(const shared_set<clone_pair> &clone_pairs, const QMap<std::shared_ptr<file>, int> file_index_map) noexcept;
 };
 
 }

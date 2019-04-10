@@ -47,6 +47,8 @@ public:
 	QString clone_detector_string() const noexcept;
 	QHash<QString, QString> parameters() const noexcept;
 
+	bool operator ==(const result_environment &other) const noexcept;
+
 private:
 	clone_detector clone_detector_;
 	QString source_;

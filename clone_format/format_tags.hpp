@@ -20,6 +20,7 @@ public:
 	static inline const QString FILE_TABLE="file_table";
 	static inline const QString RESULTS="results";
 	static inline const QString CLONE_PAIRS="clone_pairs";
+	static inline const QString CLONE_PAIR_SIZE="clone_pair_size";
 	static inline const QString RESULT_ID="result_id";
 	static inline const QString FILE_ID="file_id";
 	static inline const QString PATH="path";

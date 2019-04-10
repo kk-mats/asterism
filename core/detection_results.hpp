@@ -17,11 +17,14 @@ public:
 	detection_results(const QString &target_path) noexcept;
 
 	std::shared_ptr<file> emplace(QString &&canonical_file_path) noexcept;
-	std::shared_ptr<detection_result> empalce(result_environment &&context, shared_set<clone_pair> &&clone_pairs) noexcept;
+	std::shared_ptr<detection_result> emplace(detection_result &&detection_result) noexcept;
+	std::shared_ptr<detection_result> empalce(result_environment &&environment, shared_set<clone_pair> &&clone_pairs) noexcept;
 
 	bool remove(std::shared_ptr<detection_result> &&ptr) noexcept;
 
-	shared_list<detection_result> results() const noexcept;
+	const shared_set<detection_result>& results() const noexcept;
+	const shared_set<file>& files() const noexcept;
+	QHash<std::shared_ptr<file>, int> file_index_map() const noexcept;
 
 	void set_target_path(const QString &target_path) noexcept;
 	QString target_path() const noexcept;
