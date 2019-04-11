@@ -23,14 +23,14 @@ QColor operator /(const QColor &c, const float &f) noexcept
 	return QColor(c.red()/f, c.green()/f, c.blue()/f);
 }
 
-color_selector::color_selector(const QColor &color, const uint32_t index) noexcept
+color_selector::color_selector(const QColor &color, const int index) noexcept
 	: index_begin_(index), index_end_(index)
 {
 	this->color_source_[index]=color;
 }
 
 
-void color_selector::set_anchor(const QColor &color, const uint32_t index) noexcept
+void color_selector::set_anchor(const QColor &color, const int index) noexcept
 {
 	if(index<this->index_begin_)
 	{
@@ -44,7 +44,7 @@ void color_selector::set_anchor(const QColor &color, const uint32_t index) noexc
 	this->color_source_[index]=color;
 }
 
-std::optional<QColor> color_selector::color_at(const uint32_t index) noexcept
+std::optional<QColor> color_selector::color_at(const int index) noexcept
 {
 	if(index<this->index_begin_ || this->index_end_<index)
 	{

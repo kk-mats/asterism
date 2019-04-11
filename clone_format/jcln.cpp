@@ -4,7 +4,7 @@ namespace asterism
 {
 
 
-std::optional<detection_results> jcln::read(const QString &path, const bool is_binary) noexcept
+std::optional<detection_results> jcln::read(const QString &path) noexcept
 {
 	QFile file(path);
 
@@ -14,7 +14,7 @@ std::optional<detection_results> jcln::read(const QString &path, const bool is_b
 		return std::nullopt;
 	}
 
-	auto json(is_binary ?
+	auto json(QFileInfo(file).suffix()=="jcln" ?
 				QJsonDocument::fromBinaryData(file.readAll()) : // *.jcln
 				QJsonDocument::fromJson(file.readAll())); // *.bjcln
 
@@ -44,41 +44,41 @@ bool jcln::write(const detection_results &results, const QString &path) noexcept
 }
 
 
-QJsonValue jcln::writer::to_qjson(const std::shared_ptr<file> &file_ptr, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept
+QJsonValue jcln::writer::to_qjson(const std::weak_ptr<file> &file_ptr, const file_index &file_index) noexcept
 {
 	return QJsonObject
 	{
-		{FILE_ID, file_index_map[file_ptr]},
-		{PATH, file_ptr->canonical_file_path()}
+		{FILE_ID, file_index[file_ptr]},
+		{PATH, file_ptr.lock()->canonical_file_path()}
 	};
 }
 
-QJsonValue jcln::writer::to_qjson(const fragment &fragment, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept
+QJsonValue jcln::writer::to_qjson(const fragment &fragment, const file_index &file_index) noexcept
 {
 	return QJsonObject
 	{
-		{FILE_ID, int(file_index_map[fragment.file_ptr()])},
+		{FILE_ID, int(file_index[fragment.file_ptr()])},
 		{BEGIN, int(fragment.begin())},
 		{END, int(fragment.end())}
 	};
 }
 
-QJsonValue jcln::writer::to_qjson(const std::shared_ptr<clone_pair> &clone_pair, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept
+QJsonValue jcln::writer::to_qjson(const std::shared_ptr<clone_pair> &clone_pair, const file_index &file_index) noexcept
 {
 	return QJsonObject
 	{
 		{SIMILARITY, int(clone_pair->similarity())},
-		{FRAGMENT1, to_qjson(clone_pair->fragment1(), file_index_map)},
-		{FRAGMENT2, to_qjson(clone_pair->fragment2(), file_index_map)}
+		{FRAGMENT1, to_qjson(clone_pair->fragment1(), file_index)},
+		{FRAGMENT2, to_qjson(clone_pair->fragment2(), file_index)}
 	};
 }
 
-QJsonValue jcln::writer::to_qjson(const std::shared_ptr<detection_result> &detection_result, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept
+QJsonValue jcln::writer::to_qjson(const std::shared_ptr<detection_result> &detection_result, const file_index &file_index) noexcept
 {
 	QJsonArray json_clone_pairs_array;
 	for(const auto &p:detection_result->clone_pairs())
 	{
-		json_clone_pairs_array.append(to_qjson(p, file_index_map));
+		json_clone_pairs_array.append(to_qjson(p, file_index));
 	}
 
 	QJsonObject json_parameters;
@@ -102,15 +102,15 @@ QJsonValue jcln::writer::to_qjson(const std::shared_ptr<detection_result> &detec
 QJsonValue jcln::writer::to_qjson(const detection_results &detection_results) noexcept
 {
 	QJsonArray files, results;
-	auto file_index_map=detection_results.file_index_map();
+	const auto &file_index=detection_results.file_index_ptr();
 	for(const auto &f:detection_results.files())
 	{
-		files.append(to_qjson(f, file_index_map));
+		files.append(to_qjson(f, file_index));
 	}
 
 	for(const auto &r:detection_results.results())
 	{
-		results.append(to_qjson(r, file_index_map));
+		results.append(to_qjson(r, file_index));
 	}
 
 	return QJsonObject

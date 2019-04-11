@@ -46,7 +46,7 @@ uint32_t fragment::operator |(const fragment &other) const noexcept
 	return std::max(this->end_, other.end_)-std::min(this->begin_, other.begin_);
 }
 
-std::shared_ptr<file> fragment::file_ptr() const noexcept
+std::weak_ptr<file> fragment::file_ptr() const noexcept
 {
 	return this->file_;
 }
@@ -73,7 +73,7 @@ float contained(const fragment &f1, const fragment &f2) noexcept
 
 QDebug operator <<(QDebug logger, const fragment &fragment) noexcept
 {
-	logger<<"id="<<std::intptr_t(fragment.file_ptr().get())<<"["<<fragment.begin_<<", "<<fragment.end_<<"]";
+	logger<<"id="<<std::intptr_t(fragment.file_ptr().lock().get())<<"["<<fragment.begin_<<", "<<fragment.end_<<"]";
 	return logger;
 }
 

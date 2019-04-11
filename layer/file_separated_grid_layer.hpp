@@ -9,33 +9,12 @@
 namespace asterism
 {
 
-using file_index=QMap<std::weak_ptr<file>, int>;
+using file_index=QHash<std::weak_ptr<file>, int>;
 
 class grid_coordinate
 {
 public:
 	virtual int to_linear(const std::weak_ptr<file_index> &file_index) const noexcept=0;
-};
-
-class grid_2d_coordinate final
-	: public grid_coordinate
-{
-public:
-	grid_2d_coordinate(const std::shared_ptr<file> &x, const std::shared_ptr<file> &y) noexcept;
-
-	std::weak_ptr<file> x() const noexcept;
-	std::weak_ptr<file> y() const noexcept;
-
-	int to_linear(const std::weak_ptr<file_index> &file_index_ptr) const noexcept override;
-
-	bool operator ==(const grid_2d_coordinate &other) const noexcept;
-	bool operator !=(const grid_2d_coordinate &other) const noexcept;
-
-private:
-	std::pair<std::weak_ptr<file>, std::weak_ptr<file>> x_y_;
-
-	std::pair<std::weak_ptr<file>, std::weak_ptr<file>> canonical(const std::shared_ptr<file> &x, const std::shared_ptr<file> &y) noexcept;
-	std::pair<std::weak_ptr<file>, std::weak_ptr<file>> canonical(std::shared_ptr<file> &&x, std::shared_ptr<file> &&y) noexcept;
 };
 
 class grid_1d_coordinate final
@@ -58,6 +37,28 @@ private:
 	int i_;
 };
 
+class grid_2d_coordinate final
+	: public grid_coordinate
+{
+public:
+	grid_2d_coordinate(const std::weak_ptr<file> &x, const std::weak_ptr<file> &y) noexcept;
+
+	std::weak_ptr<file> x() const noexcept;
+	std::weak_ptr<file> y() const noexcept;
+
+	int to_linear(const std::weak_ptr<file_index> &file_index_ptr) const noexcept override;
+	static grid_1d_coordinate to_linear(const int x, const int y) noexcept;
+
+	bool operator ==(const grid_2d_coordinate &other) const noexcept;
+	bool operator !=(const grid_2d_coordinate &other) const noexcept;
+
+private:
+	std::pair<std::weak_ptr<file>, std::weak_ptr<file>> x_y_;
+
+	std::pair<std::weak_ptr<file>, std::weak_ptr<file>> canonical(const std::weak_ptr<file> &x, const std::weak_ptr<file> &y) noexcept;
+	std::pair<std::weak_ptr<file>, std::weak_ptr<file>> canonical(std::weak_ptr<file> &&x, std::weak_ptr<file> &&y) noexcept;
+};
+
 template <class val_T>
 class file_separated_grid_layer
 {
@@ -66,30 +67,25 @@ public:
 		: width_(0)
 	{}
 
-	file_separated_grid_layer(std::shared_ptr<file_index> &&file_index_ptr) noexcept
-		: width_(file_index_ptr->size()), values_(this->required_size())
+	file_separated_grid_layer(std::shared_ptr<file_index> &&file_index) noexcept
+		: width_(file_index->size()), values_(this->required_size())
 	{
-		file_index_ptr_=std::move(file_index_ptr);
+		file_index_ptr_=std::move(file_index_ptr_);
 	}
 
-	file_separated_grid_layer(const std::weak_ptr<file_index> &file_index_ptr) noexcept
-		: width_(file_index_ptr.lock()->size()), values_(this->required_size())
+	file_separated_grid_layer(const std::weak_ptr<file_index> &file_index) noexcept
+		: width_(file_index.lock()->size()), values_(this->required_size())
 	{
-		file_index_ptr_=std::move(file_index_ptr);
+		file_index_ptr_=file_index_ptr_;
 	}
 
-	file_separated_grid_layer(std::shared_ptr<file_index> &&file_index_ptr, const val_T &initial) noexcept
-		: width_(file_index_ptr->size()), values_(this->required_size(), initial)
+	file_separated_grid_layer(std::shared_ptr<file_index> &&file_index, const val_T &initial) noexcept
+		: width_(file_index->size()), values_(this->required_size(), initial)
 	{
-		file_index_ptr_=std::move(file_index_ptr);
+		file_index_ptr_=std::move(file_index_ptr_);
 	}
 
 	auto begin() const noexcept
-	{
-		return this->values_.begin();
-	}
-
-	auto& begin() noexcept
 	{
 		return this->values_.begin();
 	}
@@ -100,11 +96,6 @@ public:
 	}
 
 	auto end() const noexcept
-	{
-		return this->values_.end();
-	}
-
-	auto& end() noexcept
 	{
 		return this->values_.end();
 	}
@@ -126,21 +117,26 @@ public:
 
 	int width() const noexcept
 	{
-		return file_index_ptr_.lock()->size();
+		return this->width_;
 	}
 
-	void update(const std::shared_ptr<file_index> &file_index_ptr) noexcept
+	void update(const std::shared_ptr<file_index> &file_index) noexcept
 	{
-		file_index_ptr_=file_index_ptr;
-		this->width_=file_index_ptr->size();
+		file_index_ptr_=file_index;
+		this->width_=file_index->size();
 		this->values_.resize(this->required_size());
 	}
 
-protected:
-	int width_;
-	QVector<val_T> values_;
+	std::weak_ptr<file_index> file_index_ptr() const noexcept
+	{
+		return this->file_index_ptr_;
+	}
 
-	static std::weak_ptr<file_index> file_index_ptr_;
+protected:
+	int width_=0;
+	QVector<val_T> values_;
+	static inline std::weak_ptr<file_index> file_index_ptr_;
+
 
 	int required_size() const noexcept
 	{

@@ -17,10 +17,10 @@ class heatmap_layer
 public:
 	using file_separated_grid_layer::file_separated_grid_layer;
 
-	bool colorized_by_clone_pair_size(const shared_set<clone_pair> &clone_pairs) noexcept;
+	static std::optional<heatmap_layer> colorized_by_clone_pair_size(const std::shared_ptr<clone_pair_grid_layer> &clone_pair_layer, const std::shared_ptr<file_index> &file_index) noexcept;
 
 private:
-	std::weak_ptr<clone_pair_grid_layer> clone_pair_layer_;
+	std::shared_ptr<clone_pair_grid_layer> clone_pair_layer_;
 };
 
 }

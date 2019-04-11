@@ -3,7 +3,7 @@
 namespace asterism
 {
 
-grid_2d_coordinate::grid_2d_coordinate(const std::shared_ptr<file> &x, const std::shared_ptr<file> &y) noexcept
+grid_2d_coordinate::grid_2d_coordinate(const std::weak_ptr<file> &x, const std::weak_ptr<file> &y) noexcept
 	: x_y_(this->canonical(x, y))
 {}
 
@@ -12,6 +12,11 @@ int grid_2d_coordinate::to_linear(const std::weak_ptr<file_index> &file_index_pt
 	const auto fi=file_index_ptr.lock();
 	const auto x=(*fi)[this->x_y_.first], y=(*fi)[this->x_y_.second];
 	return x+y*(y+1)/2;
+}
+
+grid_1d_coordinate grid_2d_coordinate::to_linear(const int x, const int y) noexcept
+{
+	return grid_1d_coordinate(x+y*(y+1)/2);
 }
 
 std::weak_ptr<file> grid_2d_coordinate::x() const noexcept
@@ -26,7 +31,7 @@ std::weak_ptr<file> grid_2d_coordinate::y() const noexcept
 
 bool grid_2d_coordinate::operator ==(const grid_2d_coordinate &other) const noexcept
 {
-	return this->x_y_==other.x_y_;
+	return *this->x_y_.first.lock()==*other.x_y_.first.lock() && *this->x_y_.second.lock()==*other.x_y_.second.lock();
 }
 
 bool grid_2d_coordinate::operator !=(const grid_2d_coordinate &other) const noexcept
@@ -34,15 +39,15 @@ bool grid_2d_coordinate::operator !=(const grid_2d_coordinate &other) const noex
 	return !(*this==other);
 }
 
-std::pair<std::weak_ptr<file>, std::weak_ptr<file>> grid_2d_coordinate::canonical(const std::shared_ptr<file> &x, const std::shared_ptr<file> &y) noexcept
+std::pair<std::weak_ptr<file>, std::weak_ptr<file>> grid_2d_coordinate::canonical(const std::weak_ptr<file> &x, const std::weak_ptr<file> &y) noexcept
 {
 	auto xx=x, yy=y;
 	return this->canonical(std::move(xx), std::move(yy));
 }
 
-std::pair<std::weak_ptr<file>, std::weak_ptr<file>> grid_2d_coordinate::canonical(std::shared_ptr<file> &&x, std::shared_ptr<file> &&y) noexcept
+std::pair<std::weak_ptr<file>, std::weak_ptr<file>> grid_2d_coordinate::canonical(std::weak_ptr<file> &&x, std::weak_ptr<file> &&y) noexcept
 {
-	return *x<*y ? std::make_pair(x, y) : std::make_pair(y, x);
+	return *(x.lock())<*(y.lock()) ? std::make_pair(x, y) : std::make_pair(y, x);
 }
 
 

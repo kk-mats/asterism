@@ -11,7 +11,7 @@ class clone_io
 public:
 	clone_io();
 
-	static std::optional<detection_results> read_jcln(const QString &file, const bool is_binary) noexcept;
+	static std::optional<detection_results> read_jcln(const QString &file) noexcept;
 };
 
 }

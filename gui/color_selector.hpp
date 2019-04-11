@@ -17,15 +17,15 @@ QColor operator /(const QColor &c, const float &f) noexcept;
 class color_selector
 {
 public:
-	color_selector(const QColor &color, const uint32_t index=0) noexcept;
+	color_selector(const QColor &color, const int index=0) noexcept;
 
-	void set_anchor(const QColor &color, const uint32_t index) noexcept;
+	void set_anchor(const QColor &color, const int index) noexcept;
 
-	std::optional<QColor> color_at(const uint32_t index) noexcept;
+	std::optional<QColor> color_at(const int index) noexcept;
 
 private:
-	uint32_t index_begin_, index_end_;
-	QMap<uint32_t, QColor> color_source_;
+	int index_begin_, index_end_;
+	QMap<int, QColor> color_source_;
 };
 
 }

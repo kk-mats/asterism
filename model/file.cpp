@@ -38,7 +38,7 @@ bool file::operator ==(const QString &path) const noexcept
 
 bool file::operator ==(const file &other) const noexcept
 {
-	return this->id_==other.id_;
+	return this->canonical_file_path_==other.canonical_file_path_;
 }
 
 file::id_t file::new_id() noexcept
@@ -53,9 +53,24 @@ uint qHash(const file &key, uint seed) noexcept
 	return qHash(key.canonical_file_path_, seed);
 }
 
-uint qHash(const std::shared_ptr<file> &key, uint seed) noexcept
+uint qHash(const std::weak_ptr<file>& key, uint seed) noexcept
+{
+	return qHash(key.lock(), seed);
+}
+
+uint qHash(const std::shared_ptr<file>& key, uint seed) noexcept
 {
 	return qHash(key->canonical_file_path(), seed);
+}
+
+bool operator ==(const std::weak_ptr<file> &lhs, const std::weak_ptr<file> &rhs) noexcept
+{
+	return lhs.lock()==rhs.lock();
+}
+
+bool operator ==(const std::shared_ptr<file> &lhs, const std::shared_ptr<file> &rhs) noexcept
+{
+	return *lhs==*rhs;
 }
 
 QDebug operator <<(QDebug logger, const file &file) noexcept

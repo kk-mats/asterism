@@ -29,7 +29,7 @@ template <class T>
 using shared_vector=QVector<std::shared_ptr<T>>;
 
 template <class K, class V>
-using shared_map=QMap<K, std::shared_ptr<V>>;
+using shared_map=QHash<K, std::shared_ptr<V>>;
 
 class file final
 {
@@ -60,7 +60,11 @@ private:
 };
 
 uint qHash(const file &key, uint seed) noexcept;
+uint qHash(const std::weak_ptr<file> &key, uint seed) noexcept;
 uint qHash(const std::shared_ptr<file> &key, uint seed) noexcept;
+
+bool operator ==(const std::weak_ptr<file> &lhs, const std::weak_ptr<file> &rhs) noexcept;
+bool operator ==(const std::shared_ptr<file> &lhs, const std::shared_ptr<file> &rhs) noexcept;
 
 QDebug operator <<(QDebug logger, const file &file) noexcept;
 }

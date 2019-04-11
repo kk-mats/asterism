@@ -18,9 +18,9 @@ class clone_pair_grid_layer final
 {
 public:
 	clone_pair_grid_layer() noexcept;
-	clone_pair_grid_layer(const shared_set<clone_pair> &clone_pairs, std::shared_ptr<file_index> &&file_index_ptr) noexcept;
+	clone_pair_grid_layer(const shared_set<clone_pair> &clone_pairs, std::shared_ptr<file_index> &&file_index) noexcept;
 
-	void update(const shared_set<clone_pair> &clone_pairs, const std::shared_ptr<file_index> &file_index_ptr) noexcept;
+	void update(const shared_set<clone_pair> &clone_pairs, const std::shared_ptr<file_index> &file_index) noexcept;
 
 private:
 	void make_layer(const shared_set<clone_pair> &clone_pairs) noexcept;

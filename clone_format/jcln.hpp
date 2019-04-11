@@ -16,17 +16,17 @@ class jcln final
 	: public format_tags
 {
 public:
-	static std::optional<detection_results> read(const QString &path, const bool is_binary) noexcept;
+	static std::optional<detection_results> read(const QString &path) noexcept;
 	static bool write(const detection_results &results, const QString &path) noexcept;
 
 private:
 	class writer
 	{
 	public:
-		QJsonValue to_qjson(const std::shared_ptr<file> &file_ptr, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept;
-		QJsonValue to_qjson(const fragment &fragment, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept;
-		QJsonValue to_qjson(const std::shared_ptr<clone_pair> &clone_pair, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept;
-		QJsonValue to_qjson(const std::shared_ptr<detection_result> &detection_result, const QHash<std::shared_ptr<file>, int> file_index_map) noexcept;
+		QJsonValue to_qjson(const std::weak_ptr<file> &file_ptr, const file_index &file_index) noexcept;
+		QJsonValue to_qjson(const fragment &fragment, const file_index &file_index) noexcept;
+		QJsonValue to_qjson(const std::shared_ptr<clone_pair> &clone_pair, const file_index &file_index) noexcept;
+		QJsonValue to_qjson(const std::shared_ptr<detection_result> &detection_result, const file_index &file_index) noexcept;
 		QJsonValue to_qjson(const detection_results &detection_results) noexcept;
 	};
 

@@ -21,7 +21,7 @@ QVariant scatter_plot_model::data(const QModelIndex &index, int role) const noex
 {
 	if(index.isValid() && role==Qt::DisplayRole)
 	{
-		return this->heatmap_layer_[grid_2d_coordinate(index.row(), index.column())];
+		return this->heatmap_layer_[grid_2d_coordinate::to_linear(index.row(), index.column())];
 	}
 
 	return QVariant();

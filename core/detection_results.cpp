@@ -30,6 +30,15 @@ std::shared_ptr<detection_result> detection_results::empalce(result_environment 
 	return *itr;
 }
 
+void detection_results::update() noexcept
+{
+	this->update_file_index_ptr();
+	for(auto &&r:this->results_)
+	{
+		r->update(this->file_index_ptr_);
+	}
+}
+
 bool detection_results::remove(std::shared_ptr<detection_result> &&ptr) noexcept
 {
 	if(auto itr=this->results_.find(ptr); itr!=this->results_.end())
@@ -42,11 +51,6 @@ bool detection_results::remove(std::shared_ptr<detection_result> &&ptr) noexcept
 	return false;
 }
 
-std::weak_ptr<file_index> detection_results::header_index_ptr() const noexcept
-{
-	return std::weak_ptr(this->header_index_ptr_);
-}
-
 const shared_set<detection_result>& detection_results::results() const noexcept
 {
 	return this->results_;
@@ -57,21 +61,6 @@ const shared_set<file>& detection_results::files() const noexcept
 	return this->files_;
 }
 
-QHash<std::shared_ptr<file>, int> detection_results::file_index_map() const noexcept
-{
-	auto list=this->files_.toList();
-	std::sort(list.begin(), list.end(), [](const auto &f1, const auto &f2){ return *f1<*f2; });
-
-	QHash<std::shared_ptr<file>, int> r;
-	int index=0;
-	for(const auto &key:list)
-	{
-		r.insert(key, index);
-		++index;
-	}
-	return r;
-}
-
 QString detection_results::target_path() const noexcept
 {
 	return this->target_path_;
@@ -80,6 +69,25 @@ QString detection_results::target_path() const noexcept
 void detection_results::set_target_path(const QString &target_path) noexcept
 {
 	this->target_path_=target_path;
+}
+
+const file_index& detection_results::file_index_ptr() const noexcept
+{
+	return *this->file_index_ptr_;
+}
+
+void detection_results::update_file_index_ptr() noexcept
+{
+	auto list=this->files_.toList();
+	std::sort(list.begin(), list.end(), [](const auto &f1, const auto &f2){ return *f1<*f2; });
+
+	this->file_index_ptr_->clear();
+	int index=0;
+	for(const auto &key:list)
+	{
+		this->file_index_ptr_->insert(key, index);
+		++index;
+	}
 }
 
 void detection_results::remove_files() noexcept
