@@ -4,11 +4,15 @@ namespace asterism
 {
 
 detection_results::detection_results() noexcept
-{}
+	: detection_results("")
+{
+}
 
 detection_results::detection_results(const QString &target_path) noexcept
 	: target_path_(target_path)
-{}
+{
+	clone_pair_grid_layer::file_index_ptr=this->file_index_ptr_;
+}
 
 std::shared_ptr<file> detection_results::emplace(QString &&canonical_file_path) noexcept
 {
@@ -33,10 +37,7 @@ std::shared_ptr<detection_result> detection_results::empalce(result_environment 
 void detection_results::update() noexcept
 {
 	this->update_file_index_ptr();
-	for(auto &&r:this->results_)
-	{
-		r->update(this->file_index_ptr_);
-	}
+	std::for_each(this->results_.begin(), this->results_.end(), [](const auto &r){ r->update(); });
 }
 
 bool detection_results::remove(std::shared_ptr<detection_result> &&ptr) noexcept

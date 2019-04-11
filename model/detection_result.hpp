@@ -21,7 +21,7 @@ public:
 	shared_set<clone_pair>& clone_pairs() noexcept;
 	const shared_set<clone_pair>& clone_pairs() const noexcept;
 
-	std::shared_ptr<clone_pair_grid_layer> update(const std::shared_ptr<file_index> &file_index_ptr) noexcept;
+	std::shared_ptr<clone_pair_grid_layer> update() noexcept;
 
 	bool operator ==(const detection_result &detection_result) const noexcept;
 
@@ -30,7 +30,7 @@ public:
 private:
 	result_environment environment_;
 	shared_set<clone_pair> clone_pairs_;
-	std::shared_ptr<clone_pair_grid_layer> clone_pair_grid_layer_;
+	std::shared_ptr<clone_pair_grid_layer> clone_pair_grid_layer_=std::make_shared<clone_pair_grid_layer>();
 };
 
 uint qHash(const detection_result &key, uint seed) noexcept;

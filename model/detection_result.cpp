@@ -4,7 +4,6 @@ namespace asterism
 {
 
 detection_result::detection_result() noexcept
-	: clone_pair_grid_layer_(std::make_shared<clone_pair_grid_layer>())
 {}
 
 detection_result::detection_result(result_environment &&environment, shared_set<clone_pair> &&clone_pairs) noexcept
@@ -26,9 +25,9 @@ const shared_set<clone_pair>& detection_result::clone_pairs() const noexcept
 	return this->clone_pairs_;
 }
 
-std::shared_ptr<clone_pair_grid_layer> detection_result::update(const std::shared_ptr<file_index> &file_index_ptr) noexcept
+std::shared_ptr<clone_pair_grid_layer> detection_result::update() noexcept
 {
-	this->clone_pair_grid_layer_->update(this->clone_pairs_, file_index_ptr);
+	this->clone_pair_grid_layer_->update(this->clone_pairs_);
 	return this->clone_pair_grid_layer_;
 }
 

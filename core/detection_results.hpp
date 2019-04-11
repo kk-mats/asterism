@@ -33,7 +33,7 @@ private:
 	QString target_path_;
 	shared_set<file> files_;
 	shared_set<detection_result> results_;
-	std::shared_ptr<file_index> file_index_ptr_;
+	std::shared_ptr<file_index> file_index_ptr_=std::make_shared<file_index>();
 
 	void update_file_index_ptr() noexcept;
 	void remove_files() noexcept;

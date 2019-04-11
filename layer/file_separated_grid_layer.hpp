@@ -63,6 +63,8 @@ template <class val_T>
 class file_separated_grid_layer
 {
 public:
+	static inline std::weak_ptr<file_index> file_index_ptr=std::weak_ptr<file_index>();
+
 	file_separated_grid_layer() noexcept
 		: width_(0)
 	{}
@@ -70,19 +72,19 @@ public:
 	file_separated_grid_layer(std::shared_ptr<file_index> &&file_index) noexcept
 		: width_(file_index->size()), values_(this->required_size())
 	{
-		file_index_ptr_=std::move(file_index_ptr_);
+		file_index_ptr=std::move(file_index);
 	}
 
 	file_separated_grid_layer(const std::weak_ptr<file_index> &file_index) noexcept
 		: width_(file_index.lock()->size()), values_(this->required_size())
 	{
-		file_index_ptr_=file_index_ptr_;
+		file_index_ptr=file_index;
 	}
 
 	file_separated_grid_layer(std::shared_ptr<file_index> &&file_index, const val_T &initial) noexcept
 		: width_(file_index->size()), values_(this->required_size(), initial)
 	{
-		file_index_ptr_=std::move(file_index_ptr_);
+		file_index_ptr=std::move(file_index);
 	}
 
 	auto begin() const noexcept
@@ -107,12 +109,12 @@ public:
 
 	val_T& operator [](const grid_coordinate &coordinate)
 	{
-		return this->values_[coordinate.to_linear(file_index_ptr_)];
+		return this->values_[coordinate.to_linear(file_index_ptr)];
 	}
 
 	const val_T& operator [](const grid_coordinate &coordiante) const
 	{
-		return this->values_[coordiante.to_linear(file_index_ptr_)];
+		return this->values_[coordiante.to_linear(file_index_ptr)];
 	}
 
 	int width() const noexcept
@@ -122,21 +124,14 @@ public:
 
 	void update(const std::shared_ptr<file_index> &file_index) noexcept
 	{
-		file_index_ptr_=file_index;
+		file_index_ptr=file_index;
 		this->width_=file_index->size();
 		this->values_.resize(this->required_size());
-	}
-
-	std::weak_ptr<file_index> file_index_ptr() const noexcept
-	{
-		return this->file_index_ptr_;
 	}
 
 protected:
 	int width_=0;
 	QVector<val_T> values_;
-	static inline std::weak_ptr<file_index> file_index_ptr_;
-
 
 	int required_size() const noexcept
 	{

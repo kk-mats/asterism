@@ -38,6 +38,7 @@ void MainWindow::open()
 		if(auto results=clone_io::read_jcln(filepath); results)
 		{
 			this->results_=std::move(results.value());
+			this->results_.update();
 			qInfo().nospace()<<"\n"<<this->results_;
 		}
 	}
