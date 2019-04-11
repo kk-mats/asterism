@@ -42,6 +42,11 @@ bool detection_results::remove(std::shared_ptr<detection_result> &&ptr) noexcept
 	return false;
 }
 
+std::weak_ptr<file_index> detection_results::header_index_ptr() const noexcept
+{
+	return std::weak_ptr(this->header_index_ptr_);
+}
+
 const shared_set<detection_result>& detection_results::results() const noexcept
 {
 	return this->results_;

@@ -10,12 +10,6 @@ detection_result::detection_result(result_environment &&environment, shared_set<
 	: environment_(std::move(environment)), clone_pairs_(std::move(clone_pairs))
 {}
 
-
-clone_pair_grid_layer detection_result::to_layer(const QMap<std::shared_ptr<file>, int> file_index_map) const noexcept
-{
-	return clone_pair_grid_layer(this->clone_pairs_, file_index_map);
-}
-
 const result_environment& detection_result::environment() const noexcept
 {
 	return this->environment_;

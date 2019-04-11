@@ -27,7 +27,6 @@ public:
 
 private:
 	heatmap_layer heatmap_layer_;
-
 };
 
 }

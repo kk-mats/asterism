@@ -22,6 +22,8 @@ public:
 
 	bool remove(std::shared_ptr<detection_result> &&ptr) noexcept;
 
+	std::weak_ptr<file_index> header_index_ptr() const noexcept;
+
 	const shared_set<detection_result>& results() const noexcept;
 	const shared_set<file>& files() const noexcept;
 	QHash<std::shared_ptr<file>, int> file_index_map() const noexcept;
@@ -33,6 +35,7 @@ private:
 	QString target_path_;
 	shared_set<file> files_;
 	shared_set<detection_result> results_;
+	std::shared_ptr<file_index> header_index_ptr_;
 
 	void remove_files() noexcept;
 };

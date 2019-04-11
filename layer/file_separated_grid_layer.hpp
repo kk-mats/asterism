@@ -9,44 +9,42 @@
 namespace asterism
 {
 
+using file_index=QMap<std::weak_ptr<file>, int>;
+
 class grid_coordinate
 {
 public:
-	virtual uint32_t to_linear() const noexcept=0;
+	virtual int to_linear(const std::weak_ptr<file_index> &file_index) const noexcept=0;
 };
 
 class grid_2d_coordinate final
 	: public grid_coordinate
 {
 public:
-	grid_2d_coordinate(const file::id_t &x, const file::id_t &y) noexcept;
-	grid_2d_coordinate(file::id_t &&x, file::id_t &&y) noexcept;
+	grid_2d_coordinate(const std::shared_ptr<file> &x, const std::shared_ptr<file> &y) noexcept;
 
-	file::id_t x() const noexcept;
-	file::id_t y() const noexcept;
+	std::weak_ptr<file> x() const noexcept;
+	std::weak_ptr<file> y() const noexcept;
 
-	uint32_t to_linear() const noexcept override;
+	int to_linear(const std::weak_ptr<file_index> &file_index_ptr) const noexcept override;
 
 	bool operator ==(const grid_2d_coordinate &other) const noexcept;
 	bool operator !=(const grid_2d_coordinate &other) const noexcept;
 
 private:
-	QPair<file::id_t, file::id_t> x_y_;
+	std::pair<std::weak_ptr<file>, std::weak_ptr<file>> x_y_;
 
-	QPair<file::id_t, file::id_t> canonical(const file::id_t &x, const file::id_t &y) noexcept;
-	QPair<file::id_t, file::id_t> canonical(file::id_t &&x, file::id_t &&y) noexcept;
+	std::pair<std::weak_ptr<file>, std::weak_ptr<file>> canonical(const std::shared_ptr<file> &x, const std::shared_ptr<file> &y) noexcept;
+	std::pair<std::weak_ptr<file>, std::weak_ptr<file>> canonical(std::shared_ptr<file> &&x, std::shared_ptr<file> &&y) noexcept;
 };
 
 class grid_1d_coordinate final
 	: public grid_coordinate
 {
 public:
-	grid_1d_coordinate(const file::id_t &i) noexcept;
-	grid_1d_coordinate(file::id_t &&i) noexcept;
+	grid_1d_coordinate(const int i) noexcept;
 
-	file::id_t index() const noexcept;
-
-	uint32_t to_linear() const noexcept override;
+	int to_linear(const std::weak_ptr<file_index> &file_index) const noexcept override;
 
 	grid_1d_coordinate& operator ++() noexcept;
 	grid_1d_coordinate& operator --() noexcept;
@@ -57,7 +55,7 @@ public:
 	bool operator !=(const grid_1d_coordinate &other) const noexcept;
 
 private:
-	file::id_t i_;
+	int i_;
 };
 
 template <class val_T>
@@ -68,13 +66,23 @@ public:
 		: width_(0)
 	{}
 
-	file_separated_grid_layer(const uint32_t width) noexcept
-		: width_(width), values_(width*(width+1)/2)
-	{}
+	file_separated_grid_layer(std::shared_ptr<file_index> &&file_index_ptr) noexcept
+		: width_(file_index_ptr->size()), values_(this->required_size())
+	{
+		file_index_ptr_=std::move(file_index_ptr);
+	}
 
-	file_separated_grid_layer(const uint32_t width, const val_T &initial) noexcept
-		: width_(width), values_(width*(width+1)/2, initial)
-	{}
+	file_separated_grid_layer(const std::weak_ptr<file_index> &file_index_ptr) noexcept
+		: width_(file_index_ptr.lock()->size()), values_(this->required_size())
+	{
+		file_index_ptr_=std::move(file_index_ptr);
+	}
+
+	file_separated_grid_layer(std::shared_ptr<file_index> &&file_index_ptr, const val_T &initial) noexcept
+		: width_(file_index_ptr->size()), values_(this->required_size(), initial)
+	{
+		file_index_ptr_=std::move(file_index_ptr);
+	}
 
 	auto begin() const noexcept
 	{
@@ -108,22 +116,36 @@ public:
 
 	val_T& operator [](const grid_coordinate &coordinate)
 	{
-		return this->values_[coordinate.to_linear()];
+		return this->values_[coordinate.to_linear(file_index_ptr_)];
 	}
 
 	const val_T& operator [](const grid_coordinate &coordiante) const
 	{
-		return this->values_[coordiante.to_linear()];
+		return this->values_[coordiante.to_linear(file_index_ptr_)];
 	}
 
-	uint32_t width() const noexcept
+	int width() const noexcept
 	{
-		return this->width_;
+		return file_index_ptr_.lock()->size();
+	}
+
+	void update(const std::shared_ptr<file_index> &file_index_ptr) noexcept
+	{
+		file_index_ptr_=file_index_ptr;
+		this->width_=file_index_ptr->size();
+		this->values_.resize(this->required_size());
 	}
 
 protected:
-	uint32_t width_;
+	int width_;
 	QVector<val_T> values_;
+
+	static std::weak_ptr<file_index> file_index_ptr_;
+
+	int required_size() const noexcept
+	{
+		return this->width_*(this->width_+1)/2;
+	}
 };
 
 }

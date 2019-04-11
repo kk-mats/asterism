@@ -3,25 +3,23 @@
 namespace asterism
 {
 
-grid_2d_coordinate::grid_2d_coordinate(const file::id_t &x, const file::id_t &y) noexcept
+grid_2d_coordinate::grid_2d_coordinate(const std::shared_ptr<file> &x, const std::shared_ptr<file> &y) noexcept
 	: x_y_(this->canonical(x, y))
 {}
 
-grid_2d_coordinate::grid_2d_coordinate(file::id_t &&x, file::id_t &&y) noexcept
-	: x_y_(this->canonical(std::move(x), std::move(y)))
-{}
-
-uint32_t grid_2d_coordinate::to_linear() const noexcept
+int grid_2d_coordinate::to_linear(const std::weak_ptr<file_index> &file_index_ptr) const noexcept
 {
-	return this->x_y_.first.id()+this->x_y_.second.id()*(this->x_y_.second.id()+1)/2;
+	const auto fi=file_index_ptr.lock();
+	const auto x=(*fi)[this->x_y_.first], y=(*fi)[this->x_y_.second];
+	return x+y*(y+1)/2;
 }
 
-file::id_t grid_2d_coordinate::x() const noexcept
+std::weak_ptr<file> grid_2d_coordinate::x() const noexcept
 {
 	return this->x_y_.first;
 }
 
-file::id_t grid_2d_coordinate::y() const noexcept
+std::weak_ptr<file> grid_2d_coordinate::y() const noexcept
 {
 	return this->x_y_.second;
 }
@@ -36,32 +34,23 @@ bool grid_2d_coordinate::operator !=(const grid_2d_coordinate &other) const noex
 	return !(*this==other);
 }
 
-QPair<file::id_t, file::id_t> grid_2d_coordinate::canonical(const file::id_t &x, const file::id_t &y) noexcept
+std::pair<std::weak_ptr<file>, std::weak_ptr<file>> grid_2d_coordinate::canonical(const std::shared_ptr<file> &x, const std::shared_ptr<file> &y) noexcept
 {
 	auto xx=x, yy=y;
 	return this->canonical(std::move(xx), std::move(yy));
 }
 
-QPair<file::id_t, file::id_t> grid_2d_coordinate::canonical(file::id_t &&x, file::id_t &&y) noexcept
+std::pair<std::weak_ptr<file>, std::weak_ptr<file>> grid_2d_coordinate::canonical(std::shared_ptr<file> &&x, std::shared_ptr<file> &&y) noexcept
 {
-	return x<y ? qMakePair(x, y) : qMakePair(y, x);
+	return *x<*y ? std::make_pair(x, y) : std::make_pair(y, x);
 }
 
 
-grid_1d_coordinate::grid_1d_coordinate(const file::id_t &i) noexcept
+grid_1d_coordinate::grid_1d_coordinate(const int i) noexcept
 	: i_(i)
 {}
 
-grid_1d_coordinate::grid_1d_coordinate(file::id_t &&i) noexcept
-	: i_(std::move(i))
-{}
-
-uint32_t grid_1d_coordinate::to_linear() const noexcept
-{
-	return this->i_.id();
-}
-
-file::id_t grid_1d_coordinate::index() const noexcept
+int grid_1d_coordinate::to_linear(const std::weak_ptr<file_index> &file_index[[maybe_unused]]) const noexcept
 {
 	return this->i_;
 }

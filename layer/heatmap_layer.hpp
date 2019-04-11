@@ -5,6 +5,7 @@
 #include "clone_pair_grid_layer.hpp"
 #include "gui/color_selector.hpp"
 #include "core/logger.hpp"
+#include "model/detection_result.hpp"
 
 namespace asterism
 {
@@ -16,7 +17,10 @@ class heatmap_layer
 public:
 	using file_separated_grid_layer::file_separated_grid_layer;
 
-	static std::optional<heatmap_layer> colorized_by_clone_pair_size(const clone_pair_grid_layer &source) noexcept;
+	bool colorized_by_clone_pair_size(const shared_set<clone_pair> &clone_pairs) noexcept;
+
+private:
+	std::weak_ptr<clone_pair_grid_layer> clone_pair_layer_;
 };
 
 }

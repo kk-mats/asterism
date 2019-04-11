@@ -17,8 +17,6 @@ public:
 	detection_result() noexcept;
 	detection_result(result_environment &&environment, shared_set<clone_pair> &&clone_pairs) noexcept;
 
-	clone_pair_grid_layer to_layer(const QMap<std::shared_ptr<file>, int> file_index_map) const noexcept;
-
 	const result_environment& environment() const noexcept;
 	shared_set<clone_pair>& clone_pairs() noexcept;
 	const shared_set<clone_pair>& clone_pairs() const noexcept;
