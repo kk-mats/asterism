@@ -25,6 +25,8 @@ public:
 
 	bool operator ==(const detection_result &detection_result) const noexcept;
 
+	friend QDebug operator <<(QDebug logger, const detection_result &detection_result) noexcept;
+
 private:
 	result_environment environment_;
 	shared_set<clone_pair> clone_pairs_;
@@ -32,5 +34,7 @@ private:
 
 uint qHash(const detection_result &key, uint seed) noexcept;
 uint qHash(const std::shared_ptr<detection_result> &key, uint seed) noexcept;
+
+QDebug operator <<(QDebug logger, const detection_result &detection_result) noexcept;
 }
 #endif // DETECTION_RESULT_HPP

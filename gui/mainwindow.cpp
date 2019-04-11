@@ -39,18 +39,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::open()
 {
-	/*
-	auto results=clone_io::read(QFileDialog::getOpenFileName(this, tr("open file"), QDir::currentPath(), tr("Asterism Project (*.jcln)")));
+	auto results=clone_io::read_jcln(QFileDialog::getOpenFileName(this, tr("open file"), QDir::currentPath(), tr("Asterism Project (*.jcln)")), false);
 	if(results)
 	{
 		this->results_=std::move(results.value());
-		auto h=this->results_.clone_pair_size_heatmap(this->results_.result_ids()[0]);
-		if(h)
-		{
-			this->scatter_plot_model_->set_heatmap_layer(std::move(h.value()));
-		}
+		qInfo().nospace()<<"\n"<<this->results_;
 	}
-	*/
 }
 
 

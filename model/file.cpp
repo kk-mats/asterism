@@ -58,5 +58,11 @@ uint qHash(const std::shared_ptr<file> &key, uint seed) noexcept
 	return qHash(key->canonical_file_path(), seed);
 }
 
+QDebug operator <<(QDebug logger, const file &file) noexcept
+{
+	logger.nospace()<<file.canonical_file_path_;
+	return logger;
+}
+
 }
 

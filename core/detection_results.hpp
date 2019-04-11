@@ -1,6 +1,7 @@
 #ifndef DETECTION_RESULTS_HPP
 #define DETECTION_RESULTS_HPP
 
+#include <QDebug>
 #include <memory>
 #include <type_traits>
 
@@ -17,7 +18,6 @@ public:
 	detection_results(const QString &target_path) noexcept;
 
 	std::shared_ptr<file> emplace(QString &&canonical_file_path) noexcept;
-	std::shared_ptr<detection_result> emplace(detection_result &&detection_result) noexcept;
 	std::shared_ptr<detection_result> empalce(result_environment &&environment, shared_set<clone_pair> &&clone_pairs) noexcept;
 
 	bool remove(std::shared_ptr<detection_result> &&ptr) noexcept;
@@ -36,6 +36,8 @@ private:
 
 	void remove_files() noexcept;
 };
+
+QDebug operator <<(QDebug logger, const detection_results &results) noexcept;
 
 }
 

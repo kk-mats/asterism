@@ -1,6 +1,7 @@
 #ifndef FILE_HPP
 #define FILE_HPP
 
+#include <QDebug>
 #include <QHash>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -46,6 +47,8 @@ public:
 	bool operator ==(const QString &path) const noexcept;
 	bool operator ==(const file &other) const noexcept;
 
+	friend QDebug operator <<(QDebug logger, const file &file) noexcept;
+
 	friend uint qHash(const file &key, uint seed) noexcept;
 
 private:
@@ -58,6 +61,8 @@ private:
 
 uint qHash(const file &key, uint seed) noexcept;
 uint qHash(const std::shared_ptr<file> &key, uint seed) noexcept;
+
+QDebug operator <<(QDebug logger, const file &file) noexcept;
 }
 
 #endif // FILE_HPP

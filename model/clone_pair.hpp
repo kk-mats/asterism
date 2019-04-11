@@ -21,6 +21,7 @@ public:
 	unsigned int similarity() const noexcept;
 
 	friend uint qHash(const clone_pair &key, uint seed) noexcept;
+	friend QDebug operator <<(QDebug logger, const clone_pair &clone_pair) noexcept;
 
 	friend float good(const clone_pair &p1, const clone_pair &p2) noexcept;
 	friend float ok(const clone_pair &p1, const clone_pair &p2) noexcept;
@@ -34,6 +35,7 @@ private:
 };
 
 uint qHash(const clone_pair &key, uint seed) noexcept;
+QDebug operator <<(QDebug logger, const clone_pair &clone_pair) noexcept;
 
 float good(const clone_pair &p1, const clone_pair &p2) noexcept;
 float ok(const clone_pair &p1, const clone_pair &p2) noexcept;

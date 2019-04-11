@@ -45,4 +45,17 @@ uint qHash(const std::shared_ptr<detection_result> &key, uint seed) noexcept
 {
 	return qHash(key->environment().source(), seed);
 }
+
+QDebug operator <<(QDebug logger, const detection_result &detection_result) noexcept
+{
+	logger.nospace()<<"{";
+	logger.nospace()<<"\tsource="<<detection_result.environment_.source()<<"\n";
+	for(const auto &c:detection_result.clone_pairs_)
+	{
+		logger.nospace()<<"\t"<<*c<<"\n";
+	}
+	logger.nospace()<<"}\n";
+	return logger;
+}
+
 }

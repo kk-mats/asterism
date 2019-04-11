@@ -20,16 +20,6 @@ std::shared_ptr<file> detection_results::emplace(QString &&canonical_file_path) 
 	return *itr;
 }
 
-std::shared_ptr<detection_result> detection_results::emplace(detection_result &&result) noexcept
-{
-	auto itr=std::find_if(this->results_.begin(), this->results_.end(), [&](const auto &r){ return r->environment()==result.environment(); });
-	if(itr==this->results_.end())
-	{
-		itr=this->results_.insert(std::make_shared<detection_result>(std::move(result)));
-	}
-	return *itr;
-}
-
 std::shared_ptr<detection_result> detection_results::empalce(result_environment &&environment, shared_set<clone_pair> &&clone_pairs) noexcept
 {
 	auto itr=std::find_if(this->results_.begin(), this->results_.end(), [&](const auto &r){ return r->environment()==environment; });
@@ -90,6 +80,22 @@ void detection_results::set_target_path(const QString &target_path) noexcept
 void detection_results::remove_files() noexcept
 {
 
+}
+
+
+QDebug operator <<(QDebug logger, const detection_results &results) noexcept
+{
+	logger.nospace()<<"files :\n";
+	for(const auto &file:results.files())
+	{
+		logger.nospace()<<"\tid="<<std::intptr_t(file.get())<<" : "<<file->canonical_file_path()<<"\n";
+	}
+	logger<<"results :\n";
+	for(const auto &result:results.results())
+	{
+		logger.nospace()<<(*result)<<"\n";
+	}
+	return logger;
 }
 
 }

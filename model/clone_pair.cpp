@@ -54,6 +54,12 @@ uint qHash(const clone_pair &key, uint seed) noexcept
 	return key.fragments_.first.begin()^seed+key.fragments_.second.begin();
 }
 
+QDebug operator <<(QDebug logger, const clone_pair &clone_pair) noexcept
+{
+	logger.nospace()<<clone_pair.fragments_.first<<", "<<clone_pair.fragments_.second<<", "<<clone_pair.similairty_;
+	return logger;
+}
+
 float good(const clone_pair &p1, const clone_pair &p2) noexcept
 {
 	return std::min(overlap(p1.fragments_.first, p2.fragments_.first), overlap(p1.fragments_.second, p2.fragments_.second));

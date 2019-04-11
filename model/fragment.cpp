@@ -71,4 +71,10 @@ float contained(const fragment &f1, const fragment &f2) noexcept
 	return float(f1&f2)/(f1.end_-f1.begin_);
 }
 
+QDebug operator <<(QDebug logger, const fragment &fragment) noexcept
+{
+	logger<<"id="<<std::intptr_t(fragment.file_ptr().get())<<"["<<fragment.begin_<<", "<<fragment.end_<<"]";
+	return logger;
+}
+
 }
