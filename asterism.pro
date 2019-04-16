@@ -32,46 +32,50 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     ref.jcln \
+    test/f0.txt \
+    test/f1.txt \
+    test/f2.txt \
+    test/rs.jcln
 
 HEADERS += \
+    clone_format/clone_io.hpp \
     clone_format/format_tags.hpp \
     clone_format/jcln.hpp \
+    core/detection_results.hpp \
     core/logger.hpp \
+    core/matching_table.hpp \
     core/utility.hpp \
+    gui/color_selector.hpp \
     gui/mainwindow.hpp \
+    gui/scatter_plot_model.hpp \
+    gui/scatter_plot_view.hpp \
     layer/clone_pair_grid_layer.hpp \
     layer/file_separated_grid_layer.hpp \
+    layer/heatmap_layer.hpp \
     model/clone_pair.hpp \
     model/detection_result.hpp \
     model/file.hpp \
     model/fragment.hpp \
     model/object_id_t.hpp \
-    model/result_environment.hpp \
-    gui/scatter_plot_view.hpp \
-    gui/scatter_plot_model.hpp \
-    layer/heatmap_layer.hpp \
-    gui/color_selector.hpp \
-    clone_format/clone_io.hpp \
-    core/matching_table.hpp \
-    core/detection_results.hpp
+    model/result_environment.hpp
 
 SOURCES += \
+    clone_format/clone_io.cpp \
     clone_format/jcln.cpp \
+    core/detection_results.cpp \
     core/logger.cpp \
+    core/matching_table.cpp \
     core/utility.cpp \
+    gui/color_selector.cpp \
     gui/mainwindow.cpp \
+    gui/scatter_plot_model.cpp \
+    gui/scatter_plot_view.cpp \
     layer/clone_pair_grid_layer.cpp \
     layer/file_separated_grid_layer.cpp \
+    layer/heatmap_layer.cpp \
     model/clone_pair.cpp \
     model/detection_result.cpp \
     model/file.cpp \
     model/fragment.cpp \
     model/result_environment.cpp \
-    main.cpp \
-    gui/scatter_plot_view.cpp \
-    gui/scatter_plot_model.cpp \
-    layer/heatmap_layer.cpp \
-    gui/color_selector.cpp \
-    clone_format/clone_io.cpp \
-    core/matching_table.cpp \
-    core/detection_results.cpp
+    main.cpp

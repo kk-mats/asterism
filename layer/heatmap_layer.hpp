@@ -1,7 +1,8 @@
 #ifndef HEATMAP_LAYER_HPP
 #define HEATMAP_LAYER_HPP
 
-#include "file_separated_grid_layer.hpp"
+#include <optional>
+
 #include "clone_pair_grid_layer.hpp"
 #include "gui/color_selector.hpp"
 #include "core/logger.hpp"
@@ -15,12 +16,21 @@ class heatmap_layer
 		: public file_separated_grid_layer<QColor>
 {
 public:
-	using file_separated_grid_layer::file_separated_grid_layer;
+	enum class colorized_mathod
+	{
+		matching_rate,
+		clone_pair_size
+	};
 
-	static std::optional<heatmap_layer> colorized_by_clone_pair_size(const std::shared_ptr<clone_pair_grid_layer> &clone_pair_layer, const std::shared_ptr<file_index> &file_index) noexcept;
+	static std::optional<heatmap_layer> colorized_by_clone_pair_size(const std::shared_ptr<clone_pair_grid_layer> &clone_pair_layer, const std::shared_ptr<file_index> &file_index_ptr) noexcept;
+
+	void update(const std::shared_ptr<file_index> &file_index_ptr) noexcept;
 
 private:
+	colorized_mathod method_;
 	std::shared_ptr<clone_pair_grid_layer> clone_pair_layer_;
+
+	bool make_layer() noexcept;
 };
 
 }

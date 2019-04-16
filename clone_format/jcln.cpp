@@ -15,8 +15,8 @@ std::optional<detection_results> jcln::read(const QString &path) noexcept
 	}
 
 	auto json(QFileInfo(file).suffix()=="jcln" ?
-				QJsonDocument::fromBinaryData(file.readAll()) : // *.jcln
-				QJsonDocument::fromJson(file.readAll())); // *.bjcln
+				QJsonDocument::fromJson(file.readAll()) : // *.jcln
+				QJsonDocument::fromBinaryData(file.readAll())); // *.bjcln
 
 	if(!json.isObject())
 	{

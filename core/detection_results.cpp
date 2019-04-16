@@ -37,7 +37,11 @@ std::shared_ptr<detection_result> detection_results::empalce(result_environment 
 void detection_results::update() noexcept
 {
 	this->update_file_index_ptr();
-	std::for_each(this->results_.begin(), this->results_.end(), [](auto &&r){ r->update(); });
+	qCritical()<<"size="<<this->results_.count()<<"debugging";
+	for(auto &&r:this->results_.values())
+	{
+		r->update();
+	}
 }
 
 bool detection_results::remove(std::shared_ptr<detection_result> &&ptr) noexcept

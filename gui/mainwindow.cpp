@@ -33,7 +33,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::open()
 {
-	if(auto filepath=QFileDialog::getOpenFileName(this, tr("open file"), QDir::currentPath(), tr("Asterism Project (*.jcln)")); !filepath.isEmpty())
+	if(auto filepath=QFileDialog::getOpenFileName(this, tr("open file"), "X:\\projects\\asterism", tr("Asterism Project (*.jcln)")); !filepath.isEmpty())
 	{
 		if(auto results=clone_io::read_jcln(filepath); results)
 		{

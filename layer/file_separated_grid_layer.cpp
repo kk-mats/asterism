@@ -7,10 +7,9 @@ grid_2d_coordinate::grid_2d_coordinate(const std::weak_ptr<file> &x, const std::
 	: x_y_(this->canonical(x, y))
 {}
 
-int grid_2d_coordinate::to_linear(const std::weak_ptr<file_index> &file_index_ptr) const noexcept
+int grid_2d_coordinate::to_linear(const std::shared_ptr<file_index> &file_index_ptr) const noexcept
 {
-	const auto fi=file_index_ptr.lock();
-	const auto x=(*fi)[this->x_y_.first], y=(*fi)[this->x_y_.second];
+	const auto x=(*file_index_ptr)[this->x_y_.first], y=(*file_index_ptr)[this->x_y_.second];
 	return x+y*(y+1)/2;
 }
 
@@ -55,7 +54,7 @@ grid_1d_coordinate::grid_1d_coordinate(const int i) noexcept
 	: i_(i)
 {}
 
-int grid_1d_coordinate::to_linear(const std::weak_ptr<file_index> &file_index[[maybe_unused]]) const noexcept
+int grid_1d_coordinate::to_linear(const std::shared_ptr<file_index> &file_index[[maybe_unused]]) const noexcept
 {
 	return this->i_;
 }

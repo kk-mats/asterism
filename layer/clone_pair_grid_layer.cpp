@@ -12,9 +12,9 @@ clone_pair_grid_layer::clone_pair_grid_layer(const shared_set<clone_pair> &clone
 	this->make_layer(clone_pairs);
 }
 
-
-void clone_pair_grid_layer::update(const shared_set<clone_pair> &clone_pairs) noexcept
+void clone_pair_grid_layer::update(const shared_set<clone_pair> &clone_pairs, const std::shared_ptr<file_index> &file_index) noexcept
 {
+	this->resize(file_index);
 	this->make_layer(clone_pairs);
 }
 

@@ -1,6 +1,8 @@
 #ifndef DETECTION_RESULTS_HPP
 #define DETECTION_RESULTS_HPP
 
+#include <iostream>
+
 #include <QDebug>
 #include <memory>
 #include <type_traits>

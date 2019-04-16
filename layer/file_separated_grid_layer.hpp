@@ -3,7 +3,7 @@
 
 #include <QVector>
 
-#include "model/file.hpp"
+#include "model/clone_pair.hpp"
 
 
 namespace asterism
@@ -14,7 +14,7 @@ using file_index=QHash<std::weak_ptr<file>, int>;
 class grid_coordinate
 {
 public:
-	virtual int to_linear(const std::weak_ptr<file_index> &file_index) const noexcept=0;
+	virtual int to_linear(const std::shared_ptr<file_index> &file_index) const noexcept=0;
 };
 
 class grid_1d_coordinate final
@@ -23,7 +23,7 @@ class grid_1d_coordinate final
 public:
 	grid_1d_coordinate(const int i) noexcept;
 
-	int to_linear(const std::weak_ptr<file_index> &file_index) const noexcept override;
+	int to_linear(const std::shared_ptr<file_index> &file_index) const noexcept override;
 
 	grid_1d_coordinate& operator ++() noexcept;
 	grid_1d_coordinate& operator --() noexcept;
@@ -46,7 +46,7 @@ public:
 	std::weak_ptr<file> x() const noexcept;
 	std::weak_ptr<file> y() const noexcept;
 
-	int to_linear(const std::weak_ptr<file_index> &file_index_ptr) const noexcept override;
+	int to_linear(const std::shared_ptr<file_index> &file_index_ptr) const noexcept override;
 	static grid_1d_coordinate to_linear(const int x, const int y) noexcept;
 
 	bool operator ==(const grid_2d_coordinate &other) const noexcept;
@@ -63,28 +63,22 @@ template <class val_T>
 class file_separated_grid_layer
 {
 public:
-	static inline std::weak_ptr<file_index> file_index_ptr=std::weak_ptr<file_index>();
+	static inline std::shared_ptr<file_index> file_index_ptr=std::shared_ptr<file_index>();
 
 	file_separated_grid_layer() noexcept
 		: width_(0)
 	{}
 
-	file_separated_grid_layer(std::shared_ptr<file_index> &&file_index) noexcept
+	file_separated_grid_layer(const std::shared_ptr<file_index> &file_index) noexcept
 		: width_(file_index->size()), values_(this->required_size())
-	{
-		file_index_ptr=std::move(file_index);
-	}
-
-	file_separated_grid_layer(const std::weak_ptr<file_index> &file_index) noexcept
-		: width_(file_index.lock()->size()), values_(this->required_size())
 	{
 		file_index_ptr=file_index;
 	}
 
-	file_separated_grid_layer(std::shared_ptr<file_index> &&file_index, const val_T &initial) noexcept
+	file_separated_grid_layer(const std::shared_ptr<file_index> &file_index, const val_T &initial) noexcept
 		: width_(file_index->size()), values_(this->required_size(), initial)
 	{
-		file_index_ptr=std::move(file_index);
+		file_index_ptr=file_index;
 	}
 
 	auto begin() const noexcept
@@ -122,20 +116,14 @@ public:
 		return this->width_;
 	}
 
-	void update(const std::shared_ptr<file_index> &file_index) noexcept
-	{
-		file_index_ptr=file_index;
-		this->width_=file_index->size();
-		this->values_.resize(this->required_size());
-	}
-
 protected:
 	int width_=0;
 	QVector<val_T> values_;
 
-	int required_size() const noexcept
+	void resize(const std::shared_ptr<file_index> &file_index_ptr) noexcept
 	{
-		return this->width_*(this->width_+1)/2;
+		this->width_=file_index_ptr->size();
+		this->values_.resize(this->width_*(this->width_+1)/2);
 	}
 };
 
