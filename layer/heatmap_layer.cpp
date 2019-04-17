@@ -3,19 +3,18 @@
 namespace asterism
 {
 
-std::optional<heatmap_layer> heatmap_layer::colorized_by_clone_pair_size(const std::shared_ptr<clone_pair_grid_layer> &clone_pair_layer, const std::shared_ptr<file_index> &file_index_ptr) noexcept
+std::optional<heatmap_layer> heatmap_layer::colorized_by_clone_pair_size(const std::shared_ptr<clone_pair_grid_layer> &clone_pair_layer, const file_index &file_index) noexcept
 {
-	heatmap_layer::file_index_ptr=file_index_ptr;
-	heatmap_layer r;
+	heatmap_layer r(file_index);
 	r.method_=colorized_mathod::clone_pair_size;
 	r.clone_pair_layer_=clone_pair_layer;
 
 	return r.make_layer() ? std::make_optional(r) : std::nullopt;
 }
 
-void heatmap_layer::update(const std::shared_ptr<file_index> &file_index_ptr) noexcept
+void heatmap_layer::update(const file_index &file_index) noexcept
 {
-	heatmap_layer::file_index_ptr=file_index_ptr;
+	this->resize(file_index);
 	this->make_layer();
 }
 

@@ -25,9 +25,9 @@ const shared_set<clone_pair>& detection_result::clone_pairs() const noexcept
 	return this->clone_pairs_;
 }
 
-std::shared_ptr<clone_pair_grid_layer> detection_result::update() noexcept
+std::shared_ptr<clone_pair_grid_layer> detection_result::update(const file_index &file_index) noexcept
 {
-	this->clone_pair_grid_layer_->update(this->clone_pairs_);
+	this->clone_pair_grid_layer_->update(this->clone_pairs_, file_index);
 	return this->clone_pair_grid_layer_;
 }
 

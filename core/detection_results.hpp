@@ -29,15 +29,15 @@ public:
 
 	void set_target_path(const QString &target_path) noexcept;
 	QString target_path() const noexcept;
-	const file_index& file_index_ptr() const noexcept;
+	const file_index& file_index_map() const noexcept;
 
 private:
 	QString target_path_;
 	shared_set<file> files_;
 	shared_set<detection_result> results_;
-	std::shared_ptr<file_index> file_index_ptr_=std::make_shared<file_index>();
+	file_index file_index_;
 
-	void update_file_index_ptr() noexcept;
+	void update_file_index() noexcept;
 	void remove_files() noexcept;
 };
 

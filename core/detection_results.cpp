@@ -10,9 +10,7 @@ detection_results::detection_results() noexcept
 
 detection_results::detection_results(const QString &target_path) noexcept
 	: target_path_(target_path)
-{
-	clone_pair_grid_layer::file_index_ptr=this->file_index_ptr_;
-}
+{}
 
 std::shared_ptr<file> detection_results::emplace(QString &&canonical_file_path) noexcept
 {
@@ -36,11 +34,11 @@ std::shared_ptr<detection_result> detection_results::empalce(result_environment 
 
 void detection_results::update() noexcept
 {
-	this->update_file_index_ptr();
+	this->update_file_index();
 	qCritical()<<"size="<<this->results_.count()<<"debugging";
 	for(auto &&r:this->results_.values())
 	{
-		r->update();
+		r->update(this->file_index_);
 	}
 }
 
@@ -76,21 +74,21 @@ void detection_results::set_target_path(const QString &target_path) noexcept
 	this->target_path_=target_path;
 }
 
-const file_index& detection_results::file_index_ptr() const noexcept
+const file_index& detection_results::file_index_map() const noexcept
 {
-	return *this->file_index_ptr_;
+	return this->file_index_;
 }
 
-void detection_results::update_file_index_ptr() noexcept
+void detection_results::update_file_index() noexcept
 {
 	auto list=this->files_.toList();
 	std::sort(list.begin(), list.end(), [](const auto &f1, const auto &f2){ return *f1<*f2; });
 
-	this->file_index_ptr_->clear();
+	this->file_index_.clear();
 	int index=0;
 	for(const auto &key:list)
 	{
-		this->file_index_ptr_->insert(key, index);
+		this->file_index_.insert(key, index);
 		++index;
 	}
 }

@@ -3,13 +3,13 @@
 namespace asterism
 {
 
-grid_2d_coordinate::grid_2d_coordinate(const std::weak_ptr<file> &x, const std::weak_ptr<file> &y) noexcept
-	: x_y_(this->canonical(x, y))
+grid_2d_coordinate::grid_2d_coordinate(const std::weak_ptr<file> &x, const std::weak_ptr<file> &y, const file_index &file_index) noexcept
+	: x_y_(this->canonical(file_index[x], file_index[y]))
 {}
 
-int grid_2d_coordinate::to_linear(const std::shared_ptr<file_index> &file_index_ptr) const noexcept
+int grid_2d_coordinate::to_linear() const noexcept
 {
-	const auto x=(*file_index_ptr)[this->x_y_.first], y=(*file_index_ptr)[this->x_y_.second];
+	const auto x=this->x_y_.first, y=this->x_y_.second;
 	return x+y*(y+1)/2;
 }
 
@@ -18,19 +18,19 @@ grid_1d_coordinate grid_2d_coordinate::to_linear(const int x, const int y) noexc
 	return grid_1d_coordinate(x+y*(y+1)/2);
 }
 
-std::weak_ptr<file> grid_2d_coordinate::x() const noexcept
+int grid_2d_coordinate::x() const noexcept
 {
 	return this->x_y_.first;
 }
 
-std::weak_ptr<file> grid_2d_coordinate::y() const noexcept
+int grid_2d_coordinate::y() const noexcept
 {
 	return this->x_y_.second;
 }
 
 bool grid_2d_coordinate::operator ==(const grid_2d_coordinate &other) const noexcept
 {
-	return *this->x_y_.first.lock()==*other.x_y_.first.lock() && *this->x_y_.second.lock()==*other.x_y_.second.lock();
+	return this->x_y_.first==other.x_y_.first && this->x_y_.second==other.x_y_.second;
 }
 
 bool grid_2d_coordinate::operator !=(const grid_2d_coordinate &other) const noexcept
@@ -38,15 +38,10 @@ bool grid_2d_coordinate::operator !=(const grid_2d_coordinate &other) const noex
 	return !(*this==other);
 }
 
-std::pair<std::weak_ptr<file>, std::weak_ptr<file>> grid_2d_coordinate::canonical(const std::weak_ptr<file> &x, const std::weak_ptr<file> &y) noexcept
-{
-	auto xx=x, yy=y;
-	return this->canonical(std::move(xx), std::move(yy));
-}
 
-std::pair<std::weak_ptr<file>, std::weak_ptr<file>> grid_2d_coordinate::canonical(std::weak_ptr<file> &&x, std::weak_ptr<file> &&y) noexcept
+std::pair<int, int> grid_2d_coordinate::canonical(const int x, const int y) noexcept
 {
-	return *(x.lock())<*(y.lock()) ? std::make_pair(x, y) : std::make_pair(y, x);
+	return x<y ? std::make_pair(x, y) : std::make_pair(y, x);
 }
 
 
@@ -54,7 +49,7 @@ grid_1d_coordinate::grid_1d_coordinate(const int i) noexcept
 	: i_(i)
 {}
 
-int grid_1d_coordinate::to_linear(const std::shared_ptr<file_index> &file_index[[maybe_unused]]) const noexcept
+int grid_1d_coordinate::to_linear() const noexcept
 {
 	return this->i_;
 }

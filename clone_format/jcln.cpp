@@ -102,7 +102,7 @@ QJsonValue jcln::writer::to_qjson(const std::shared_ptr<detection_result> &detec
 QJsonValue jcln::writer::to_qjson(const detection_results &detection_results) noexcept
 {
 	QJsonArray files, results;
-	const auto &file_index=detection_results.file_index_ptr();
+	const auto &file_index=detection_results.file_index_map();
 	for(const auto &f:detection_results.files())
 	{
 		files.append(to_qjson(f, file_index));
