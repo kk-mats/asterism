@@ -26,7 +26,7 @@ public:
 
 	static std::optional<heatmap_layer> colorized_by_clone_pair_size(const std::shared_ptr<clone_pair_grid_layer> &clone_pair_layer, const file_index &file_index) noexcept;
 
-	void update(const file_index &file_index) noexcept;
+	bool update(const file_index &file_index) noexcept;
 
 private:
 	colorized_mathod method_;

@@ -24,6 +24,7 @@ public:
 	QVariant headerData(int section, Qt::Orientation orientation, int role=Qt::DisplayRole) const noexcept override;
 
 	void set_heatmap_layer(heatmap_layer &&heatmap_layer) noexcept;
+	bool update(const file_index &file_index) noexcept;
 
 private:
 	heatmap_layer heatmap_layer_;

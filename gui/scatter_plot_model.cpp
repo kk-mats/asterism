@@ -44,4 +44,9 @@ void scatter_plot_model::set_heatmap_layer(heatmap_layer &&heatmap_layer) noexce
 	this->endResetModel();
 }
 
+bool scatter_plot_model::update(const file_index &file_index) noexcept
+{
+	return this->heatmap_layer_.update(file_index);
+}
+
 }

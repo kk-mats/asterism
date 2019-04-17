@@ -38,8 +38,7 @@ void MainWindow::open()
 		if(auto results=clone_io::read_jcln(filepath); results)
 		{
 			this->results_=std::move(results.value());
-			this->results_.update();
-			qInfo().nospace()<<"\n"<<this->results_;
+			this->update();
 		}
 	}
 }
@@ -65,6 +64,23 @@ void MainWindow::create_menus()
 	this->file_menu_->addAction(this->open_act_);
 	this->file_menu_->addSeparator();
 	this->file_menu_->addAction(this->quit_act_);
+}
+
+void MainWindow::change_current_layer(const std::shared_ptr<detection_result> &new_result) noexcept
+{
+	this->current_layer_=new_result;
+	if(auto layer=heatmap_layer::colorized_by_clone_pair_size(new_result->clone_pair_layer(), this->results_.file_index_map()); layer)
+	{
+		this->scatter_plot_model_->set_heatmap_layer(std::move(layer.value()));
+	}
+}
+
+void MainWindow::update() noexcept
+{
+	this->results_.update();
+	//ToDo
+	this->change_current_layer(*this->results_.results().begin());
+	this->scatter_plot_model_->update(this->results_.file_index_map());
 }
 
 }

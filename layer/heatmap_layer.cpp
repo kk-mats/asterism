@@ -12,10 +12,10 @@ std::optional<heatmap_layer> heatmap_layer::colorized_by_clone_pair_size(const s
 	return r.make_layer() ? std::make_optional(r) : std::nullopt;
 }
 
-void heatmap_layer::update(const file_index &file_index) noexcept
+bool heatmap_layer::update(const file_index &file_index) noexcept
 {
 	this->resize(file_index);
-	this->make_layer();
+	return this->make_layer();
 }
 
 bool heatmap_layer::make_layer() noexcept

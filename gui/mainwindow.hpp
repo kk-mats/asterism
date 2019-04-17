@@ -30,6 +30,7 @@ private slots:
 
 private:
 	detection_results results_;
+	std::shared_ptr<detection_result> current_layer_=nullptr;
 
 	scatter_plot_view *scatter_plot_view_;
 	scatter_plot_model *scatter_plot_model_;
@@ -39,7 +40,9 @@ private:
 
 	void create_actions();
 	void create_menus();
+	void change_current_layer(const std::shared_ptr<detection_result> &new_result) noexcept;
 
+	void update() noexcept;
 };
 
 }
