@@ -121,6 +121,7 @@ protected:
 	void resize(const file_index &file_index) noexcept
 	{
 		this->width_=file_index.size();
+		this->values_.clear();
 		this->values_.resize(this->required_size(this->width_));
 	}
 };
