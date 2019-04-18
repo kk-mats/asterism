@@ -27,14 +27,18 @@ bool heatmap_layer::make_layer() noexcept
 			auto max=(*std::max_element(this->clone_pair_layer_->begin(), this->clone_pair_layer_->end(), [](const auto &g1, const auto &g2){ return g1.size()<g2.size(); })).size();
 			auto min=(*std::min_element(this->clone_pair_layer_->begin(), this->clone_pair_layer_->end(), [](const auto &g1, const auto &g2){ return g1.size()<g2.size(); })).size();
 
-			color_selector selector(Qt::white, 0);
+			color_selector selector(white, 0);
 			if(0<min)
 			{
-				selector.set_anchor(Qt::white, min-1);
+				selector.set_anchor(white, min-1);
+				selector.set_anchor(green, min);
+			}
+			else
+			{
+				selector.set_anchor(green, 1);
 			}
 
-			selector.set_anchor(Qt::green, min);
-			selector.set_anchor(Qt::red, max);
+			selector.set_anchor(red, max);
 
 			for(auto i=this->begin1d(), end=this->end1d(); i!=end; ++i)
 			{

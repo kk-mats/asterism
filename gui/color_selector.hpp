@@ -26,6 +26,8 @@ public:
 private:
 	int index_begin_, index_end_;
 	QMap<int, QColor> color_source_;
+
+	QColor clamp(QColor &&c) const noexcept;
 };
 
 }

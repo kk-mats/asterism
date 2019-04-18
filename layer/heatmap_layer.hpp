@@ -29,6 +29,10 @@ public:
 	bool update(const file_index &file_index) noexcept;
 
 private:
+	static inline const QColor white=QColor(255, 255, 255);
+	static inline const QColor green=QColor(76, 175, 80);
+	static inline const QColor red=QColor(244, 67, 54);
+
 	colorized_mathod method_;
 	std::shared_ptr<clone_pair_grid_layer> clone_pair_layer_;
 

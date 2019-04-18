@@ -10,7 +10,7 @@ error_code::error_code(const QString &base, const QString &error_code_string) no
 
 QDebug operator <<(QDebug logger, const error_code &code) noexcept
 {
-	logger.nospace().noquote()<<QStringLiteral("when ")<<code.base_<<QStringLiteral(": ")<<code.error_code_string_;
+	logger<<QStringLiteral("when ")<<code.base_<<QStringLiteral(": ")<<code.error_code_string_;
 	return logger;
 }
 
@@ -22,19 +22,19 @@ void asterism_message_output(QtMsgType type, const QMessageLogContext &context, 
 	switch(type)
 	{
 		case QtDebugMsg:
-			fprintf(stderr, "[Debug] at %s in %s(%u)\n\t - %s\n", function, file, context.line, localMsg.constData());
+			fprintf(stderr, "[Debug] at %s in %s(%u)\n - %s\n", function, file, context.line, localMsg.constData());
 			break;
 		case QtInfoMsg:
-			fprintf(stderr, "[Info] at %s in %s(%u)\n\t - %s\n", function, file, context.line, localMsg.constData());
+			fprintf(stderr, "[Info] at %s in %s(%u)\n - %s\n", function, file, context.line, localMsg.constData());
 			break;
 		case QtWarningMsg:
-			fprintf(stderr, "[Warn] at %s in %s(%u)\n\t - %s\n", function, file, context.line, localMsg.constData());
+			fprintf(stderr, "[Warn] at %s in %s(%u)\n - %s\n", function, file, context.line, localMsg.constData());
 			break;
 		case QtCriticalMsg:
-			fprintf(stderr, "[Critical] at %s in %s(%u)\n\t - %s\n", function, file, context.line, localMsg.constData());
+			fprintf(stderr, "[Critical] at %s in %s(%u)\n - %s\n", function, file, context.line, localMsg.constData());
 			break;
 		case QtFatalMsg:
-			fprintf(stderr, "[Fatal] at %s in %s(%u)\n\t - %s\n", function, file, context.line, localMsg.constData());
+			fprintf(stderr, "[Fatal] at %s in %s(%u)\n - %s\n", function, file, context.line, localMsg.constData());
 			break;
 	}
 }

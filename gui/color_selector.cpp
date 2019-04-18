@@ -56,11 +56,20 @@ std::optional<QColor> color_selector::color_at(const int index) noexcept
 	{
 		if(keys[i]<=index && index<=keys[i+1])
 		{
-			return this->color_source_[i]+(this->color_source_[i+1]-this->color_source_[i])/(keys[i+1]-keys[i])*index;
+			const auto d=(index-keys[i])/(keys[i+1]-keys[i]);
+			return this->clamp(this->color_source_[i]+(this->color_source_[i+1]-this->color_source_[i])*d);
 		}
 	}
 
 	return std::nullopt;
+}
+
+QColor color_selector::clamp(QColor &&c) const noexcept
+{
+	c.setRed(std::clamp(c.red(), 0, 255));
+	c.setGreen(std::clamp(c.green(), 0, 255));
+	c.setBlue(std::clamp(c.blue(), 0, 255));
+	return c;
 }
 
 }
