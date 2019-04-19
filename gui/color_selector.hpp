@@ -7,12 +7,22 @@
 
 namespace asterism
 {
+struct signed_color
+{
+	signed_color() noexcept;
+	signed_color(const QColor &c) noexcept;
+	signed_color(const int r, const int g, const int b) noexcept;
 
+	operator QColor() const noexcept;
 
-QColor operator +(const QColor &c1, const QColor &c2) noexcept;
-QColor operator -(const QColor &c1, const QColor &c2) noexcept;
-QColor operator *(const QColor &c, const float &f) noexcept;
-QColor operator /(const QColor &c, const float &f) noexcept;
+	int r, g, b;
+};
+
+signed_color operator +(const signed_color &c1, const signed_color &c2) noexcept;
+signed_color operator -(const signed_color &c1, const signed_color &c2) noexcept;
+signed_color operator *(const signed_color &c, const float f) noexcept;
+signed_color operator /(const signed_color &c, const float f) noexcept;
+
 
 class color_selector
 {
@@ -25,9 +35,7 @@ public:
 
 private:
 	int index_begin_, index_end_;
-	QMap<int, QColor> color_source_;
-
-	QColor clamp(QColor &&c) const noexcept;
+	QMap<int, signed_color> color_source_;
 };
 
 }

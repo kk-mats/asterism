@@ -3,30 +3,52 @@
 namespace asterism
 {
 
-QColor operator +(const QColor &c1, const QColor &c2) noexcept
+signed_color::signed_color() noexcept
+	: r(0), g(0), b(0)
+{}
+
+signed_color::signed_color(const QColor &c) noexcept
+	: r(c.red()), g(c.green()), b(c.blue())
+{}
+
+signed_color::signed_color(const int r, const int g, const int b) noexcept
+	: r(r), g(g), b(b)
+{}
+
+signed_color::operator QColor() const noexcept
 {
-	return QColor(c1.red()+c2.red(), c1.green()+c2.green(), c1.blue()+c2.blue());
+	return QColor(
+		std::clamp(this->r, 0, 255),
+		std::clamp(this->g, 0, 255),
+		std::clamp(this->b, 0, 255)
+	);
+
 }
 
-QColor operator -(const QColor &c1, const QColor &c2) noexcept
+signed_color operator +(const signed_color &c1, const signed_color &c2) noexcept
 {
-	return QColor(c1.red()-c2.red(), c1.green()-c2.green(), c1.blue()-c2.blue());
+	return signed_color(c1.r+c2.r, c1.g+c2.g, c1.b+c2.b);
 }
 
-QColor operator *(const QColor &c, const float &f) noexcept
+signed_color operator -(const signed_color &c1, const signed_color &c2) noexcept
 {
-	return QColor(c.red()*f, c.green()*f, c.blue()*f);
+	return signed_color(c1.r-c2.r, c1.g-c2.g, c1.b-c2.b);
 }
 
-QColor operator /(const QColor &c, const float &f) noexcept
+signed_color operator *(const signed_color &c, const float f) noexcept
 {
-	return QColor(c.red()/f, c.green()/f, c.blue()/f);
+	return signed_color(c.r*f, c.g*f, c.b*f);
+}
+
+signed_color operator /(const signed_color &c, const float f) noexcept
+{
+	return signed_color(c.r/f, c.g/f, c.b/f);
 }
 
 color_selector::color_selector(const QColor &color, const int index) noexcept
 	: index_begin_(index), index_end_(index)
 {
-	this->color_source_[index]=color;
+	this->color_source_[index]=signed_color(color);
 }
 
 
@@ -41,7 +63,7 @@ void color_selector::set_anchor(const QColor &color, const int index) noexcept
 		this->index_end_=index;
 	}
 
-	this->color_source_[index]=color;
+	this->color_source_[index]=signed_color(color);
 }
 
 std::optional<QColor> color_selector::color_at(const int index) noexcept
@@ -56,20 +78,12 @@ std::optional<QColor> color_selector::color_at(const int index) noexcept
 	{
 		if(keys[i]<=index && index<=keys[i+1])
 		{
-			const auto d=(index-keys[i])/(keys[i+1]-keys[i]);
-			return this->clamp(this->color_source_[i]+(this->color_source_[i+1]-this->color_source_[i])*d);
+			const auto d=(index-keys[i])/float(keys[i+1]-keys[i]);
+			return QColor(this->color_source_[i]+(this->color_source_[i+1]-this->color_source_[i])*d);
 		}
 	}
 
 	return std::nullopt;
-}
-
-QColor color_selector::clamp(QColor &&c) const noexcept
-{
-	c.setRed(std::clamp(c.red(), 0, 255));
-	c.setGreen(std::clamp(c.green(), 0, 255));
-	c.setBlue(std::clamp(c.blue(), 0, 255));
-	return c;
 }
 
 }
