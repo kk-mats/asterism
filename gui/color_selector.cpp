@@ -78,8 +78,9 @@ std::optional<QColor> color_selector::color_at(const int index) noexcept
 	{
 		if(keys[i]<=index && index<=keys[i+1])
 		{
+			const auto base=this->color_source_[keys[i]], next=this->color_source_[keys[i+1]];
 			const auto d=(index-keys[i])/float(keys[i+1]-keys[i]);
-			return QColor(this->color_source_[i]+(this->color_source_[i+1]-this->color_source_[i])*d);
+			return QColor(base+(next-base)*d);
 		}
 	}
 
