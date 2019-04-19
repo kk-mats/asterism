@@ -54,8 +54,6 @@ public:
 
 private:
 	std::pair<int, int> x_y_;
-
-	std::pair<int, int> canonical(const int x, const int y) noexcept;
 };
 
 template <class val_T>
@@ -91,7 +89,7 @@ public:
 
 	auto end1d() const noexcept
 	{
-		return grid_1d_coordinate(this->values_.size()-1);
+		return grid_1d_coordinate(this->values_.size());
 	}
 
 	val_T& operator [](const grid_coordinate &coordinate)

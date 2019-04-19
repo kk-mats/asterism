@@ -27,11 +27,8 @@ public:
 	friend float ok(const clone_pair &p1, const clone_pair &p2) noexcept;
 
 private:
-	QPair<fragment, fragment> fragments_;
+	std::pair<fragment, fragment> fragments_;
 	unsigned int similairty_;
-
-	QPair<fragment, fragment> canonical(const fragment &fragment1, const fragment &fragment2) noexcept;
-	QPair<fragment, fragment> canonical(fragment &&fragment1, fragment &&fragment2) noexcept;
 };
 
 uint qHash(const clone_pair &key, uint seed) noexcept;

@@ -4,7 +4,7 @@ namespace asterism
 {
 
 grid_2d_coordinate::grid_2d_coordinate(const std::weak_ptr<file> &x, const std::weak_ptr<file> &y, const file_index &file_index) noexcept
-	: x_y_(this->canonical(file_index[x], file_index[y]))
+	: x_y_(std::minmax(file_index[x], file_index[y]))
 {}
 
 int grid_2d_coordinate::to_linear() const noexcept
@@ -15,7 +15,8 @@ int grid_2d_coordinate::to_linear() const noexcept
 
 grid_1d_coordinate grid_2d_coordinate::to_linear(const int x, const int y) noexcept
 {
-	return grid_1d_coordinate(x+y*(y+1)/2);
+	const auto [xx, yy]=std::minmax(x, y);
+	return grid_1d_coordinate(xx+yy*(yy+1)/2);
 }
 
 int grid_2d_coordinate::x() const noexcept
@@ -36,12 +37,6 @@ bool grid_2d_coordinate::operator ==(const grid_2d_coordinate &other) const noex
 bool grid_2d_coordinate::operator !=(const grid_2d_coordinate &other) const noexcept
 {
 	return !(*this==other);
-}
-
-
-std::pair<int, int> grid_2d_coordinate::canonical(const int x, const int y) noexcept
-{
-	return x<y ? std::make_pair(x, y) : std::make_pair(y, x);
 }
 
 

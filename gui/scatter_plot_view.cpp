@@ -11,8 +11,7 @@ void scatter_plot_delegate::paint(QPainter *painter, const QStyleOptionViewItem 
 	}
 }
 
-
-QSize scatter_plot_delegate::sizeHint(const QStyleOptionViewItem &option[[maybe_unused]], const QModelIndex &index[[maybe_unused]]) const
+QSize scatter_plot_delegate::sizeHint(const QStyleOptionViewItem &option [[maybe_unused]], const QModelIndex &index [[maybe_unused]]) const
 {
 	return QSize(grid_size, grid_size);
 }

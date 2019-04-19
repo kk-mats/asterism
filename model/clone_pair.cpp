@@ -5,15 +5,15 @@ namespace asterism
 
 // constructor
 clone_pair::clone_pair() noexcept
-	: fragments_(qMakePair(fragment(), fragment())), similairty_(0)
+	: fragments_(std::make_pair(fragment(), fragment())), similairty_(0)
 {}
 
 clone_pair::clone_pair(const fragment &fragment1, const fragment &fragment2, const unsigned int similarity) noexcept
-	: fragments_(canonical(fragment1, fragment2)), similairty_(similarity)
+	: fragments_(std::minmax<fragment>(fragment1, fragment2)), similairty_(similarity)
 {}
 
 clone_pair::clone_pair(fragment &&fragment1, fragment &&fragment2, const unsigned int similarity) noexcept
-	: fragments_(canonical(fragment1, fragment2)), similairty_(similarity)
+	: fragments_(std::minmax<fragment>(std::move(fragment1), std::move(fragment2))), similairty_(similarity)
 {}
 
 bool clone_pair::operator <(const clone_pair &other) const noexcept
@@ -28,25 +28,12 @@ fragment clone_pair::fragment1() const noexcept
 
 fragment clone_pair::fragment2() const noexcept
 {
-	return this->fragments_.first;
+	return this->fragments_.second;
 }
 
 unsigned int clone_pair::similarity() const noexcept
 {
 	return this->similairty_;
-}
-
-QPair<fragment, fragment> clone_pair::canonical(const fragment &fragment1, const fragment &fragment2) noexcept
-{
-	fragment f1=fragment1, f2=fragment2;
-	return this->canonical(std::move(f1), std::move(f2));
-}
-
-QPair<fragment, fragment> clone_pair::canonical(fragment &&fragment1, fragment &&fragment2) noexcept
-{
-	return fragment1<fragment2 ?
-				qMakePair(fragment1, fragment2) :
-				qMakePair(fragment2, fragment1);
 }
 
 uint qHash(const clone_pair &key, uint seed) noexcept
