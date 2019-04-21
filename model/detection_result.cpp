@@ -15,6 +15,11 @@ const result_environment& detection_result::environment() const noexcept
 	return this->environment_;
 }
 
+result_environment & detection_result::environment() noexcept
+{
+	return this->environment_;
+}
+
 shared_set<clone_pair>& detection_result::clone_pairs() noexcept
 {
 	return this->clone_pairs_;

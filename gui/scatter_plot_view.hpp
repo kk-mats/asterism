@@ -24,7 +24,7 @@ public:
 	using QAbstractItemDelegate::QAbstractItemDelegate;
 
 	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	QSize scatter_plot_delegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };
 
 class scatter_plot_view final

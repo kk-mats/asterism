@@ -27,7 +27,6 @@ public:
 
 private:
 	QString name_;
-
 };
 
 enum class tool
@@ -43,14 +42,17 @@ public:
 	result_environment(const QString &clone_detector_name, const QString &source) noexcept;
 	result_environment(const clone_detector &clone_detector, const QString &source) noexcept;
 
+	void set_name(const QString &name) noexcept;
+
+	QString name() const noexcept;
 	QString source() const noexcept;
-	QString clone_detector_string() const noexcept;
 	QHash<QString, QString> parameters() const noexcept;
 
 	bool operator ==(const result_environment &other) const noexcept;
 
 private:
 	clone_detector clone_detector_;
+	QString name_;
 	QString source_;
 	QHash<QString, QString> parameters_;
 };

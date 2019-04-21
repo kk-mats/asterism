@@ -18,6 +18,8 @@ public:
 	detection_result(result_environment &&environment, shared_set<clone_pair> &&clone_pairs) noexcept;
 
 	const result_environment& environment() const noexcept;
+	result_environment& environment() noexcept;
+
 	shared_set<clone_pair>& clone_pairs() noexcept;
 	const shared_set<clone_pair>& clone_pairs() const noexcept;
 	std::shared_ptr<clone_pair_grid_layer> clone_pair_layer() const noexcept;

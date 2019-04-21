@@ -7,12 +7,13 @@ namespace asterism
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
-	this->scatter_plot_model_=new scatter_plot_model(this);
-
-	this->scatter_plot_view_=new scatter_plot_view;
 	this->scatter_plot_view_->setModel(this->scatter_plot_model_);
 	this->scatter_plot_view_->setItemDelegate(new scatter_plot_delegate(this));
 
+	this->results_list_view_->setModel(this->results_list_model_);
+	this->results_list_dock_->setWidget(this->results_list_view_);
+	this->addDockWidget(Qt::LeftDockWidgetArea, this->results_list_dock_, Qt::Vertical);
+	
 	auto *main_layout=new QHBoxLayout;
 	main_layout->addWidget(this->scatter_plot_view_);
 
@@ -38,6 +39,7 @@ void MainWindow::open()
 		if(auto results=clone_io::read_jcln(filepath); results)
 		{
 			this->results_=std::move(results.value());
+			this->results_list_model_->set_results(this->results_.results());
 			this->update();
 		}
 	}

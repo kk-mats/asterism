@@ -45,20 +45,31 @@ const clone_detector clone_detector::ccfindersw("CCFinderSW");
 const clone_detector clone_detector::nicad("NiCAD");
 
 
-result_environment::result_environment():clone_detector_(clone_detector::undefined)
+result_environment::result_environment()
+	: clone_detector_(clone_detector::undefined)
 {}
 
 result_environment::result_environment(const result_environment &other) noexcept
-	:clone_detector_(other.clone_detector_), source_(other.source_)
+	: clone_detector_(other.clone_detector_), source_(other.source_), name_(other.name_)
 {}
 
 result_environment::result_environment(const QString &clone_detector_name, const QString &source) noexcept
-	:clone_detector_(clone_detector::from_string(clone_detector_name)), source_(source)
+	: clone_detector_(clone_detector::from_string(clone_detector_name)), source_(source), name_(source)
 {}
 
 result_environment::result_environment(const clone_detector &clone_detector, const QString &source) noexcept
-	:clone_detector_(clone_detector), source_(source)
+	: clone_detector_(clone_detector), source_(source), name_(source)
 {}
+
+void result_environment::set_name(const QString &name) noexcept
+{
+	this->name_=name;
+}
+
+QString result_environment::name() const noexcept
+{
+	return this->name_;
+}
 
 QString result_environment::source() const noexcept
 {

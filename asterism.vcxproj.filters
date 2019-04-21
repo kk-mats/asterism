@@ -94,6 +94,12 @@
     <ClCompile Include="core\utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gui\results_list_view.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\results_list_model.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="clone_format\clone_io.hpp">
@@ -158,18 +164,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    
-    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
-    
-    
-    
-    
   </ItemGroup>
   <ItemGroup>
     <None Include="test\f0.txt">
@@ -187,5 +187,13 @@
     <None Include="test\rs.jcln">
       <Filter>Distribution Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="gui\results_list_view.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\results_list_model.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>
