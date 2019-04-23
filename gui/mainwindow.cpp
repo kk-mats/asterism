@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
 	central_widget->setLayout(main_layout);
 	this->setCentralWidget(central_widget);
 
+	connect(this->results_list_view_, &results_list_view::clicked, )
+
 	this->create_actions();
 	this->create_menus();
 

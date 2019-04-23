@@ -27,7 +27,8 @@ std::shared_ptr<detection_result> detection_results::empalce(result_environment 
 	auto itr=std::find_if(this->results_.begin(), this->results_.end(), [&](const auto &r){ return r->environment()==environment; });
 	if(itr==this->results_.end())
 	{
-		itr=this->results_.insert(std::make_shared<detection_result>(std::move(environment), std::move(clone_pairs)));
+		this->results_.append(std::make_shared<detection_result>(std::move(environment), std::move(clone_pairs)));
+		itr=(--this->results_.end());
 	}
 	return *itr;
 }
@@ -35,7 +36,7 @@ std::shared_ptr<detection_result> detection_results::empalce(result_environment 
 void detection_results::update() noexcept
 {
 	this->update_file_index();
-	for(auto &&r:this->results_.values())
+	for(auto &&r:this->results_)
 	{
 		r->update(this->file_index_);
 	}
@@ -43,7 +44,7 @@ void detection_results::update() noexcept
 
 bool detection_results::remove(std::shared_ptr<detection_result> &&ptr) noexcept
 {
-	if(auto itr=this->results_.find(ptr); itr!=this->results_.end())
+	if(auto itr=std::find(this->results_.begin(), this->results_.end(), (ptr)); itr!=this->results_.end())
 	{
 		ptr.reset();
 		this->results_.erase(itr);
@@ -53,7 +54,7 @@ bool detection_results::remove(std::shared_ptr<detection_result> &&ptr) noexcept
 	return false;
 }
 
-const shared_set<detection_result>& detection_results::results() const noexcept
+const shared_list<detection_result>& detection_results::results() const noexcept
 {
 	return this->results_;
 }

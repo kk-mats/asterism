@@ -3,10 +3,10 @@
 namespace asterism
 {
 
-void results_list_model::set_results(const shared_set<detection_result> &results) noexcept
+void results_list_model::set_results(const shared_list<detection_result> &results) noexcept
 {
 	this->beginResetModel();
-	this->results_list_=results.toList().toVector();
+	this->results_list_ = results;
 	this->endResetModel();
 }
 

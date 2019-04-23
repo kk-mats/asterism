@@ -17,13 +17,13 @@ class results_list_model
 public:
 	using QAbstractListModel::QAbstractListModel;
 
-	void set_results(const shared_set<detection_result> &results) noexcept;
+	void set_results(const shared_list<detection_result> &results) noexcept;
 
 	int rowCount(const QModelIndex &parent=QModelIndex()) const override;
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const override;
 
 private:
-	shared_vector<detection_result> results_list_;
+	shared_list<detection_result> results_list_;
 };
 
 }

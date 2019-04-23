@@ -24,7 +24,7 @@ public:
 
 	void update() noexcept;
 	bool remove(std::shared_ptr<detection_result> &&ptr) noexcept;
-	const shared_set<detection_result>& results() const noexcept;
+	const shared_list<detection_result>& results() const noexcept;
 	const shared_set<file>& files() const noexcept;
 
 	void set_target_path(const QString &target_path) noexcept;
@@ -34,7 +34,7 @@ public:
 private:
 	QString target_path_;
 	shared_set<file> files_;
-	shared_set<detection_result> results_;
+	shared_list<detection_result> results_;
 	file_index file_index_;
 
 	void update_file_index() noexcept;
