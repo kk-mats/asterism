@@ -2,30 +2,22 @@
 
 namespace asterism
 {
-
-void layer_list_model::set_detection_results(const shared_list<detection_result> &results) noexcept
-{
-	this->beginResetModel();
-	for(const auto &r:results)
-	{
-		this->layers_.emplace_back(r);
-	}
-	this->endResetModel();
-}
+layer_list_model::layer_list_model(const std::shared_ptr<const QList<heatmap_layer>> &layers, QObject *parent) noexcept
+	: QAbstractListModel(parent), layers_(layers)
+{}
 
 int layer_list_model::rowCount(const QModelIndex &parent) const
 {
-	return this->layers_.size();
+	return this->layers_->size();
 }
 
 QVariant layer_list_model::data(const QModelIndex &index, int role) const
 {
-	if(index.isValid() && role==Qt::DisplayRole)
+	if(index.isValid() && role==Qt::DisplayRole && this->layers_->size()>0)
 	{
-		auto i=this->layers_.begin();
+		auto i=this->layers_->begin();
 		std::advance(i, index.row());
-
-		return std::visit(heatmap_layer_name_visitor(), *i);
+		return i->name();
 	}
 	return QVariant();
 }

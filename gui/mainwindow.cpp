@@ -10,9 +10,9 @@ MainWindow::MainWindow(QWidget *parent)
 	this->scatter_plot_view_->setModel(this->scatter_plot_model_);
 	this->scatter_plot_view_->setItemDelegate(new scatter_plot_delegate(this));
 
-	this->results_list_view_->setModel(this->results_list_model_);
-	this->results_list_dock_->setWidget(this->results_list_view_);
-	this->addDockWidget(Qt::LeftDockWidgetArea, this->results_list_dock_, Qt::Vertical);
+	this->layer_list_view_->setModel(this->layer_list_model_);
+	this->layer_list_dock_->setWidget(this->layer_list_view_);
+	this->addDockWidget(Qt::LeftDockWidgetArea, this->layer_list_dock_, Qt::Vertical);
 	
 	auto *main_layout=new QHBoxLayout;
 	main_layout->addWidget(this->scatter_plot_view_);
@@ -21,7 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
 	central_widget->setLayout(main_layout);
 	this->setCentralWidget(central_widget);
 
-	connect(this->results_list_view_, &results_list_view::clicked, this->results_, &detection_results::change_current_layer);
+	connect(this->layer_list_view_, &layer_list_view::clicked, this->scatter_plot_model_, &scatter_plot_model::change_current_layer);
+	connect(this->scatter_plot_model_, &scatter_plot_model::modelReset, this->layer_list_model_, &layer_list_model::modelReset);
 
 	this->create_actions();
 	this->create_menus();
@@ -41,8 +42,15 @@ void MainWindow::open()
 		if(auto results=clone_io::read_jcln(filepath); results)
 		{
 			this->results_=std::move(results.value());
-			this->results_list_model_->set_results(this->results_.results());
 			this->update();
+			QList<heatmap_layer> layers;
+			for(const auto &r:this->results_.results())
+			{
+				layers.append(heatmap_layer(r));
+			}
+			this->scatter_plot_model_->add_heatmap_layers(std::move(layers));
+
+			return;
 		}
 	}
 }
@@ -73,9 +81,6 @@ void MainWindow::create_menus()
 void MainWindow::update() noexcept
 {
 	this->results_.update();
-	//ToDo
-	this->change_current_layer(0);
-	this->scatter_plot_model_->update(this->results_.file_index_map());
 }
 
 }

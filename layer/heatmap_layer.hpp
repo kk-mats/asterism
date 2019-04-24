@@ -26,7 +26,7 @@ public:
 	int min() const noexcept;
 	int max() const noexcept;
 
-	bool update(const file_index &file_index) noexcept;
+	bool update() noexcept;
 
 private:
 	QString name_;
@@ -48,19 +48,47 @@ public:
 	QString primitive2_name() const noexcept;
 	QString primitive2_source() const noexcept;
 
-	bool update(const file_index &file_index) noexcept;
+	bool update() noexcept;
 
 private:
 	QString name_;
 	std::shared_ptr<detection_result> primitive1_, primitive2_;
 };
 
-using heatmap_layer=std::variant<clone_size_heatmap_layer, matching_rate_heatmap_layer>;
 
-struct heatmap_layer_name_visitor
+class heatmap_layer
 {
-	QString operator ()(const clone_size_heatmap_layer &h) noexcept;
-	QString operator ()(const matching_rate_heatmap_layer &h) noexcept;
+public:
+	heatmap_layer(const std::shared_ptr<detection_result> &primitive) noexcept;
+	heatmap_layer(const std::shared_ptr<detection_result> &primitive1, const std::shared_ptr<detection_result> &primitive2) noexcept;
+
+	template <class T>
+	using is_convertible_from=typename std::enable_if_t<std::is_same_v<T, clone_size_heatmap_layer> || std::is_same_v<T, matching_rate_heatmap_layer>>;
+
+	bool update() noexcept;
+
+	QString name() const noexcept;
+	int width() const noexcept;
+
+	const QColor& operator [](const grid_coordinate &coordinate) const noexcept;
+	const QColor& operator [](const int i) const noexcept;
+
+	template <class T, is_convertible_from<T> =nullptr>
+	heatmap_layer& operator =(const T &layer)
+	{
+		this->value_=layer;
+		return *this;
+	}
+
+	template <class T, is_convertible_from<T> =nullptr>
+	heatmap_layer& operator =(T &&layer)
+	{
+		this->value_=std::move(layer);
+		return *this;
+	}
+
+private:
+	std::variant<clone_size_heatmap_layer, matching_rate_heatmap_layer> value_;
 };
 
 }

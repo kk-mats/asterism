@@ -102,9 +102,19 @@ public:
 		return this->values_[coordiante.to_linear()];
 	}
 
+	const val_T &operator [](const int i) const
+	{
+		return this->values_[i];
+	}
+
 	int width() const noexcept
 	{
 		return this->width_;
+	}
+
+	int size() const noexcept
+	{
+		return this->values_.size();
 	}
 
 protected:

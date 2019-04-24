@@ -4,8 +4,11 @@ namespace asterism
 {
 
 clone_size_heatmap_layer::clone_size_heatmap_layer(const std::shared_ptr<detection_result> &primitive) noexcept
-	: primitive_(primitive), name_(primitive->environment().name())
-{}
+	: primitive_(primitive)
+{
+	this->name_=primitive->environment().name();
+	this->update();
+}
 
 QString clone_size_heatmap_layer::name() const noexcept
 {
@@ -32,7 +35,7 @@ int clone_size_heatmap_layer::max() const noexcept
 	return this->max_;
 }
 
-bool clone_size_heatmap_layer::update(const file_index &file_index) noexcept
+bool clone_size_heatmap_layer::update() noexcept
 {
 	this->max_=(*std::max_element(this->primitive_->clone_pair_layer()->begin(), this->primitive_->clone_pair_layer()->end(), [](const auto&g1, const auto&g2){ return g1.size()<g2.size(); })).size();
 	this->min_=(*std::min_element(this->primitive_->clone_pair_layer()->begin(), this->primitive_->clone_pair_layer()->end(), [](const auto&g1, const auto&g2){ return g1.size()<g2.size(); })).size();
@@ -50,6 +53,7 @@ bool clone_size_heatmap_layer::update(const file_index &file_index) noexcept
 
 	selector.set_anchor(Qt::red, this->max_);
 
+	this->values_.resize(this->primitive_->clone_pair_layer()->size());
 	for(auto i=this->begin1d(), end=this->end1d(); i!=end; ++i)
 	{
 		if(auto color=selector.color_at((*this->primitive_->clone_pair_layer())[i].size()); !color)
@@ -62,11 +66,14 @@ bool clone_size_heatmap_layer::update(const file_index &file_index) noexcept
 			(*this)[i]=color.value();
 		}
 	}
+	return true;
 }
 
 matching_rate_heatmap_layer::matching_rate_heatmap_layer(const std::shared_ptr<detection_result> &primitive1, const std::shared_ptr<detection_result> &primitive2) noexcept
 	: primitive1_(primitive1), primitive2_(primitive2)
-{}
+{
+	this->update();
+}
 
 QString matching_rate_heatmap_layer::name() const noexcept
 {
@@ -93,19 +100,44 @@ QString matching_rate_heatmap_layer::primitive2_source() const noexcept
 	return this->primitive1_->environment().source();
 }
 
-bool matching_rate_heatmap_layer::update(const file_index &file_index) noexcept
+bool matching_rate_heatmap_layer::update() noexcept
 {
 	return false;
 }
 
-QString heatmap_layer_name_visitor::operator()(const clone_size_heatmap_layer &h) noexcept
+
+heatmap_layer::heatmap_layer(const std::shared_ptr<detection_result> &primitive) noexcept
+	: value_(std::in_place_type<clone_size_heatmap_layer>, primitive)
+{}
+
+heatmap_layer::heatmap_layer(const std::shared_ptr<detection_result> &primitive1, const std::shared_ptr<detection_result> &primitive2) noexcept
+	: value_(std::in_place_type<matching_rate_heatmap_layer>, primitive1, primitive2)
+{}
+
+bool heatmap_layer::update() noexcept
 {
-	return h.name();
+	return std::visit([&](auto &&h){return h.update(); }, this->value_);
 }
 
-QString heatmap_layer_name_visitor::operator()(const matching_rate_heatmap_layer &h) noexcept
+QString heatmap_layer::name() const noexcept
 {
-	return h.name();
+	return std::visit([](const auto &h){ return h.name(); }, this->value_);
 }
+
+int heatmap_layer::width() const noexcept
+{
+	return std::visit([](const auto &h){ return h.width(); }, this->value_);
+}
+
+const QColor& heatmap_layer::operator[](const grid_coordinate &coordinate) const noexcept
+{
+	return std::visit([&](const auto &h){ return h[coordinate]; }, this->value_);
+}
+
+const QColor& heatmap_layer::operator[](const int i) const noexcept
+{
+	return std::visit([&](const auto &h){ return h[i]; }, this->value_);
+}
+
 
 }

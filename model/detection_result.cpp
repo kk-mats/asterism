@@ -15,7 +15,7 @@ const result_environment& detection_result::environment() const noexcept
 	return this->environment_;
 }
 
-result_environment & detection_result::environment() noexcept
+result_environment& detection_result::environment() noexcept
 {
 	return this->environment_;
 }

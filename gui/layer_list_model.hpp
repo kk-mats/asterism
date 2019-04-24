@@ -16,15 +16,16 @@ class layer_list_model
 	Q_OBJECT
 
 public:
-	using QAbstractListModel::QAbstractListModel;
-
-	void set_detection_results(const shared_list<detection_result> &results) noexcept;
+	explicit layer_list_model(const std::shared_ptr<const QList<heatmap_layer>> &layers, QObject *parent=nullptr) noexcept;
 
 	int rowCount(const QModelIndex &parent=QModelIndex()) const override;
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const override;
 
+public slots:
+
+
 private:
-	std::list<heatmap_layer> layers_;
+	const std::shared_ptr<const QList<heatmap_layer>> layers_;
 };
 
 }

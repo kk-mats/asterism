@@ -15,9 +15,8 @@
 
 #include "gui/scatter_plot_view.hpp"
 #include "gui/scatter_plot_model.hpp"
-
-#include "gui/results_list_view.hpp"
-#include "gui/results_list_model.hpp"
+#include "gui/layer_list_view.hpp"
+#include "gui/layer_list_model.hpp"
 
 namespace asterism
 {
@@ -41,9 +40,9 @@ private:
 	scatter_plot_view *scatter_plot_view_=new scatter_plot_view;
 	scatter_plot_model *scatter_plot_model_=new scatter_plot_model(this);
 
-	results_list_view *results_list_view_=new results_list_view(this);
-	results_list_model *results_list_model_=new results_list_model(this);
-	QDockWidget *results_list_dock_=new QDockWidget(QStringLiteral("Results List"), this);
+	layer_list_view *layer_list_view_=new layer_list_view(this);
+	layer_list_model *layer_list_model_=new layer_list_model(this->scatter_plot_model_->layers(), this);
+	QDockWidget *layer_list_dock_=new QDockWidget(QStringLiteral("Layer List"), this);
 
 	QMenu *file_menu_;
 	QAction *open_act_;

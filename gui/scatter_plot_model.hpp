@@ -23,11 +23,19 @@ public:
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const noexcept override;
 	QVariant headerData(int section, Qt::Orientation orientation, int role=Qt::DisplayRole) const noexcept override;
 
-	void set_heatmap_layer(heatmap_layer &&heatmap_layer) noexcept;
-	bool update(const file_index &file_index) noexcept;
+	void add_heatmap_layers(QList<heatmap_layer> &&layers) noexcept;
+	void add_heatmap_layer(heatmap_layer &&layer) noexcept;
+	bool update() noexcept;
+
+	const std::shared_ptr<QList<heatmap_layer>> &layers() const noexcept;
+
+public slots:
+	void change_current_layer(const QModelIndex &index) noexcept;
 
 private:
-	QList<heatmap_layer> layers_;
+	int current_index_=0;
+	heatmap_layer *current_layer_=nullptr;
+	std::shared_ptr<QList<heatmap_layer>> layers_=std::make_shared<QList<heatmap_layer>>();
 };
 
 }
