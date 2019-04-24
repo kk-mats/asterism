@@ -27,7 +27,7 @@ public:
 	bool update(const file_index &file_index) noexcept;
 
 private:
-	heatmap_layer heatmap_layer_;
+	QList<heatmap_layer> layers_;
 };
 
 }

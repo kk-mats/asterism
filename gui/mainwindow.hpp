@@ -51,7 +51,6 @@ private:
 
 	void create_actions();
 	void create_menus();
-	void change_current_layer(const std::shared_ptr<detection_result> &new_result) noexcept;
 
 	void update() noexcept;
 };

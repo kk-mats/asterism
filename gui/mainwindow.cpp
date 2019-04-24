@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 	central_widget->setLayout(main_layout);
 	this->setCentralWidget(central_widget);
 
-	connect(this->results_list_view_, &results_list_view::clicked, )
+	connect(this->results_list_view_, &results_list_view::clicked, this->results_, &detection_results::change_current_layer);
 
 	this->create_actions();
 	this->create_menus();
@@ -70,20 +70,11 @@ void MainWindow::create_menus()
 	this->file_menu_->addAction(this->quit_act_);
 }
 
-void MainWindow::change_current_layer(const std::shared_ptr<detection_result> &new_result) noexcept
-{
-	this->current_layer_=new_result;
-	if(auto layer=heatmap_layer::colorized_by_clone_pair_size(new_result->clone_pair_layer(), this->results_.file_index_map()); layer)
-	{
-		this->scatter_plot_model_->set_heatmap_layer(std::move(layer.value()));
-	}
-}
-
 void MainWindow::update() noexcept
 {
 	this->results_.update();
 	//ToDo
-	this->change_current_layer(*this->results_.results().begin());
+	this->change_current_layer(0);
 	this->scatter_plot_model_->update(this->results_.file_index_map());
 }
 

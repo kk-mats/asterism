@@ -94,10 +94,10 @@
     <ClCompile Include="core\utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\results_list_view.cpp">
+    <ClCompile Include="gui\layer_list_model.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\results_list_model.cpp">
+    <ClCompile Include="gui\layer_list_view.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -189,10 +189,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="gui\results_list_view.hpp">
+    <QtMoc Include="gui\layer_list_model.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="gui\results_list_model.hpp">
+    <QtMoc Include="gui\layer_list_view.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

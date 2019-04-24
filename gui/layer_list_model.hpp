@@ -1,15 +1,16 @@
-#ifndef RESULTS_LIST_MODEL_HPP
-#define RESULTS_LIST_MODEL_HPP
+#ifndef LAYER_LIST_MODEL_HPP
+#define LAYER_LIST_MODEL_HPP
 
 #include <QAbstractListModel>
+#include <list>
 
+#include "layer/heatmap_layer.hpp"
 #include "model/detection_result.hpp"
-
 
 namespace asterism
 {
 
-class results_list_model
+class layer_list_model
 	: public QAbstractListModel
 {
 	Q_OBJECT
@@ -17,15 +18,15 @@ class results_list_model
 public:
 	using QAbstractListModel::QAbstractListModel;
 
-	void set_results(const shared_list<detection_result> &results) noexcept;
+	void set_detection_results(const shared_list<detection_result> &results) noexcept;
 
 	int rowCount(const QModelIndex &parent=QModelIndex()) const override;
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const override;
 
 private:
-	shared_list<detection_result> results_list_;
+	std::list<heatmap_layer> layers_;
 };
 
 }
 
-#endif // RESULTS_LIST_MODEL_HPP
+#endif // LAYER_LIST_MODEL_HPP

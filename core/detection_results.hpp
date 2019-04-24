@@ -4,11 +4,12 @@
 #include <iostream>
 
 #include <QDebug>
+#include <QModelIndex>
 #include <memory>
 #include <type_traits>
 
 #include "matching_table.hpp"
-#include "layer/heatmap_layer.hpp"
+#include "model/detection_result.hpp"
 
 namespace asterism
 {
