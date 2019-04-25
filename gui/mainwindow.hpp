@@ -41,7 +41,7 @@ private:
 	scatter_plot_model *scatter_plot_model_=new scatter_plot_model(this);
 
 	layer_list_view *layer_list_view_=new layer_list_view(this);
-	layer_list_model *layer_list_model_=new layer_list_model(this->scatter_plot_model_->layers(), this);
+	layer_list_model *layer_list_model_=new layer_list_model(this);
 	QDockWidget *layer_list_dock_=new QDockWidget(QStringLiteral("Layer List"), this);
 
 	QMenu *file_menu_;

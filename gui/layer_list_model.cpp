@@ -2,24 +2,67 @@
 
 namespace asterism
 {
-layer_list_model::layer_list_model(const std::shared_ptr<const QList<heatmap_layer>> &layers, QObject *parent) noexcept
-	: QAbstractListModel(parent), layers_(layers)
+layer_list_model::layer_list_model(QObject *parent) noexcept
+	: QAbstractListModel(parent)
 {}
 
 int layer_list_model::rowCount(const QModelIndex &parent) const
 {
-	return this->layers_->size();
+	return this->layers_.size();
 }
 
 QVariant layer_list_model::data(const QModelIndex &index, int role) const
 {
-	if(index.isValid() && role==Qt::DisplayRole && this->layers_->size()>0)
+	if(index.isValid() && role==Qt::DisplayRole && this->layers_.size()>0)
 	{
-		auto i=this->layers_->begin();
-		std::advance(i, index.row());
-		return i->name();
+		return this->layers_[index.row()]->name();
 	}
 	return QVariant();
+}
+
+void layer_list_model::emplace_clone_size_heatmap_layers(const shared_list<detection_result> &results) noexcept
+{
+	const auto head=this->layers_.size();
+	this->insertRows(head, results.size());
+	for(auto i=0; i<results.size(); ++i)
+	{
+		this->setData(this->index(head+i, 0), QVariant::fromValue(results[i]));
+	}
+
+	//this->change_current_layer(this->createIndex(this->layers_->size()-1, 0));
+}
+
+void layer_list_model::emplace_clone_size_heatmap_layer(const std::shared_ptr<detection_result> &result) noexcept
+{
+	const auto head=this->layers_.size();
+	this->insertRow(head);
+	this->setData(this->index(head, 0), QVariant::fromValue(result));
+
+	//this->change_current_layer(this->createIndex(this->layers_->size()-1, 0));
+}
+
+bool layer_list_model::insertRows(const int row, const int count, const QModelIndex &parent) noexcept
+{
+	this->beginInsertRows(parent, row, row+count-1);
+	for(int i=0; i<count; ++i)
+	{
+		this->layers_.insert(row, nullptr);
+	}
+	this->endInsertRows();
+	return true;
+}
+
+bool layer_list_model::setData(const QModelIndex &index, const QVariant &value, int role) noexcept
+{
+	if(!index.isValid() || role!=Qt::EditRole || !value.canConvert<std::shared_ptr<detection_result>>())
+	{
+		return false;
+	}
+
+	this->layers_[index.row()]=std::make_shared<heatmap_layer>(value.value<std::shared_ptr<detection_result>>());
+	emit dataChanged(index, index, {role});
+
+	return true;
 }
 
 }

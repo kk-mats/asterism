@@ -46,4 +46,5 @@ QDebug operator <<(QDebug logger, const detection_results &results) noexcept;
 
 }
 
+
 #endif // DETECTION_RESULTS_HPP

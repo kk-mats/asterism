@@ -21,8 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 	central_widget->setLayout(main_layout);
 	this->setCentralWidget(central_widget);
 
-	connect(this->layer_list_view_, &layer_list_view::clicked, this->scatter_plot_model_, &scatter_plot_model::change_current_layer);
-	connect(this->scatter_plot_model_, &scatter_plot_model::modelReset, this->layer_list_model_, &layer_list_model::modelReset);
+	connect(this->layer_list_model_, &layer_list_model::current_layer_changed, this->scatter_plot_model_, &scatter_plot_model::change_current_layer);
 
 	this->create_actions();
 	this->create_menus();
@@ -43,12 +42,7 @@ void MainWindow::open()
 		{
 			this->results_=std::move(results.value());
 			this->update();
-			QList<heatmap_layer> layers;
-			for(const auto &r:this->results_.results())
-			{
-				layers.append(heatmap_layer(r));
-			}
-			this->scatter_plot_model_->add_heatmap_layers(std::move(layers));
+			this->layer_list_model_->emplace_clone_size_heatmap_layers(this->results_.results());
 
 			return;
 		}
