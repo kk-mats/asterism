@@ -10,7 +10,7 @@
 namespace asterism
 {
 
-class layer_list_model
+class layer_list_model final
 	: public QAbstractListModel
 {
 	Q_OBJECT
@@ -25,6 +25,8 @@ public slots:
 
 
 private:
+	bool insertRows(int row, int count, const QModelIndex &parent=QModelIndex()) noexcept override;
+
 	const std::shared_ptr<const QList<heatmap_layer>> layers_;
 };
 

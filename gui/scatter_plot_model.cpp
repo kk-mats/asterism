@@ -69,6 +69,29 @@ const std::shared_ptr<QList<heatmap_layer>> &scatter_plot_model::layers() const 
 	return this->layers_;
 }
 
+bool scatter_plot_model::insertRows(int row, int count, const QModelIndex &parent) noexcept
+{
+	const int end=row+count;
+	this->beginInsertRows(parent, row, end-1);
+
+	for(; row<end; ++row)
+	{
+		this->layers_->append(heatmap_layer());
+	}
+
+	this->endInsertRows();
+}
+
+bool scatter_plot_model::setData(const QModelIndex &index, const QVariant &value, int role) noexcept
+{
+	if(!index.isValid() || role!=Qt::EditRole)
+	{
+		return false;
+	}
+
+
+}
+
 void scatter_plot_model::change_current_layer(const QModelIndex &index) noexcept
 {
 	this->beginResetModel();

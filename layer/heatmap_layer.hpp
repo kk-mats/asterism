@@ -16,6 +16,7 @@ class clone_size_heatmap_layer final
 	: public file_separated_grid_layer<QColor>
 {
 public:
+	clone_size_heatmap_layer() noexcept=default;
 	clone_size_heatmap_layer(const std::shared_ptr<detection_result> &primitive) noexcept;
 
 	QString name() const noexcept;
@@ -39,6 +40,7 @@ class matching_rate_heatmap_layer final
 	: public file_separated_grid_layer<QColor>
 {
 public:
+	matching_rate_heatmap_layer() noexcept=default;
 	matching_rate_heatmap_layer(const std::shared_ptr<detection_result> &primitive1, const std::shared_ptr<detection_result> &primitive2) noexcept;
 
 	QString name() const noexcept;
@@ -59,6 +61,7 @@ private:
 class heatmap_layer
 {
 public:
+	heatmap_layer() noexcept=default;
 	heatmap_layer(const std::shared_ptr<detection_result> &primitive) noexcept;
 	heatmap_layer(const std::shared_ptr<detection_result> &primitive1, const std::shared_ptr<detection_result> &primitive2) noexcept;
 

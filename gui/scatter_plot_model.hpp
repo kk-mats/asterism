@@ -10,7 +10,7 @@
 namespace asterism
 {
 
-class scatter_plot_model
+class scatter_plot_model final
 	: public QAbstractTableModel
 {
 	Q_OBJECT
@@ -23,6 +23,7 @@ public:
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const noexcept override;
 	QVariant headerData(int section, Qt::Orientation orientation, int role=Qt::DisplayRole) const noexcept override;
 
+
 	void add_heatmap_layers(QList<heatmap_layer> &&layers) noexcept;
 	void add_heatmap_layer(heatmap_layer &&layer) noexcept;
 	bool update() noexcept;
@@ -31,6 +32,9 @@ public:
 
 public slots:
 	void change_current_layer(const QModelIndex &index) noexcept;
+
+	bool insertRows(int row, int count, const QModelIndex &parent=QModelIndex()) noexcept override;
+	bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole) noexcept override;
 
 private:
 	int current_index_=0;
