@@ -23,7 +23,6 @@ public:
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const noexcept override;
 	QVariant headerData(int section, Qt::Orientation orientation, int role=Qt::DisplayRole) const noexcept override;
 
-public slots:
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
 
 private:

@@ -7,13 +7,10 @@ namespace asterism
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
-	this->scatter_plot_view_->setModel(this->scatter_plot_model_);
-	this->scatter_plot_view_->setItemDelegate(new scatter_plot_delegate(this));
-
 	this->initialize_layer_list_dock();
 
 	auto *main_layout=new QHBoxLayout;
-	main_layout->addWidget(this->scatter_plot_view_);
+	main_layout->addWidget(this->scatter_plot_widget_);
 
 	auto *central_widget=new QWidget;
 	central_widget->setLayout(main_layout);
@@ -53,8 +50,8 @@ void MainWindow::initialize_layer_list_dock() noexcept
 	this->addDockWidget(Qt::LeftDockWidgetArea, this->layer_list_dock_, Qt::Vertical);
 
 	connect(this->layer_list_view_, &layer_list_view::clicked, this->layer_list_model_, &layer_list_model::select_layer_ptr);
-	connect(this->layer_list_model_, &layer_list_model::current_layer_changed, this->scatter_plot_model_, &scatter_plot_model::set_layer);
-	connect(this->scatter_plot_model_, &scatter_plot_model::modelReset, this->scatter_plot_view_, &scatter_plot_view::reset);
+	connect(this->layer_list_model_, &layer_list_model::current_layer_changed, this->scatter_plot_widget_, &scatter_plot_widget::set_layer);
+	//connect(this->scatter_plot_model_, &scatter_plot_model::modelReset, this->scatter_plot_view_, &scatter_plot_view::reset);
 }
 
 void MainWindow::create_actions()

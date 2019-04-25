@@ -37,8 +37,7 @@ private:
 	detection_results results_;
 	std::shared_ptr<detection_result> current_layer_=nullptr;
 
-	scatter_plot_view *scatter_plot_view_=new scatter_plot_view;
-	scatter_plot_model *scatter_plot_model_=new scatter_plot_model(this);
+	scatter_plot_widget *scatter_plot_widget_=new scatter_plot_widget(this);
 
 	layer_list_view *layer_list_view_=new layer_list_view(this);
 	layer_list_model *layer_list_model_=new layer_list_model(this);

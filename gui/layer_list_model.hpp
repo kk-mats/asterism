@@ -34,7 +34,7 @@ public slots:
 	bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole) noexcept override;
 
 private:
-	int current_index_=0;
+	int current_index_=-1;
 	shared_list<heatmap_layer> layers_;
 };
 
