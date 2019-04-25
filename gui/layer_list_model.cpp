@@ -28,8 +28,6 @@ void layer_list_model::emplace_clone_size_heatmap_layers(const shared_list<detec
 	{
 		this->setData(this->index(head+i, 0), QVariant::fromValue(results[i]));
 	}
-
-	//this->change_current_layer(this->createIndex(this->layers_->size()-1, 0));
 }
 
 void layer_list_model::emplace_clone_size_heatmap_layer(const std::shared_ptr<detection_result> &result) noexcept
@@ -37,8 +35,16 @@ void layer_list_model::emplace_clone_size_heatmap_layer(const std::shared_ptr<de
 	const auto head=this->layers_.size();
 	this->insertRow(head);
 	this->setData(this->index(head, 0), QVariant::fromValue(result));
+}
 
-	//this->change_current_layer(this->createIndex(this->layers_->size()-1, 0));
+void layer_list_model::select_layer_ptr(const QModelIndex &index) noexcept
+{
+	if(this->current_index_==index.row())
+	{
+		return;
+	}
+	this->current_index_=index.row();
+	emit this->current_layer_changed(this->layers_[index.row()]);
 }
 
 bool layer_list_model::insertRows(const int row, const int count, const QModelIndex &parent) noexcept

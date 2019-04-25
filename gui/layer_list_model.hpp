@@ -29,10 +29,12 @@ signals:
 	void current_layer_changed(const std::shared_ptr<heatmap_layer> &layer);
 
 public slots:
+	void select_layer_ptr(const QModelIndex &index) noexcept;
 	bool insertRows(const int row, const int count, const QModelIndex &parent=QModelIndex()) noexcept override;
 	bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole) noexcept override;
 
 private:
+	int current_index_=0;
 	shared_list<heatmap_layer> layers_;
 };
 

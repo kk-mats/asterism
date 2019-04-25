@@ -24,7 +24,7 @@ public:
 	QVariant headerData(int section, Qt::Orientation orientation, int role=Qt::DisplayRole) const noexcept override;
 
 public slots:
-	void change_current_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
+	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
 
 private:
 	std::shared_ptr<heatmap_layer> current_layer_=nullptr;

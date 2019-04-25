@@ -6,7 +6,7 @@ namespace asterism
 clone_size_heatmap_layer::clone_size_heatmap_layer(const std::shared_ptr<detection_result> &primitive) noexcept
 	: primitive_(primitive)
 {
-	this->name_=primitive->environment().name();
+	this->name_=this->primitive_->environment().name();
 	this->update();
 }
 
@@ -53,6 +53,7 @@ bool clone_size_heatmap_layer::update() noexcept
 
 	selector.set_anchor(Qt::red, this->max_);
 
+	this->width_=this->primitive_->clone_pair_layer()->width();
 	this->values_.resize(this->primitive_->clone_pair_layer()->size());
 	for(auto i=this->begin1d(), end=this->end1d(); i!=end; ++i)
 	{

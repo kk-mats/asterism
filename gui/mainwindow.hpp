@@ -48,6 +48,8 @@ private:
 	QAction *open_act_;
 	QAction *quit_act_;
 
+	void initialize_layer_list_dock() noexcept;
+
 	void create_actions();
 	void create_menus();
 

@@ -38,10 +38,11 @@ QVariant scatter_plot_model::headerData(int section [[maybe_unused]], Qt::Orient
 	return QVariant();
 }
 
-void scatter_plot_model::change_current_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept
+void scatter_plot_model::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept
 {
 	this->beginResetModel();
 	this->current_layer_=layer;
+	qDebug()<<layer->name();
 	this->endResetModel();
 }
 
