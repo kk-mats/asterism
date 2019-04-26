@@ -5,11 +5,10 @@
 
 #include "model/clone_pair.hpp"
 
-
 namespace asterism
 {
 
-using file_index=QHash<std::weak_ptr<file>, int>;
+using file_index=std::unordered_map<std::weak_ptr<file>, int>;
 
 class grid_coordinate
 {

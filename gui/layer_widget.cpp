@@ -2,9 +2,11 @@
 
 namespace asterism
 {
-layer_widget::layer_widget(QWidget *parent) noexcept
+layer_widget::layer_widget(const detection_results *results, QWidget *parent) noexcept
 	: QWidget(parent)
 {
+	this->scatter_plot_widget_=new scatter_plot_widget(results);
+
 	auto *layout=new QVBoxLayout(this);
 	layout->addWidget(this->current_grid_detail_widget_);
 	layout->addWidget(this->scatter_plot_widget_);

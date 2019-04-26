@@ -7,17 +7,13 @@ namespace asterism
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
-
-	//auto *main_layout=new QHBoxLayout;
-	//main_layout->addWidget(this->layer_widget_);
-
-	//auto *central_widget=new QWidget;
-	//central_widget->setLayout(main_layout);
+	this->layer_widget_=new layer_widget(&this->results_, this);
 	this->setCentralWidget(this->layer_widget_);
 
-	this->initialize_layer_list_dock();
+	this->initialize_docks();
 
 	connect(this->layer_list_widget_, &layer_list_widget::current_layer_changed, this->layer_widget_, &layer_widget::set_layer);
+	connect(this->layer_list_widget_, &layer_list_widget::current_layer_changed, this->layer_detail_widget_, &layer_detail_widget::set_layer);
 
 	this->create_actions();
 	this->create_menus();
@@ -46,13 +42,15 @@ void MainWindow::open()
 }
 
 
-void MainWindow::initialize_layer_list_dock() noexcept
+void MainWindow::initialize_docks() noexcept
 {
 	this->layer_list_dock_->setWidget(this->layer_list_widget_);
 	this->addDockWidget(Qt::LeftDockWidgetArea, this->layer_list_dock_, Qt::Vertical);
+	this->layer_detail_dock_->setWidget(this->layer_detail_widget_);
+	this->addDockWidget(Qt::LeftDockWidgetArea, this->layer_detail_dock_, Qt::Vertical);
 }
 
-void MainWindow::create_actions()
+void MainWindow::create_actions() noexcept
 {
 	this->open_act_=new QAction(tr("&Open"), this);
 	this->open_act_->setShortcuts(QKeySequence::Open);
@@ -66,7 +64,7 @@ void MainWindow::create_actions()
 
 }
 
-void MainWindow::create_menus()
+void MainWindow::create_menus() noexcept
 {
 	this->file_menu_=this->menuBar()->addMenu(tr("&File"));
 	this->file_menu_->addAction(this->open_act_);

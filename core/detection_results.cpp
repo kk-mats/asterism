@@ -64,6 +64,18 @@ const shared_set<file>& detection_results::files() const noexcept
 	return this->files_;
 }
 
+std::shared_ptr<file> detection_results::file_at(const int index) const noexcept
+{
+	for(const auto &p:this->file_index_)
+	{
+		if(p.second==index)
+		{
+			return p.first.lock();
+		}
+	}
+	return nullptr;
+}
+
 QString detection_results::target_path() const noexcept
 {
 	return this->target_path_;
@@ -88,7 +100,7 @@ void detection_results::update_file_index() noexcept
 	int index=0;
 	for(const auto &key:list)
 	{
-		this->file_index_.insert(key, index);
+		this->file_index_.emplace(key, index);
 		++index;
 	}
 }

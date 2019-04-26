@@ -15,6 +15,7 @@
 
 #include "gui/layer_widget.hpp"
 #include "gui/layer_list_widget.hpp"
+#include "gui/layer_detail_widget.hpp"
 
 namespace asterism
 {
@@ -35,19 +36,22 @@ private:
 	detection_results results_;
 	std::shared_ptr<detection_result> current_layer_=nullptr;
 
-	layer_widget *layer_widget_=new layer_widget(this);
+	layer_widget *layer_widget_;
 
 	layer_list_widget *layer_list_widget_=new layer_list_widget(this);
-	QDockWidget *layer_list_dock_=new QDockWidget(QStringLiteral("Layer List"), this);
+	QDockWidget *layer_list_dock_=new QDockWidget(QStringLiteral("Layers"), this);
+	
+	layer_detail_widget *layer_detail_widget_=new layer_detail_widget(this);
+	QDockWidget *layer_detail_dock_=new QDockWidget(QStringLiteral("Layer Details"), this);
 
 	QMenu *file_menu_;
 	QAction *open_act_;
 	QAction *quit_act_;
 
-	void initialize_layer_list_dock() noexcept;
+	void initialize_docks() noexcept;
 
-	void create_actions();
-	void create_menus();
+	void create_actions() noexcept;
+	void create_menus() noexcept;
 
 	void update() noexcept;
 };

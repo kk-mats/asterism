@@ -28,6 +28,8 @@ public:
 	const shared_list<detection_result>& results() const noexcept;
 	const shared_set<file>& files() const noexcept;
 
+	std::shared_ptr<file> file_at(const int index) const noexcept;
+
 	void set_target_path(const QString &target_path) noexcept;
 	QString target_path() const noexcept;
 	const file_index& file_index_map() const noexcept;

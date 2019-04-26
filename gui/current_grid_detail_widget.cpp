@@ -11,6 +11,8 @@ current_grid_detail_widget::current_grid_detail_widget(QWidget *parent) noexcept
 
 	this->filepath1_->setPlaceholderText("no grid selected");
 	this->filepath2_->setPlaceholderText("no grid selected");
+	this->filepath1_->setReadOnly(true);
+	this->filepath2_->setReadOnly(true);
 
 	auto *filepath_layout=new QGridLayout(this);
 
@@ -20,14 +22,11 @@ current_grid_detail_widget::current_grid_detail_widget(QWidget *parent) noexcept
 	filepath_layout->addWidget(filepath2_, 1, 1);
 
 	this->setLayout(filepath_layout);
-
-	connect(this, &current_grid_detail_widget::filepath1_changed, this->filepath1_, &QLineEdit::setText);
-	connect(this, &current_grid_detail_widget::filepath2_changed, this->filepath2_, &QLineEdit::setText);
 }
 
 void current_grid_detail_widget::change_current_grid(const QString &filepath1, const QString &filepath2, const int clone_pair_size) noexcept
 {
-	emit filepath1_changed(filepath1);
-	emit filepath2_changed(filepath2);
+	this->filepath1_->setText(filepath1);
+	this->filepath2_->setText(filepath2);
 }
 }

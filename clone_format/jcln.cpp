@@ -48,7 +48,7 @@ QJsonValue jcln::writer::to_qjson(const std::weak_ptr<file> &file_ptr, const fil
 {
 	return QJsonObject
 	{
-		{FILE_ID, file_index[file_ptr]},
+		{FILE_ID, file_index.at(file_ptr)},
 		{PATH, file_ptr.lock()->canonical_file_path()}
 	};
 }
@@ -57,7 +57,7 @@ QJsonValue jcln::writer::to_qjson(const fragment &fragment, const file_index &fi
 {
 	return QJsonObject
 	{
-		{FILE_ID, int(file_index[fragment.file_ptr()])},
+		{FILE_ID, int(file_index.at(fragment.file_ptr()))},
 		{BEGIN, int(fragment.begin())},
 		{END, int(fragment.end())}
 	};

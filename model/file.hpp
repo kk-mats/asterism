@@ -7,6 +7,8 @@
 #include <QJsonObject>
 #include <QJsonValue>
 
+#include <functional>
+
 #include "core/utility.hpp"
 #include "object_id_t.hpp"
 
@@ -69,4 +71,17 @@ bool operator ==(const std::shared_ptr<file> &lhs, const std::shared_ptr<file> &
 QDebug operator <<(QDebug logger, const file &file) noexcept;
 }
 
+namespace std
+{
+
+template <>
+struct hash<std::weak_ptr<asterism::file>>
+{
+	size_t operator ()(const std::weak_ptr<asterism::file> &v) const noexcept
+	{
+		return std::hash<asterism::file*>()(v.lock().get());
+	}
+};
+
+}
 #endif // FILE_HPP

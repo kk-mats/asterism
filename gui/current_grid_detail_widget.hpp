@@ -17,14 +17,9 @@ class current_grid_detail_widget final
 
 public:
 	explicit current_grid_detail_widget(QWidget *parent=nullptr) noexcept;
-
-
+	
 public slots:
 	void change_current_grid(const QString &filepath1, const QString &filepath2, const int clone_pair_size) noexcept;
-
-signals:
-	void filepath1_changed(const QString &filepath1);
-	void filepath2_changed(const QString &filepath2);
 
 private:
 	QLineEdit *filepath1_=new QLineEdit(this);

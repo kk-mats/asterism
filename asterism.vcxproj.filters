@@ -88,9 +88,6 @@
     <ClCompile Include="core\utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\current_grid_detail_view.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="gui\scatter_plot_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -98,6 +95,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gui\layer_list_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\current_grid_detail_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\layer_detail_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -156,9 +159,6 @@
     <ClInclude Include="core\utility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gui\layer_detail_widget.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -186,9 +186,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="gui\current_grid_detail_view.hpp">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="gui\layer_widget.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -196,6 +193,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="gui\scatter_plot_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\current_grid_detail_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\layer_detail_widget.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

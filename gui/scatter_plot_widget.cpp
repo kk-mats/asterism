@@ -19,7 +19,7 @@ int scatter_plot_model::columnCount(const QModelIndex &parent [[maybe_unused]] )
 
 QVariant scatter_plot_model::data(const QModelIndex &index, int role) const noexcept
 {
-	if(index.isValid()&&role==Qt::DisplayRole)
+	if(index.isValid()&&role==Qt::BackgroundColorRole)
 	{
 		auto r=*this->current_layer_;
 		auto c=r[grid_2d_coordinate::to_linear(index.row(), index.column())];
@@ -38,24 +38,13 @@ QVariant scatter_plot_model::headerData(int section [[maybe_unused]] , Qt::Orien
 	return QVariant();
 }
 
-void scatter_plot_delegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-	if(index.data().canConvert<QColor>())
-	{
-		painter->fillRect(option.rect, index.data().value<QColor>());
-	}
-}
 
-QSize scatter_plot_delegate::sizeHint(const QStyleOptionViewItem &option [[maybe_unused]], const QModelIndex &index [[maybe_unused]]) const
+scatter_plot_widget::scatter_plot_widget(const detection_results *results, QWidget *parent)
+	: QTableView(parent), results_(results)
 {
-	return QSize(grid_size, grid_size);
-}
+	this->setSelectionMode(QAbstractItemView::SingleSelection);
 
-scatter_plot_widget::scatter_plot_widget(QWidget *parent)
-	: QTableView(parent)
-{
 	this->setModel(this->model_);
-	this->setItemDelegate(new scatter_plot_delegate(parent));
 
 	this->verticalHeader()->hide();
 	this->horizontalHeader()->hide();
@@ -79,8 +68,9 @@ void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 {
 	if(index.isValid() && this->model_->previous_!=index)
 	{
+		this->setCurrentIndex(index);
 		this->model_->previous_=index;
-		emit current_grid_changed(QString::number(index.row()), QString::number(index.column()), 100);
+		emit current_grid_changed(this->results_->file_at(index.row())->canonical_file_path(), this->results_->file_at(index.column())->canonical_file_path(), 100);
 	}
 }
 }

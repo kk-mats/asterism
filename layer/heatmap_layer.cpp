@@ -35,10 +35,32 @@ int clone_size_heatmap_layer::max() const noexcept
 	return this->max_;
 }
 
+std::vector<std::pair<QString, QString>> clone_size_heatmap_layer::details() const noexcept
+{
+	return
+	{
+		{"name", this->name_},
+		{"source", this->primitive_->environment().source()},
+		{"clone pair size min", QString::number(this->min_)},
+		{"clone pair size max", QString::number(this->max_)},
+		{"clone pair size sum", QString::number(this->sum_)}
+	};
+}
+
 bool clone_size_heatmap_layer::update() noexcept
 {
-	this->max_=(*std::max_element(this->primitive_->clone_pair_layer()->begin(), this->primitive_->clone_pair_layer()->end(), [](const auto&g1, const auto&g2){ return g1.size()<g2.size(); })).size();
-	this->min_=(*std::min_element(this->primitive_->clone_pair_layer()->begin(), this->primitive_->clone_pair_layer()->end(), [](const auto&g1, const auto&g2){ return g1.size()<g2.size(); })).size();
+	for(const auto &g:*this->primitive_->clone_pair_layer())
+	{
+		this->sum_+=g.size();
+		if(this->min_>g.size())
+		{
+			this->min_=g.size();
+		}
+		if(this->max_<g.size())
+		{
+			this->max_=g.size();
+		}
+	}
 
 	color_selector selector(Qt::white, 0);
 	if(0<this->min_)
@@ -101,6 +123,17 @@ QString matching_rate_heatmap_layer::primitive2_source() const noexcept
 	return this->primitive1_->environment().source();
 }
 
+std::vector<std::pair<QString, QString>> matching_rate_heatmap_layer::details() const noexcept
+{
+	return
+	{
+		{"name", this->name_},
+		{"source", this->primitive1_->environment().source()},
+		{"source", this->primitive2_->environment().source()},
+		{"average_matching_rate", QString::number(this->average_matching_rate_)}
+	};
+}
+
 bool matching_rate_heatmap_layer::update() noexcept
 {
 	return false;
@@ -128,6 +161,11 @@ QString heatmap_layer::name() const noexcept
 int heatmap_layer::width() const noexcept
 {
 	return std::visit([](const auto &h){ return h.width(); }, this->value_);
+}
+
+std::vector<std::pair<QString, QString>> heatmap_layer::details() const noexcept
+{
+	return std::visit([](const auto &h){ return h.details(); }, this->value_);
 }
 
 const QColor& heatmap_layer::operator[](const grid_coordinate &coordinate) const noexcept

@@ -27,12 +27,16 @@ public:
 	int min() const noexcept;
 	int max() const noexcept;
 
+	std::vector<std::pair<QString, QString>> details() const noexcept;
+
 	bool update() noexcept;
 
 private:
 	QString name_;
 	std::shared_ptr<detection_result> primitive_;
-	int min_, max_;
+	int min_=std::numeric_limits<int>::max();
+	int max_=0;
+	int sum_=0;
 };
 
 
@@ -50,15 +54,18 @@ public:
 	QString primitive2_name() const noexcept;
 	QString primitive2_source() const noexcept;
 
+	std::vector<std::pair<QString, QString>> details() const noexcept;
+
 	bool update() noexcept;
 
 private:
 	QString name_;
 	std::shared_ptr<detection_result> primitive1_, primitive2_;
+	int average_matching_rate_=0;
 };
 
 
-class heatmap_layer
+class heatmap_layer final
 {
 public:
 	heatmap_layer() noexcept=default;
@@ -72,6 +79,7 @@ public:
 
 	QString name() const noexcept;
 	int width() const noexcept;
+	std::vector<std::pair<QString, QString>> details() const noexcept;
 
 	const QColor& operator [](const grid_coordinate &coordinate) const noexcept;
 	const QColor& operator [](const int i) const noexcept;

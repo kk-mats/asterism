@@ -4,7 +4,7 @@ namespace asterism
 {
 
 grid_2d_coordinate::grid_2d_coordinate(const std::weak_ptr<file> &x, const std::weak_ptr<file> &y, const file_index &file_index) noexcept
-	: x_y_(std::minmax(file_index[x], file_index[y]))
+	: x_y_(std::minmax(file_index.at(x), file_index.at(y)))
 {}
 
 int grid_2d_coordinate::to_linear() const noexcept
@@ -49,13 +49,13 @@ int grid_1d_coordinate::to_linear() const noexcept
 	return this->i_;
 }
 
-grid_1d_coordinate& grid_1d_coordinate::operator ++() noexcept
+grid_1d_coordinate &grid_1d_coordinate::operator ++() noexcept
 {
 	++this->i_;
 	return *this;
 }
 
-grid_1d_coordinate& grid_1d_coordinate::operator --() noexcept
+grid_1d_coordinate &grid_1d_coordinate::operator --() noexcept
 {
 	--this->i_;
 	return *this;
