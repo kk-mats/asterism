@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	this->initialize_layer_list_dock();
 
-	connect(this->layer_list_model_, &layer_list_model::current_layer_changed, this->layer_widget_, &layer_widget::set_layer);
+	connect(this->layer_list_widget_, &layer_list_widget::current_layer_changed, this->layer_widget_, &layer_widget::set_layer);
 
 	this->create_actions();
 	this->create_menus();
@@ -38,7 +38,7 @@ void MainWindow::open()
 		{
 			this->results_=std::move(results.value());
 			this->update();
-			this->layer_list_model_->emplace_clone_size_heatmap_layers(this->results_.results());
+			this->layer_list_widget_->emplace_clone_size_heatmap_layers(this->results_.results());
 
 			return;
 		}
@@ -48,11 +48,8 @@ void MainWindow::open()
 
 void MainWindow::initialize_layer_list_dock() noexcept
 {
-	this->layer_list_view_->setModel(this->layer_list_model_);
-	this->layer_list_dock_->setWidget(this->layer_list_view_);
+	this->layer_list_dock_->setWidget(this->layer_list_widget_);
 	this->addDockWidget(Qt::LeftDockWidgetArea, this->layer_list_dock_, Qt::Vertical);
-
-	connect(this->layer_list_view_, &layer_list_view::clicked, this->layer_list_model_, &layer_list_model::select_layer_ptr);
 }
 
 void MainWindow::create_actions()

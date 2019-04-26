@@ -1,5 +1,5 @@
-#ifndef CURRENT_GRID_DETAIL_VIEW_HPP
-#define CURRENT_GRID_DETAIL_VIEW_HPP
+#ifndef CURRENT_GRID_DETAIL_WIDGET_HPP
+#define CURRENT_GRID_DETAIL_WIDGET_HPP
 
 #include <QLabel>
 #include <QLineEdit>
@@ -33,4 +33,4 @@ private:
 
 }
 
-#endif // CURRENT_GRID_DETAIL_VIEW_HPP
+#endif // CURRENT_GRID_DETAIL_WIDGET_HPP

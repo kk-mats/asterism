@@ -85,26 +85,20 @@
     <ClCompile Include="model\result_environment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\scatter_plot_model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\scatter_plot_view.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="core\utility.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\layer_list_model.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\layer_list_view.cpp">
-      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="gui\current_grid_detail_view.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="gui\scatter_plot_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="gui\layer_widget.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\layer_list_widget.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -159,12 +153,6 @@
     <ClInclude Include="model\result_environment.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <QtMoc Include="gui\scatter_plot_model.hpp">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="gui\scatter_plot_view.hpp">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <ClInclude Include="core\utility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -198,16 +186,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="gui\layer_list_model.hpp">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="gui\layer_list_view.hpp">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="gui\current_grid_detail_view.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="gui\layer_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\layer_list_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\scatter_plot_widget.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

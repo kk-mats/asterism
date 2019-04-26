@@ -14,8 +14,7 @@
 #include "core/detection_results.hpp"
 
 #include "gui/layer_widget.hpp"
-#include "gui/layer_list_view.hpp"
-#include "gui/layer_list_model.hpp"
+#include "gui/layer_list_widget.hpp"
 
 namespace asterism
 {
@@ -38,8 +37,7 @@ private:
 
 	layer_widget *layer_widget_=new layer_widget(this);
 
-	layer_list_view *layer_list_view_=new layer_list_view(this);
-	layer_list_model *layer_list_model_=new layer_list_model(this);
+	layer_list_widget *layer_list_widget_=new layer_list_widget(this);
 	QDockWidget *layer_list_dock_=new QDockWidget(QStringLiteral("Layer List"), this);
 
 	QMenu *file_menu_;

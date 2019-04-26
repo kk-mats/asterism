@@ -1,9 +1,7 @@
-#include "current_grid_detail_view.hpp"
+#include "current_grid_detail_widget.hpp"
 
 namespace asterism
 {
-
-
 
 current_grid_detail_widget::current_grid_detail_widget(QWidget *parent) noexcept
 	: QWidget(parent)
