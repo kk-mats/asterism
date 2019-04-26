@@ -13,8 +13,7 @@
 #include "clone_format/clone_io.hpp"
 #include "core/detection_results.hpp"
 
-#include "gui/scatter_plot_view.hpp"
-#include "gui/scatter_plot_model.hpp"
+#include "gui/layer_widget.hpp"
 #include "gui/layer_list_view.hpp"
 #include "gui/layer_list_model.hpp"
 
@@ -37,7 +36,7 @@ private:
 	detection_results results_;
 	std::shared_ptr<detection_result> current_layer_=nullptr;
 
-	scatter_plot_widget *scatter_plot_widget_=new scatter_plot_widget(this);
+	layer_widget *layer_widget_=new layer_widget(this);
 
 	layer_list_view *layer_list_view_=new layer_list_view(this);
 	layer_list_model *layer_list_model_=new layer_list_model(this);

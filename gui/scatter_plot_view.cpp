@@ -16,11 +16,9 @@ QSize scatter_plot_delegate::sizeHint(const QStyleOptionViewItem &option [[maybe
 	return QSize(grid_size, grid_size);
 }
 
-scatter_plot_widget::scatter_plot_widget(QWidget *parent)
+scatter_plot_view::scatter_plot_view(QWidget *parent)
 	: QTableView(parent)
 {
-	this->model_=new scatter_plot_model(parent);
-	this->setModel(this->model_);
 	this->setItemDelegate(new scatter_plot_delegate(parent));
 
 	this->verticalHeader()->hide();
@@ -29,11 +27,6 @@ scatter_plot_widget::scatter_plot_widget(QWidget *parent)
 	this->horizontalHeader()->setMinimumSectionSize(grid_size);
 	this->verticalHeader()->setDefaultSectionSize(grid_size);
 	this->horizontalHeader()->setDefaultSectionSize(grid_size);
-}
-
-void scatter_plot_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept
-{
-	this->model_->set_layer(layer);
 }
 
 }

@@ -9,7 +9,7 @@
 #include <QPainter>
 
 #include "core/logger.hpp"
-#include "scatter_plot_model.hpp"
+#include "layer/heatmap_layer.hpp"
 
 namespace asterism
 {
@@ -28,19 +28,13 @@ public:
 	QSize scatter_plot_delegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };
 
-class scatter_plot_widget final
+class scatter_plot_view final
 	: public QTableView
 {
 	Q_OBJECT
 
 public:
-	explicit scatter_plot_widget(QWidget *parent=nullptr);
-
-public slots:
-	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
-
-private:
-	scatter_plot_model *model_;
+	explicit scatter_plot_view(QWidget *parent=nullptr);
 };
 
 }

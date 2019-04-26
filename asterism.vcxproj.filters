@@ -100,6 +100,12 @@
     <ClCompile Include="gui\layer_list_view.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="gui\current_grid_detail_view.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\layer_widget.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="clone_format\clone_io.hpp">
@@ -162,12 +168,6 @@
     <ClInclude Include="core\utility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gui\current_grid_detail_view.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\scatter_plot_widget.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -199,6 +199,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="gui\layer_list_view.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\current_grid_detail_view.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\layer_widget.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

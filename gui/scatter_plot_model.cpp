@@ -42,8 +42,15 @@ void scatter_plot_model::set_layer(const std::shared_ptr<heatmap_layer> &layer) 
 {
 	this->beginResetModel();
 	this->current_layer_=layer;
-	qDebug()<<layer->name();
 	this->endResetModel();
+}
+
+void scatter_plot_model::select_grid(const QModelIndex &index) noexcept
+{
+	if(index.isValid())
+	{
+		emit current_grid_changed(QString::number(index.row()), QString::number(index.column()), 100);
+	}
 }
 
 }

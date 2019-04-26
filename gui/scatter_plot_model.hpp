@@ -25,6 +25,12 @@ public:
 
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
 
+public slots:
+	void select_grid(const QModelIndex &index) noexcept;
+
+signals:
+	void current_grid_changed(const QString &filepath1, const QString &filepath2, const int clone_pair_size);
+
 private:
 	std::shared_ptr<heatmap_layer> current_layer_=nullptr;
 };
