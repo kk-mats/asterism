@@ -7,6 +7,17 @@ layer_list_model::layer_list_model(QObject *parent) noexcept
 	: QAbstractListModel(parent)
 {}
 
+bool layer_list_model::removeRows(int row, int count, const QModelIndex &parent)
+{
+	this->beginRemoveRows(parent, row, row+count-1);
+	for(int i=0; i<count; ++i)
+	{
+		this->layers_.removeAt(row);
+	}
+	this->endRemoveRows();
+	return true;
+}
+
 int layer_list_model::rowCount(const QModelIndex &parent) const
 {
 	return this->layers_.size();
@@ -14,7 +25,7 @@ int layer_list_model::rowCount(const QModelIndex &parent) const
 
 QVariant layer_list_model::data(const QModelIndex &index, int role) const
 {
-	if(index.isValid()&&role==Qt::DisplayRole&&this->layers_.size()>0)
+	if(index.isValid() && role==Qt::DisplayRole && this->layers_.size()>0)
 	{
 		return this->layers_[index.row()]->name();
 	}
@@ -34,7 +45,7 @@ bool layer_list_model::insertRows(const int row, const int count, const QModelIn
 
 bool layer_list_model::setData(const QModelIndex &index, const QVariant &value, int role) noexcept
 {
-	if(!index.isValid()||role!=Qt::EditRole||!value.canConvert<std::shared_ptr<detection_result>>())
+	if(!index.isValid() || role!=Qt::EditRole || !value.canConvert<std::shared_ptr<detection_result>>())
 	{
 		return false;
 	}
@@ -50,6 +61,23 @@ layer_list_widget::layer_list_widget(QWidget *parent) noexcept
 {
 	this->setModel(this->model_);
 	connect(this, &layer_list_widget::clicked, this, &layer_list_widget::select_layer_ptr);
+}
+
+void layer_list_widget::update_layers() noexcept
+{
+	for(auto &&h:this->model_->layers_)
+	{
+		h->update();
+	}
+}
+
+void layer_list_widget::set_clone_size_heatmap_layers(const shared_list<detection_result> &results) noexcept
+{
+	if(auto size=this->model_->rowCount(); size>0)
+	{
+		this->model_->removeRows(0, size);
+	}
+	this->emplace_clone_size_heatmap_layers(results);
 }
 
 

@@ -20,6 +20,7 @@ class layer_list_model final
 public:
 	explicit layer_list_model(QObject *parent=nullptr) noexcept;
 
+	bool removeRows(int row, int count, const QModelIndex &parent=QModelIndex()) override;
 	int rowCount(const QModelIndex &parent=QModelIndex()) const override;
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const override;
 
@@ -39,6 +40,10 @@ class layer_list_widget final
 
 public:
 	explicit layer_list_widget(QWidget *parent=nullptr) noexcept;
+
+	void update_layers() noexcept;
+
+	void set_clone_size_heatmap_layers(const shared_list<detection_result> &results) noexcept;
 
 	void emplace_clone_size_heatmap_layers(const shared_list<detection_result> &results) noexcept;
 	void emplace_clone_size_heatmap_layer(const std::shared_ptr<detection_result> &result) noexcept;

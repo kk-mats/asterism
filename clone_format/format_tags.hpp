@@ -12,6 +12,7 @@ public:
 	static inline const QString GLOBAL="global";
 	static inline const QString TARGET="target";
 	static inline const QString ENVIRONMENT="environment";
+	static inline const QString PROJECT_ROOT="project_root";
 	static inline const QString SOURCE="source";
 	static inline const QString CLONE_DETECTOR="clone_detector";
 	static inline const QString NAME="name";

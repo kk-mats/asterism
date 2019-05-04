@@ -33,12 +33,12 @@ std::shared_ptr<detection_result> detection_results::empalce(result_environment 
 	return *itr;
 }
 
-void detection_results::update() noexcept
+void detection_results::update_layers() noexcept
 {
 	this->update_file_index();
 	for(auto &&r:this->results_)
 	{
-		r->update(this->file_index_);
+		r->update_layer(this->file_index_);
 	}
 }
 

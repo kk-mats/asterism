@@ -35,7 +35,7 @@ std::shared_ptr<clone_pair_grid_layer> detection_result::clone_pair_layer() cons
 	return this->clone_pair_grid_layer_;
 }
 
-std::shared_ptr<clone_pair_grid_layer> detection_result::update(const file_index &file_index) noexcept
+std::shared_ptr<clone_pair_grid_layer> detection_result::update_layer(const file_index &file_index) noexcept
 {
 	if(this->clone_pair_grid_layer_==nullptr)
 	{

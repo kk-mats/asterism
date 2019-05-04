@@ -37,6 +37,8 @@ private:
 	int min_=std::numeric_limits<int>::max();
 	int max_=0;
 	int sum_=0;
+
+	void make() noexcept;
 };
 
 

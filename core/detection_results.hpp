@@ -23,7 +23,7 @@ public:
 	std::shared_ptr<file> emplace(QString &&canonical_file_path) noexcept;
 	std::shared_ptr<detection_result> empalce(result_environment &&environment, shared_set<clone_pair> &&clone_pairs) noexcept;
 
-	void update() noexcept;
+	void update_layers() noexcept;
 	bool remove(std::shared_ptr<detection_result> &&ptr) noexcept;
 	const shared_list<detection_result>& results() const noexcept;
 	const shared_set<file>& files() const noexcept;

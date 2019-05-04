@@ -7,7 +7,7 @@ clone_size_heatmap_layer::clone_size_heatmap_layer(const std::shared_ptr<detecti
 	: primitive_(primitive)
 {
 	this->name_=this->primitive_->environment().name();
-	this->update();
+	this->make();
 }
 
 QString clone_size_heatmap_layer::name() const noexcept
@@ -49,31 +49,20 @@ std::vector<std::pair<QString, QString>> clone_size_heatmap_layer::details() con
 
 bool clone_size_heatmap_layer::update() noexcept
 {
-	for(const auto &g:*this->primitive_->clone_pair_layer())
-	{
-		this->sum_+=g.size();
-		if(this->min_>g.size())
-		{
-			this->min_=g.size();
-		}
-		if(this->max_<g.size())
-		{
-			this->max_=g.size();
-		}
-	}
-
+	const auto low=QColor(204, 255, 144);
+	const auto high=QColor(233, 30, 30);
 	color_selector selector(Qt::white, 0);
 	if(0<this->min_)
 	{
 		selector.set_anchor(Qt::white, this->min_-1);
-		selector.set_anchor(Qt::green, this->min_);
+		selector.set_anchor(low, this->min_);
 	}
 	else
 	{
-		selector.set_anchor(Qt::green, 1);
+		selector.set_anchor(low, 1);
 	}
 
-	selector.set_anchor(Qt::red, this->max_);
+	selector.set_anchor(high, this->max_);
 
 	this->width_=this->primitive_->clone_pair_layer()->width();
 	this->values_.resize(this->primitive_->clone_pair_layer()->size());
@@ -90,6 +79,23 @@ bool clone_size_heatmap_layer::update() noexcept
 		}
 	}
 	return true;
+}
+
+void clone_size_heatmap_layer::make() noexcept
+{
+	for(const auto &g:*this->primitive_->clone_pair_layer())
+	{
+		this->sum_+=g.size();
+		if(this->min_>g.size())
+		{
+			this->min_=g.size();
+		}
+		if(this->max_<g.size())
+		{
+			this->max_=g.size();
+		}
+	}
+	this->update();
 }
 
 matching_rate_heatmap_layer::matching_rate_heatmap_layer(const std::shared_ptr<detection_result> &primitive1, const std::shared_ptr<detection_result> &primitive2) noexcept

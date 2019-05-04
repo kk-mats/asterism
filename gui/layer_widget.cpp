@@ -21,4 +21,9 @@ void layer_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexce
 	this->scatter_plot_widget_->set_layer(layer);
 }
 
+void layer_widget::update_layer() noexcept
+{
+	this->scatter_plot_widget_->update_layer();
+}
+
 }

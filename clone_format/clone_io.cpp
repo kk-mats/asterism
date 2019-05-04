@@ -16,5 +16,10 @@ std::optional<detection_results> clone_io::read_jcln(const QString &file) noexce
 	return jcln::read(file);
 }
 
+std::shared_ptr<detection_result> clone_io::read_json(const QString &file, detection_results &results) noexcept
+{
+	return json::read(file, results);
+}
+
 
 }

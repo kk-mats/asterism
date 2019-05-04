@@ -64,6 +64,12 @@ void scatter_plot_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer)
 	this->model_->endResetModel();
 }
 
+void scatter_plot_widget::update_layer() noexcept
+{
+	this->model_->beginResetModel();
+	this->model_->endResetModel();
+}
+
 void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 {
 	if(index.isValid() && this->model_->previous_!=index)

@@ -103,6 +103,9 @@
     <ClCompile Include="gui\layer_detail_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="clone_format\json.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="clone_format\clone_io.hpp">
@@ -157,6 +160,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\utility.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clone_format\json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

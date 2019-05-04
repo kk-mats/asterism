@@ -47,8 +47,11 @@ layer_detail_widget::layer_detail_widget(QWidget *parent) noexcept
 	: QTableView(parent)
 {
 	this->setModel(this->model_);
+	this->verticalHeader()->hide();
+	this->horizontalHeader()->hide();
 	this->horizontalHeader()->setStretchLastSection(true);
 }
+
 void layer_detail_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept
 {
 	this->model_->beginResetModel();

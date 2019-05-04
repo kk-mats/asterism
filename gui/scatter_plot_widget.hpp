@@ -30,7 +30,7 @@ public:
 	int columnCount(const QModelIndex &parent=QModelIndex()) const noexcept override;
 	QVariant data(const QModelIndex &index, int role=Qt::BackgroundColorRole) const noexcept override;
 	QVariant headerData(int section, Qt::Orientation orientation, int role=Qt::DisplayRole) const noexcept override;
-
+	
 	QModelIndex previous_=QModelIndex();
 	std::shared_ptr<heatmap_layer> current_layer_=nullptr;
 };
@@ -44,6 +44,7 @@ public:
 	explicit scatter_plot_widget(const detection_results *results, QWidget *parent=nullptr);
 
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
+	void update_layer() noexcept;
 
 public slots:
 	void select_grid(const QModelIndex &index) noexcept;

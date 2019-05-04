@@ -14,6 +14,8 @@ class layer_widget final
 
 public:
 	explicit layer_widget(const detection_results *results, QWidget *parent=nullptr) noexcept;
+	
+	void update_layer() noexcept;
 
 public slots:
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
