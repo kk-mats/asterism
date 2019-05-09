@@ -3,16 +3,53 @@
 namespace asterism
 {
 
+std::size_t matching_table::key::hash::operator()(const key &key) const noexcept
+{
+	return qHash((key.left()->environment().source()))+qHash(key.right()->environment().source());
+}
+
 matching_table::key::key(const std::shared_ptr<detection_result> &left, const std::shared_ptr<detection_result> &right) noexcept
 	: r_(std::minmax(left, right))
 {}
 
-bool matching_table::unit::better(const float ok_v, const float good_v, QPair<float, float> &&ok_good_max, const float t) const noexcept
+std::shared_ptr<detection_result> matching_table::key::left() const noexcept
 {
-	return (good_v>=t && good_v>=ok_good_max.second) || (qFuzzyCompare(good_v, ok_good_max.second) && ok_v>ok_good_max.first) || (ok_v>=t && ok_good_max.first<t);
+	return this->r_.first;
 }
 
-std::unordered_map<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>> matching_table::unit::map_unidirectionally(const shared_vector<clone_pair> &g1, const shared_vector<clone_pair> &g2) const noexcept
+std::shared_ptr<detection_result> matching_table::key::right() const noexcept
+{
+	return this->r_.second;
+}
+
+bool matching_table::key::operator==(const key &other) const noexcept
+{
+	return this->r_==other.r_;
+}
+
+
+matching_table::unit::unit(const key &key) noexcept
+	: key_(key)
+{}
+
+void matching_table::unit::update() noexcept
+{
+	auto left=this->key_.left()->clone_pair_layer();
+	auto right=this->key_.right()->clone_pair_layer();
+	this->layer_.resize(left->width());
+
+	for(auto i=left->begin1d(), end=left->end1d(); i!=end; ++i)
+	{
+		this->layer_[i]=std::move(this->map_mutually((*left)[i], (*right)[i]));
+	}
+}
+
+bool matching_table::unit::better(const float ok_v, const float good_v, const float ok_max, const float good_max, const float t) noexcept
+{
+	return (good_v>=t && good_v>=good_max) || (qFuzzyCompare(good_v, good_max) && ok_v>ok_max) || (ok_v>=t && ok_max<t);
+}
+
+std::unordered_map<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>> matching_table::unit::map_unidirectionally(const shared_vector<clone_pair> &g1, const shared_vector<clone_pair> &g2) noexcept
 {
 	std::unordered_map<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>> matched;
 
@@ -20,11 +57,11 @@ std::unordered_map<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>> mat
 	{
 		for(const auto &c:g2)
 		{
-			auto ok_good_max=matched.find(r)!=matched.end() ? qMakePair(ok(c, matched[r]), good(c, matched[r])) : qMakePair(threshold_, threshold_);
+			auto [ok_max, good_max]=matched.find(r)!=matched.end() ? qMakePair(ok(c, matched[r]), good(c, matched[r])) : qMakePair(threshold_, threshold_);
 			auto ok_v=ok(c, r);
 			auto good_v=good(c, r);
 
-			if(this->better(ok_v, good_v, std::move(ok_good_max), threshold_))
+			if(better(ok_v, good_v, ok_max, good_max, threshold_))
 			{
 				matched[c]=r;
 			}
@@ -34,24 +71,59 @@ std::unordered_map<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>> mat
 	return matched;
 }
 
-void matching_table::unit::map_mutually(const shared_vector<clone_pair> &left, const shared_vector<clone_pair> &right) noexcept
+matching_table::unit::value_t matching_table::unit::map_mutually(const shared_vector<clone_pair> &left, const shared_vector<clone_pair> &right) noexcept
 {
-	auto left_right=this->map_unidirectionally(left, right);
-	auto right_left=this->map_unidirectionally(right, left);
+	auto left_right=map_unidirectionally(left, right);
+	auto right_left=map_unidirectionally(right, left);
 	
+	value_t matched;
+
 	for(const auto &e:left_right)
 	{
-		this->matching_list_.push_back(e);
+		matched.push_back(e);
 	}
 
 	for(const auto &e:right_left)
 	{
-		this->matching_list_.emplace_back(e.second, e.first);
+		matched.emplace_back(e.second, e.first);
 	}
 
-	std::sort(this->matching_list_.begin(), this->matching_list_.end());
-	std::unique()
+	std::sort(matched.begin(), matched.end());
+	matched.erase(std::unique(matched.begin(), matched.end()), matched.end());
+	return matched;
 }
 
+
+void matching_table::update() noexcept
+{
+	for(auto left=this->results_.begin(), left_end=this->results_.end()-1; left!=left_end; ++left)
+	{
+		for(auto right=left+1, right_end=this->results_.end(); right!=right_end; ++right)
+		{
+			key key(*left, *right);
+			this->values_.emplace(key, unit(key));
+		}
+	}
+}
+
+void matching_table::append(const std::shared_ptr<detection_result> &result) noexcept
+{
+	this->results_.append(result);
+	std::sort(this->results_.begin(), this->results_.end());
+	this->update();
+}
+
+void matching_table::append(const shared_list<detection_result> &results) noexcept
+{
+	this->results_.append(results);
+	std::sort(this->results_.begin(), this->results_.end());
+	this->update();
+}
+
+void matching_table::remove(const std::shared_ptr<detection_result> &result) noexcept
+{
+	this->results_.removeOne(result);
+	this->update();
+}
 
 }

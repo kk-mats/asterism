@@ -116,6 +116,13 @@ public:
 		return this->values_.size();
 	}
 
+	void resize(const int width) noexcept
+	{
+		this->width_=width;
+		this->values_.clear();
+		this->values_.resize(this->required_size(this->width_));
+	}
+
 protected:
 	int width_=0;
 	QVector<val_T> values_;
@@ -123,13 +130,6 @@ protected:
 	int required_size(const int width) const noexcept
 	{
 		return width*(width+1)/2;
-	}
-
-	void resize(const file_index &file_index) noexcept
-	{
-		this->width_=file_index.size();
-		this->values_.clear();
-		this->values_.resize(this->required_size(this->width_));
 	}
 };
 

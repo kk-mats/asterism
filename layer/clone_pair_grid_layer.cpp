@@ -14,7 +14,7 @@ clone_pair_grid_layer::clone_pair_grid_layer(const shared_set<clone_pair> &clone
 
 void clone_pair_grid_layer::update(const shared_set<clone_pair> &clone_pairs, const file_index &file_index) noexcept
 {
-	this->resize(file_index);
+	this->resize(file_index.size());
 	this->make_layer(clone_pairs, file_index);
 }
 
