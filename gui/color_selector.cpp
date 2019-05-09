@@ -46,7 +46,7 @@ signed_color operator /(const signed_color &c, const float f) noexcept
 }
 
 color_selector::color_selector(const QColor &color, const int index) noexcept
-	: index_begin_(index), index_end_(index)
+	: first_(index), last_(index)
 {
 	this->color_source_[index]=signed_color(color);
 }
@@ -62,13 +62,13 @@ color_selector::color_selector(const std::vector<std::pair<int, QColor>> &anchor
 
 void color_selector::set_anchor(const int index, const QColor &color) noexcept
 {
-	if(index<this->index_begin_)
+	if(index<this->first_)
 	{
-		this->index_begin_=index;
+		this->first_=index;
 	}
-	else if(this->index_end_<index)
+	else if(this->last_<index)
 	{
-		this->index_end_=index;
+		this->last_=index;
 	}
 
 	this->color_source_[index]=signed_color(color);
@@ -76,7 +76,7 @@ void color_selector::set_anchor(const int index, const QColor &color) noexcept
 
 std::optional<QColor> color_selector::color_at(const int index) noexcept
 {
-	if(index<this->index_begin_ || this->index_end_<index)
+	if(index<this->first_ || this->last_<index)
 	{
 		return std::nullopt;
 	}
@@ -93,6 +93,26 @@ std::optional<QColor> color_selector::color_at(const int index) noexcept
 	}
 
 	return std::nullopt;
+}
+
+int color_selector::first() const noexcept
+{
+	return this->first_;
+}
+
+int color_selector::last() const noexcept
+{
+	return this->last_;
+}
+
+QMap<int, signed_color>::const_key_value_iterator color_selector::begin() const noexcept
+{
+	return this->color_source_.constKeyValueBegin();
+}
+
+QMap<int, signed_color>::const_key_value_iterator color_selector::end() const noexcept
+{
+	return this->color_source_.constKeyValueEnd();
 }
 
 }

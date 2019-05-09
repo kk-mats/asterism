@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 	connect(this->layer_list_widget_, &layer_list_widget::current_layer_changed, this->layer_widget_, &layer_widget::set_layer);
 	connect(this->layer_list_widget_, &layer_list_widget::current_layer_changed, this->layer_detail_widget_, &layer_detail_widget::set_layer);
+	connect(this->layer_widget_, &layer_widget::method_changed, this->layer_detail_widget_, &layer_detail_widget::change_method);
 
 	this->create_actions();
 	this->create_menus();

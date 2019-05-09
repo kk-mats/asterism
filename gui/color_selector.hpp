@@ -3,7 +3,9 @@
 
 #include <QColor>
 #include <QMap>
+
 #include <optional>
+#include <vector>
 
 namespace asterism
 {
@@ -27,6 +29,7 @@ signed_color operator /(const signed_color &c, const float f) noexcept;
 class color_selector
 {
 public:
+	color_selector() noexcept=default;
 	color_selector(const QColor &color, const int index=0) noexcept;
 	color_selector(const std::vector<std::pair<int, QColor>> &anchors) noexcept;
 
@@ -34,8 +37,14 @@ public:
 
 	std::optional<QColor> color_at(const int index) noexcept;
 
+	int first() const noexcept;
+	int last() const noexcept;
+
+	QMap<int, signed_color>::const_key_value_iterator begin() const noexcept;
+	QMap<int, signed_color>::const_key_value_iterator end() const noexcept;
+
 private:
-	int index_begin_, index_end_;
+	int first_, last_;
 	QMap<int, signed_color> color_source_;
 };
 

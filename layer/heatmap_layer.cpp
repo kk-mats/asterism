@@ -18,6 +18,11 @@ int heatmap_layer::clone_pair_size::max() const noexcept
 	return this->max_;
 }
 
+color_selector heatmap_layer::clone_pair_size::selector() const noexcept
+{
+	return this->selector_;
+}
+
 std::vector<std::pair<QString, QString>> heatmap_layer::clone_pair_size::details() const noexcept
 {
 	return
@@ -30,26 +35,11 @@ std::vector<std::pair<QString, QString>> heatmap_layer::clone_pair_size::details
 
 bool heatmap_layer::clone_pair_size::update(const std::shared_ptr<detection_result> &primitive) noexcept
 {
-	const auto low=QColor(204, 255, 144);
-	const auto high=QColor(233, 30, 30);
-	color_selector selector(Qt::white, 0);
-	if(0<this->min_)
-	{
-		selector.set_anchor(Qt::white, this->min_-1);
-		selector.set_anchor(this->min_, low);
-	}
-	else
-	{
-		selector.set_anchor(1, low);
-	}
-
-	selector.set_anchor(this->max_, high);
-
 	this->width_=primitive->clone_pair_layer()->width();
 	this->values_.resize(primitive->clone_pair_layer()->size());
 	for(auto i=this->begin1d(), end=this->end1d(); i!=end; ++i)
 	{
-		if(auto color=selector.color_at((*primitive->clone_pair_layer())[i].size()); !color)
+		if(auto color=this->selector_.color_at((*primitive->clone_pair_layer())[i].size()); !color)
 		{
 			qCritical()<<heatmap_generating_error::color_index_out_of_range;
 			return false;
@@ -76,6 +66,20 @@ void heatmap_layer::clone_pair_size::make(const std::shared_ptr<detection_result
 			this->max_=g.size();
 		}
 	}
+
+	const auto low=QColor(204, 255, 144);
+	const auto high=QColor(233, 30, 30);
+	if(0<this->min_)
+	{
+		this->selector_.set_anchor(Qt::white, this->min_-1);
+		this->selector_.set_anchor(this->min_, low);
+	}
+	else
+	{
+		this->selector_.set_anchor(1, low);
+	}
+	this->selector_.set_anchor(this->max_, high);
+
 	this->update(primitive);
 }
 
@@ -95,6 +99,11 @@ int heatmap_layer::matching_rate::average_matching_rate() const noexcept
 	return this->average_matching_rate_;
 }
 
+color_selector heatmap_layer::matching_rate::selector() const noexcept
+{
+	return selector_;
+}
+
 std::vector<std::pair<QString, QString>> heatmap_layer::matching_rate::details() const noexcept
 {
 	return
@@ -109,7 +118,7 @@ bool heatmap_layer::matching_rate::update(const std::shared_ptr<detection_result
 	this->width_=primitive->clone_pair_layer()->width();
 	this->values_.resize(primitive->clone_pair_layer()->size());
 
-	int avg=0;
+	int matched_all=0;
 
 	for(auto i=this->begin1d(), end=this->end1d(); i!=end; ++i)
 	{
@@ -120,18 +129,18 @@ bool heatmap_layer::matching_rate::update(const std::shared_ptr<detection_result
 			continue;
 		}
 
-		int count=0;
+		int matched=0;
 		for(const auto &p:(*primitive->clone_pair_layer())[i])
 		{
 			if(matching_table_->has_matching_pair(primitive, p, file_index_))
 			{
-				++count;
+				++matched;
 			}
 		}
 
-		avg+=count;
+		matched_all+=matched;
 
-		if(auto color=color_selector_.color_at(count/size*100); !color)
+		if(auto color=selector_.color_at(matched/size*100); !color)
 		{
 			qCritical()<<heatmap_generating_error::color_index_out_of_range;
 			return false;
@@ -142,7 +151,7 @@ bool heatmap_layer::matching_rate::update(const std::shared_ptr<detection_result
 		}
 	}
 
-	this->average_matching_rate_=avg/primitive->clone_pairs().size();
+	this->average_matching_rate_=matched_all/primitive->clone_pairs().size()*100;
 	return true;
 }
 
@@ -187,6 +196,11 @@ QString heatmap_layer::name() const noexcept
 int heatmap_layer::width() const noexcept
 {
 	return this->primitive_->clone_pair_layer()->width();
+}
+
+color_selector heatmap_layer::selector() const noexcept
+{
+	return std::visit([&](const auto &h){ return h.selector(); }, this->value_);
 }
 
 std::vector<std::pair<QString, QString>> heatmap_layer::details() const noexcept

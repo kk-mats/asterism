@@ -8,6 +8,7 @@
 
 #include "current_grid_detail_widget.hpp"
 #include "scatter_plot_widget.hpp"
+#include "color_bar_widget.hpp"
 
 namespace asterism
 {
@@ -22,13 +23,19 @@ public:
 	
 	void update_layer() noexcept;
 
+signals:
+	void method_changed(const int method_index);
+
 public slots:
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
-
+	void change_method(const int method_index) noexcept;
+	
 private:
+	std::shared_ptr<heatmap_layer> layer_;
 	current_grid_detail_widget *current_grid_detail_widget_=new current_grid_detail_widget(this);
 	scatter_plot_widget *scatter_plot_widget_;
 	QComboBox *method_selector_=new QComboBox(this);
+	color_bar_widget *color_bar_widget_=new color_bar_widget(this);
 };
 
 }

@@ -22,6 +22,7 @@ public:
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const noexcept override;
 	QVariant headerData(int, Qt::Orientation, int) const noexcept override;
 
+	std::shared_ptr<heatmap_layer> current_;
 	std::vector<std::pair<QString, QString>> details_;
 };
 
@@ -36,6 +37,7 @@ public:
 
 public slots:
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
+	void change_method(const int method_index) noexcept;
 
 private:
 	layer_detail_model *model_=new layer_detail_model(this);

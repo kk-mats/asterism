@@ -25,6 +25,7 @@ public:
 
 		int min() const noexcept;
 		int max() const noexcept;
+		color_selector selector() const noexcept;
 		std::vector<std::pair<QString, QString>> details() const noexcept;
 
 		bool update(const std::shared_ptr<detection_result> &primitive) noexcept;
@@ -33,7 +34,7 @@ public:
 		int min_=std::numeric_limits<int>::max();
 		int max_=0;
 		int sum_=0;
-
+		color_selector selector_=color_selector(Qt::white, 0);
 		void make(const std::shared_ptr<detection_result> &primitive) noexcept;
 	};
 
@@ -47,6 +48,7 @@ public:
 		matching_rate(const std::shared_ptr<detection_result> &primitive) noexcept;
 
 		int average_matching_rate() const noexcept;
+		color_selector selector() const noexcept;
 		std::vector<std::pair<QString, QString>> details() const noexcept;
 
 		bool update(const std::shared_ptr<detection_result> &primitive) noexcept;
@@ -54,7 +56,7 @@ public:
 	private:
 		static inline std::shared_ptr<file_index> file_index_=nullptr;
 		static inline std::shared_ptr<matching_table> matching_table_=nullptr;
-		static inline color_selector color_selector_=color_selector(
+		static inline color_selector selector_=color_selector(
 			{
 				{0, QColor(233, 30, 30)},
 				{99, QColor(204, 255, 144)},
@@ -87,6 +89,7 @@ public:
 	int method_index() const noexcept;
 	QString name() const noexcept;
 	int width() const noexcept;
+	color_selector selector() const noexcept;
 	std::vector<std::pair<QString, QString>> details() const noexcept;
 
 	const QColor& operator [](const grid_coordinate &coordinate) const noexcept;
