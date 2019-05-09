@@ -48,6 +48,7 @@ public:
 
 public slots:
 	void select_grid(const QModelIndex &index) noexcept;
+	void change_rule(const int index) noexcept;
 
 signals:
 	void current_grid_changed(const QString &filepath1, const QString &filepath2, const int clone_pair_size);

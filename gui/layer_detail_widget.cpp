@@ -35,6 +35,8 @@ QVariant layer_detail_model::data(const QModelIndex &index, int role) const noex
 			return this->details_[index.row()].second;
 		}
 	}
+
+	return QVariant();
 }
 
 QVariant layer_detail_model::headerData(int section, Qt::Orientation orientation, int role) const noexcept

@@ -12,73 +12,71 @@
 namespace asterism
 {
 
-class clone_size_heatmap_layer final
-	: public file_separated_grid_layer<QColor>
-{
-public:
-	clone_size_heatmap_layer() noexcept=default;
-	clone_size_heatmap_layer(const std::shared_ptr<detection_result> &primitive) noexcept;
-
-	QString name() const noexcept;
-	
-	QString primitive_name() const noexcept;
-	QString primitive_source() const noexcept;
-
-	int min() const noexcept;
-	int max() const noexcept;
-
-	std::vector<std::pair<QString, QString>> details() const noexcept;
-
-	bool update() noexcept;
-
-private:
-	QString name_;
-	std::shared_ptr<detection_result> primitive_;
-	int min_=std::numeric_limits<int>::max();
-	int max_=0;
-	int sum_=0;
-
-	void make() noexcept;
-};
-
-
-class matching_rate_heatmap_layer final
-	: public file_separated_grid_layer<QColor>
-{
-public:
-	matching_rate_heatmap_layer() noexcept=default;
-	matching_rate_heatmap_layer(const std::shared_ptr<detection_result> &primitive1, const std::shared_ptr<detection_result> &primitive2) noexcept;
-
-	QString name() const noexcept;
-
-	QString primitive1_name() const noexcept;
-	QString primitive1_source() const noexcept;
-	QString primitive2_name() const noexcept;
-	QString primitive2_source() const noexcept;
-
-	std::vector<std::pair<QString, QString>> details() const noexcept;
-
-	bool update() noexcept;
-
-private:
-	QString name_;
-	std::shared_ptr<detection_result> primitive1_, primitive2_;
-	int average_matching_rate_=0;
-};
-
 
 class heatmap_layer final
 {
 public:
-	heatmap_layer() noexcept=default;
-	heatmap_layer(const std::shared_ptr<detection_result> &primitive) noexcept;
-	heatmap_layer(const std::shared_ptr<detection_result> &primitive1, const std::shared_ptr<detection_result> &primitive2) noexcept;
+	class clone_pair_size final
+		: public file_separated_grid_layer<QColor>
+	{
+	public:
+		clone_pair_size() noexcept=default;
+		clone_pair_size(const std::shared_ptr<detection_result> &primitive) noexcept;
 
+		int min() const noexcept;
+		int max() const noexcept;
+
+		std::vector<std::pair<QString, QString>> details() const noexcept;
+
+		bool update(const std::shared_ptr<detection_result> &primitive) noexcept;
+
+	private:
+		int min_=std::numeric_limits<int>::max();
+		int max_=0;
+		int sum_=0;
+
+		void make(const std::shared_ptr<detection_result> &primitive) noexcept;
+	};
+
+
+	class matching_rate final
+		: public file_separated_grid_layer<QColor>
+	{
+	public:
+		matching_rate() noexcept=default;
+		matching_rate(const std::shared_ptr<detection_result> &primitive) noexcept;
+
+		int average_matching_rate() const noexcept;
+
+		std::vector<std::pair<QString, QString>> details() const noexcept;
+
+		bool update(const std::shared_ptr<detection_result> &primitive) noexcept;
+
+	private:
+		int average_matching_rate_=0;
+	};
+
+
+	struct rule final
+	{
+		rule() noexcept=default;
+		struct clone_pair_size final{};
+		struct matching_rate final{};
+	};
+
+	heatmap_layer() noexcept=default;
+	heatmap_layer(const std::shared_ptr<detection_result> &primitive, const rule::clone_pair_size) noexcept;
+	heatmap_layer(const std::shared_ptr<detection_result> &primitive, const rule::matching_rate) noexcept;
+	
 	template <class T>
-	using is_convertible_from=typename std::enable_if_t<std::is_same_v<T, clone_size_heatmap_layer> || std::is_same_v<T, matching_rate_heatmap_layer>>;
+	using is_convertible_from=typename std::enable_if_t<std::is_same_v<T, clone_pair_size> || std::is_same_v<T, matching_rate>>;
+
+	void change_rule(const rule::clone_pair_size) noexcept;
+	void change_rule(const rule::matching_rate) noexcept;
 
 	bool update() noexcept;
 
+	int rule_index() const noexcept;
 	QString name() const noexcept;
 	int width() const noexcept;
 	std::vector<std::pair<QString, QString>> details() const noexcept;
@@ -101,7 +99,8 @@ public:
 	}
 
 private:
-	std::variant<clone_size_heatmap_layer, matching_rate_heatmap_layer> value_;
+	std::shared_ptr<detection_result> primitive_;
+	std::variant<clone_pair_size, matching_rate> value_;
 };
 
 }

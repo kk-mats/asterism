@@ -50,7 +50,7 @@ bool layer_list_model::setData(const QModelIndex &index, const QVariant &value, 
 		return false;
 	}
 
-	this->layers_[index.row()]=std::make_shared<heatmap_layer>(value.value<std::shared_ptr<detection_result>>());
+	this->layers_[index.row()]=std::make_shared<heatmap_layer>(value.value<std::shared_ptr<detection_result>>(), heatmap_layer::rule::clone_pair_size());
 	emit dataChanged(index, index, {role});
 
 	return true;

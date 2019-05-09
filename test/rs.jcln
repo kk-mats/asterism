@@ -38,7 +38,7 @@
 						"end":1
 					},
 					"fragment2":{
-						"file_id":1,
+						"file_id":0,
 						"begin":2,
 						"end":3
 					}
@@ -61,12 +61,66 @@
 					"fragment1":{
 						"file_id":2,
 						"begin":8,
-						"end":9
+						"end":19
 					},
 					"fragment2":{
 						"file_id":2,
 						"begin":10,
-						"end":11
+						"end":19
+					}
+				}
+			]
+		},
+		{
+			"environment":{
+				"source":"r55_src",
+				"clone_detector":{
+					"name":"NiCAD",
+					"parameters":{
+						"p0":"nn0",
+						"p1":"nn1"
+					}
+				}
+			},
+			"clone_pair_size":0,
+			"clone_pairs":[
+				{
+					"similarity":85,
+					"fragment1":{
+						"file_id":0,
+						"begin":0,
+						"end":1
+					},
+					"fragment2":{
+						"file_id":1,
+						"begin":2,
+						"end":3
+					}
+				},
+				{
+					"similarity":85,
+					"fragment1":{
+						"file_id":2,
+						"begin":4,
+						"end":5
+					},
+					"fragment2":{
+						"file_id":2,
+						"begin":6,
+						"end":7
+					}
+				},
+				{
+					"similarity":85,
+					"fragment1":{
+						"file_id":2,
+						"begin":8,
+						"end":19
+					},
+					"fragment2":{
+						"file_id":2,
+						"begin":10,
+						"end":20
 					}
 				}
 			]

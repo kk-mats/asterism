@@ -70,6 +70,18 @@ void scatter_plot_widget::update_layer() noexcept
 	this->model_->endResetModel();
 }
 
+void scatter_plot_widget::change_rule(const int index) noexcept
+{
+	if(index==0)
+	{
+		this->model_->current_layer_->change_rule(heatmap_layer::rule::clone_pair_size());
+	}
+	else
+	{
+		this->model_->current_layer_->change_rule(heatmap_layer::rule::matching_rate());
+	}
+}
+
 void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 {
 	if(index.isValid() && this->model_->previous_!=index)
