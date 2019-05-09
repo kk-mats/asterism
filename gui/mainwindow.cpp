@@ -35,7 +35,7 @@ void MainWindow::open_project() noexcept
 			this->results_=std::move(results.value());
 			this->update();
 			this->layer_list_widget_->set_clone_size_heatmap_layers(this->results_.results());
-			
+	
 			return;
 		}
 	}

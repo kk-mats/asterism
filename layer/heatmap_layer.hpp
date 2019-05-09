@@ -6,7 +6,7 @@
 
 #include "clone_pair_grid_layer.hpp"
 #include "gui/color_selector.hpp"
-#include "core/logger.hpp"
+#include "core/matching_table.hpp"
 #include "model/detection_result.hpp"
 
 namespace asterism
@@ -42,6 +42,7 @@ public:
 		: public file_separated_grid_layer<QColor>
 	{
 	public:
+		static void bind(const std::shared_ptr<file_index> &file_index, const std::shared_ptr<matching_table> &matching_table) noexcept;
 		matching_rate() noexcept=default;
 		matching_rate(const std::shared_ptr<detection_result> &primitive) noexcept;
 
@@ -51,6 +52,15 @@ public:
 		bool update(const std::shared_ptr<detection_result> &primitive) noexcept;
 
 	private:
+		static inline std::shared_ptr<file_index> file_index_=nullptr;
+		static inline std::shared_ptr<matching_table> matching_table_=nullptr;
+		static inline color_selector color_selector_=color_selector(
+			{
+				{0, QColor(233, 30, 30)},
+				{99, QColor(204, 255, 144)},
+				{100, Qt::darkBlue}
+			}
+		);
 		int average_matching_rate_=0;
 	};
 

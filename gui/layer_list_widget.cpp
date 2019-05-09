@@ -18,7 +18,7 @@ bool layer_list_model::removeRows(int row, int count, const QModelIndex &parent)
 	return true;
 }
 
-int layer_list_model::rowCount(const QModelIndex &parent) const
+int layer_list_model::rowCount(const QModelIndex &) const
 {
 	return this->layers_.size();
 }

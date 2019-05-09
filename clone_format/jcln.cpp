@@ -44,41 +44,41 @@ bool jcln::write(const detection_results &results, const QString &path) noexcept
 }
 
 
-QJsonValue jcln::writer::to_qjson(const std::weak_ptr<file> &file_ptr, const file_index &file_index) noexcept
+QJsonValue jcln::writer::to_qjson(const std::weak_ptr<file> &file_ptr) noexcept
 {
 	return QJsonObject
 	{
-		{FILE_ID, file_index.at(file_ptr)},
+		{FILE_ID, this->file_index_->at(file_ptr)},
 		{PATH, file_ptr.lock()->canonical_file_path()}
 	};
 }
 
-QJsonValue jcln::writer::to_qjson(const fragment &fragment, const file_index &file_index) noexcept
+QJsonValue jcln::writer::to_qjson(const fragment &fragment) noexcept
 {
 	return QJsonObject
 	{
-		{FILE_ID, int(file_index.at(fragment.file_ptr()))},
+		{FILE_ID, int(this->file_index_->at(fragment.file_ptr()))},
 		{BEGIN, int(fragment.begin())},
 		{END, int(fragment.end())}
 	};
 }
 
-QJsonValue jcln::writer::to_qjson(const std::shared_ptr<clone_pair> &clone_pair, const file_index &file_index) noexcept
+QJsonValue jcln::writer::to_qjson(const std::shared_ptr<clone_pair> &clone_pair) noexcept
 {
 	return QJsonObject
 	{
 		{SIMILARITY, int(clone_pair->similarity())},
-		{FRAGMENT1, to_qjson(clone_pair->fragment1(), file_index)},
-		{FRAGMENT2, to_qjson(clone_pair->fragment2(), file_index)}
+		{FRAGMENT1, to_qjson(clone_pair->fragment1())},
+		{FRAGMENT2, to_qjson(clone_pair->fragment2())}
 	};
 }
 
-QJsonValue jcln::writer::to_qjson(const std::shared_ptr<detection_result> &detection_result, const file_index &file_index) noexcept
+QJsonValue jcln::writer::to_qjson(const std::shared_ptr<detection_result> &detection_result) noexcept
 {
 	QJsonArray json_clone_pairs_array;
 	for(const auto &p:detection_result->clone_pairs())
 	{
-		json_clone_pairs_array.append(to_qjson(p, file_index));
+		json_clone_pairs_array.append(to_qjson(p));
 	}
 
 	QJsonObject json_parameters;
@@ -102,15 +102,14 @@ QJsonValue jcln::writer::to_qjson(const std::shared_ptr<detection_result> &detec
 QJsonValue jcln::writer::to_qjson(const detection_results &detection_results) noexcept
 {
 	QJsonArray files, results;
-	const auto &file_index=detection_results.file_index_map();
 	for(const auto &f:detection_results.files())
 	{
-		files.append(to_qjson(f, file_index));
+		files.append(to_qjson(f));
 	}
 
 	for(const auto &r:detection_results.results())
 	{
-		results.append(to_qjson(r, file_index));
+		results.append(to_qjson(r));
 	}
 
 	return QJsonObject

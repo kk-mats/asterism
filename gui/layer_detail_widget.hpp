@@ -20,7 +20,7 @@ public:
 	int rowCount(const QModelIndex &parent=QModelIndex()) const noexcept override;
 	int columnCount(const QModelIndex &parent=QModelIndex()) const noexcept override;
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const noexcept override;
-	QVariant headerData(int section, Qt::Orientation orientation, int role=Qt::DisplayRole) const noexcept override;
+	QVariant headerData(int, Qt::Orientation, int) const noexcept override;
 
 	std::vector<std::pair<QString, QString>> details_;
 };

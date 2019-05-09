@@ -23,17 +23,22 @@ private:
 	class writer
 	{
 	public:
-		QJsonValue to_qjson(const std::weak_ptr<file> &file_ptr, const file_index &file_index) noexcept;
-		QJsonValue to_qjson(const fragment &fragment, const file_index &file_index) noexcept;
-		QJsonValue to_qjson(const std::shared_ptr<clone_pair> &clone_pair, const file_index &file_index) noexcept;
-		QJsonValue to_qjson(const std::shared_ptr<detection_result> &detection_result, const file_index &file_index) noexcept;
+		writer() noexcept=default;
 		QJsonValue to_qjson(const detection_results &detection_results) noexcept;
+
+	private:
+		std::shared_ptr<file_index> file_index_;
+
+		QJsonValue to_qjson(const std::weak_ptr<file> &file_ptr) noexcept;
+		QJsonValue to_qjson(const fragment &fragment) noexcept;
+		QJsonValue to_qjson(const std::shared_ptr<clone_pair> &clone_pair) noexcept;
+		QJsonValue to_qjson(const std::shared_ptr<detection_result> &detection_result) noexcept;
 	};
 
 	class reader
 	{
 	public:
-		reader()=default;
+		reader() noexcept=default;
 		std::optional<detection_results> read(const QJsonObject &json) noexcept;
 
 	private:

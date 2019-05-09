@@ -3,14 +3,11 @@
 namespace asterism
 {
 
-detection_results::detection_results() noexcept
-	: detection_results("")
-{
-}
-
 detection_results::detection_results(const QString &target_path) noexcept
 	: target_path_(target_path)
-{}
+{
+	heatmap_layer::matching_rate::bind(this->file_index_, this->matching_table_);
+}
 
 std::shared_ptr<file> detection_results::emplace(QString &&canonical_file_path) noexcept
 {
@@ -30,6 +27,7 @@ std::shared_ptr<detection_result> detection_results::empalce(result_environment 
 		this->results_.append(std::make_shared<detection_result>(std::move(environment), std::move(clone_pairs)));
 		itr=(--this->results_.end());
 	}
+	this->matching_table_->append(*itr);
 	return *itr;
 }
 
@@ -40,6 +38,7 @@ void detection_results::update_layers() noexcept
 	{
 		r->update_layer(this->file_index_);
 	}
+	this->matching_table_->update();
 }
 
 bool detection_results::remove(std::shared_ptr<detection_result> &&ptr) noexcept
@@ -66,7 +65,7 @@ const shared_set<file>& detection_results::files() const noexcept
 
 std::shared_ptr<file> detection_results::file_at(const int index) const noexcept
 {
-	for(const auto &p:this->file_index_)
+	for(const auto &p:*this->file_index_)
 	{
 		if(p.second==index)
 		{
@@ -86,7 +85,7 @@ void detection_results::set_target_path(const QString &target_path) noexcept
 	this->target_path_=target_path;
 }
 
-const file_index& detection_results::file_index_map() const noexcept
+const std::shared_ptr<file_index> detection_results::file_index_map() const noexcept
 {
 	return this->file_index_;
 }
@@ -96,11 +95,11 @@ void detection_results::update_file_index() noexcept
 	auto list=this->files_.toList();
 	std::sort(list.begin(), list.end(), [](const auto &f1, const auto &f2){ return *f1<*f2; });
 
-	this->file_index_.clear();
+	this->file_index_->clear();
 	int index=0;
 	for(const auto &key:list)
 	{
-		this->file_index_.emplace(key, index);
+		this->file_index_->emplace(key, index);
 		++index;
 	}
 }

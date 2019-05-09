@@ -51,8 +51,16 @@ color_selector::color_selector(const QColor &color, const int index) noexcept
 	this->color_source_[index]=signed_color(color);
 }
 
+color_selector::color_selector(const std::vector<std::pair<int, QColor>> &anchors) noexcept
+{
+	for(const auto &a:anchors)
+	{
+		this->set_anchor(a.first, a.second);
+	}
+}
 
-void color_selector::set_anchor(const QColor &color, const int index) noexcept
+
+void color_selector::set_anchor(const int index, const QColor &color) noexcept
 {
 	if(index<this->index_begin_)
 	{

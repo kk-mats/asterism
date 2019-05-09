@@ -24,7 +24,7 @@ public:
 	const shared_set<clone_pair>& clone_pairs() const noexcept;
 	std::shared_ptr<clone_pair_grid_layer> clone_pair_layer() const noexcept;
 
-	std::shared_ptr<clone_pair_grid_layer> update_layer(const file_index &file_index) noexcept;
+	std::shared_ptr<clone_pair_grid_layer> update_layer(const std::shared_ptr<file_index> &file_index) noexcept;
 
 	bool operator ==(const detection_result &detection_result) const noexcept;
 

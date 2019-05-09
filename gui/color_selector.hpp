@@ -28,8 +28,9 @@ class color_selector
 {
 public:
 	color_selector(const QColor &color, const int index=0) noexcept;
+	color_selector(const std::vector<std::pair<int, QColor>> &anchors) noexcept;
 
-	void set_anchor(const QColor &color, const int index) noexcept;
+	void set_anchor(const int index, const QColor &color) noexcept;
 
 	std::optional<QColor> color_at(const int index) noexcept;
 

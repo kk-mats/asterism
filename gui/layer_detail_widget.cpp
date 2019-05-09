@@ -7,12 +7,12 @@ layer_detail_model::layer_detail_model(QObject *parent) noexcept
 	: QAbstractTableModel(parent)
 {}
 
-int layer_detail_model::rowCount(const QModelIndex &parent) const noexcept
+int layer_detail_model::rowCount(const QModelIndex &) const noexcept
 {
 	return this->details_.size();
 }
 
-int layer_detail_model::columnCount(const QModelIndex &parent) const noexcept
+int layer_detail_model::columnCount(const QModelIndex &) const noexcept
 {
 	return 2;
 }
@@ -39,7 +39,7 @@ QVariant layer_detail_model::data(const QModelIndex &index, int role) const noex
 	return QVariant();
 }
 
-QVariant layer_detail_model::headerData(int section, Qt::Orientation orientation, int role) const noexcept
+QVariant layer_detail_model::headerData(int, Qt::Orientation, int) const noexcept
 {
 	return QVariant();
 }

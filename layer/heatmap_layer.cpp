@@ -36,14 +36,14 @@ bool heatmap_layer::clone_pair_size::update(const std::shared_ptr<detection_resu
 	if(0<this->min_)
 	{
 		selector.set_anchor(Qt::white, this->min_-1);
-		selector.set_anchor(low, this->min_);
+		selector.set_anchor(this->min_, low);
 	}
 	else
 	{
-		selector.set_anchor(low, 1);
+		selector.set_anchor(1, low);
 	}
 
-	selector.set_anchor(high, this->max_);
+	selector.set_anchor(this->max_, high);
 
 	this->width_=primitive->clone_pair_layer()->width();
 	this->values_.resize(primitive->clone_pair_layer()->size());
@@ -79,6 +79,12 @@ void heatmap_layer::clone_pair_size::make(const std::shared_ptr<detection_result
 	this->update(primitive);
 }
 
+void heatmap_layer::matching_rate::bind(const std::shared_ptr<file_index> &file_index, const std::shared_ptr<matching_table> &matching_table) noexcept
+{
+	file_index_=file_index;
+	matching_table_=matching_table;
+}
+
 heatmap_layer::matching_rate::matching_rate(const std::shared_ptr<detection_result> &primitive) noexcept
 {
 	this->update(primitive);
@@ -99,6 +105,44 @@ std::vector<std::pair<QString, QString>> heatmap_layer::matching_rate::details()
 
 bool heatmap_layer::matching_rate::update(const std::shared_ptr<detection_result> &primitive) noexcept
 {
+	const auto no_clone_pair=Qt::white;
+	this->width_=primitive->clone_pair_layer()->width();
+	this->values_.resize(primitive->clone_pair_layer()->size());
+
+	int avg=0;
+
+	for(auto i=this->begin1d(), end=this->end1d(); i!=end; ++i)
+	{
+		int size=(*primitive->clone_pair_layer())[i].size();
+		if(size==0)
+		{
+			(*this)[i]=no_clone_pair;
+			continue;
+		}
+
+		int count=0;
+		for(const auto &p:(*primitive->clone_pair_layer())[i])
+		{
+			if(matching_table_->has_matching_pair(primitive, p, file_index_))
+			{
+				++count;
+			}
+		}
+
+		avg+=count;
+
+		if(auto color=color_selector_.color_at(count/size*100); !color)
+		{
+			qCritical()<<heatmap_generating_error::color_index_out_of_range;
+			return false;
+		}
+		else
+		{
+			(*this)[i]=color.value();
+		}
+	}
+
+	this->average_matching_rate_=avg/primitive->clone_pairs().size();
 	return true;
 }
 
@@ -147,7 +191,14 @@ int heatmap_layer::width() const noexcept
 
 std::vector<std::pair<QString, QString>> heatmap_layer::details() const noexcept
 {
-	return std::visit([](const auto &h){ return h.details(); }, this->value_);
+	std::vector<std::pair<QString, QString>> d={
+		{"name", this->name()},
+		{"source", this->primitive_->environment().source()}
+	};
+	auto r=std::visit([](const auto &h){ return h.details(); }, this->value_);
+	d.insert(d.end(), r.begin(), r.end());
+
+	return d;
 }
 
 const QColor& heatmap_layer::operator[](const grid_coordinate &coordinate) const noexcept
