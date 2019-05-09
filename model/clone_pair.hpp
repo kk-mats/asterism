@@ -23,8 +23,8 @@ public:
 	friend uint qHash(const clone_pair &key, uint seed) noexcept;
 	friend QDebug operator <<(QDebug logger, const clone_pair &clone_pair) noexcept;
 
-	friend float good(const clone_pair &p1, const clone_pair &p2) noexcept;
-	friend float ok(const clone_pair &p1, const clone_pair &p2) noexcept;
+	friend float good(const std::shared_ptr<clone_pair> &p1, const std::shared_ptr<clone_pair> &p2) noexcept;
+	friend float ok(const std::shared_ptr<clone_pair> &p1, const std::shared_ptr<clone_pair> &p2) noexcept;
 
 private:
 	std::pair<fragment, fragment> fragments_;
@@ -34,8 +34,8 @@ private:
 uint qHash(const clone_pair &key, uint seed) noexcept;
 QDebug operator <<(QDebug logger, const clone_pair &clone_pair) noexcept;
 
-float good(const clone_pair &p1, const clone_pair &p2) noexcept;
-float ok(const clone_pair &p1, const clone_pair &p2) noexcept;
+float good(const std::shared_ptr<clone_pair> &p1, const std::shared_ptr<clone_pair> &p2) noexcept;
+float ok(const std::shared_ptr<clone_pair> &p1, const std::shared_ptr<clone_pair> &p2) noexcept;
 
 }
 

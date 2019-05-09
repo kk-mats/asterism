@@ -106,6 +106,9 @@
     <ClCompile Include="clone_format\json.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="gui\matching_rate_heatmap_generation_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="clone_format\clone_io.hpp">
@@ -205,6 +208,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="gui\layer_detail_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\matching_rate_heatmap_generation_dialog.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -12,51 +12,41 @@
 
 namespace asterism
 {
-/*
+
 class matching_table final
 {
 public:
 	class key final
 	{
-	public:
 		key(const std::shared_ptr<detection_result> &left, const std::shared_ptr<detection_result> &right) noexcept;
 
 	private:
-		const std::shared_ptr<detection_result> left_;
-		const std::shared_ptr<detection_result> right_;
+		std::pair<std::shared_ptr<detection_result>, std::shared_ptr<detection_result>> r_;
 	};
 
 	class unit final
 	{
-	public:
-		unit() noexcept;
-		unit(const std::shared_ptr<detection_result> &left, const std::shared_ptr<detection_result> &right) noexcept;
+		using value_t=std::vector<std::pair<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>>>;
 
-
+		unit(const shared_vector<clone_pair> &left, const shared_vector<clone_pair> &right) noexcept;
 
 	private:
-		QVector<std::pair<clone_pair, clone_pair>> list_;
+		static inline float threshold_=0.8f;
+		value_t matching_list_;
 
-		QVector<QPair<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>>> unidirectional_matching(const detection_result &first, const detection_result &second, const float t) const noexcept;
-		QVector<QPair<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>>> bidirectional_matching(const detection_result &left, const detection_result &right, const float t) const noexcept;
+		bool better(const float ok_v, const float good_v, QPair<float, float> &&ok_good_max, const float t) const noexcept;
+		std::unordered_map<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>> map_unidirectionally(const shared_vector<clone_pair> &g1, const shared_vector<clone_pair> &g2) const noexcept;
+		void map_mutually(const shared_vector<clone_pair> &left, const shared_vector<clone_pair> &right) noexcept;
 	};
 
+	void update(const shared_list<detection_result> &results) noexcept;
 
-	bool map_mutually(const shared_vector<detection_result> &results) noexcept;
-	bool remove(const std::shared_ptr<detection_result> &result) noexcept;
-
-	const unit operator [](const key &key) const noexcept;
-	unit& operator [](const key &key) noexcept;
+	bool exists_matching_pair_of(const std::shared_ptr<clone_pair> &p) const noexcept;
 
 private:
-	float threshold_=0.8f;
-	QHash<key, unit> units_;
-
+	std::unordered_map<key, unit> values_;
 };
 
-uint qHash(const matching_table::key &key, uint seed) noexcept;
-
-*/
 
 }
 
