@@ -2,6 +2,9 @@
 #define LAYER_WIDGET_HPP
 
 #include <QComboBox>
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #include "current_grid_detail_widget.hpp"
 #include "scatter_plot_widget.hpp"
@@ -25,7 +28,7 @@ public slots:
 private:
 	current_grid_detail_widget *current_grid_detail_widget_=new current_grid_detail_widget(this);
 	scatter_plot_widget *scatter_plot_widget_;
-	QComboBox *colorized_rule_selector_=new QComboBox(this);
+	QComboBox *method_selector_=new QComboBox(this);
 };
 
 }

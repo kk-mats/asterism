@@ -3,7 +3,7 @@
 
 #include <QLabel>
 #include <QLineEdit>
-#include <QGridLayout>
+#include <QFormLayout>
 
 #include "model/file.hpp"
 

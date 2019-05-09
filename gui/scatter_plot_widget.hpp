@@ -26,10 +26,10 @@ class scatter_plot_model final
 public:
 	explicit scatter_plot_model(QObject *parent=nullptr) noexcept;
 
-	int rowCount(const QModelIndex &parent=QModelIndex()) const noexcept override;
-	int columnCount(const QModelIndex &parent=QModelIndex()) const noexcept override;
+	int rowCount(const QModelIndex &) const noexcept override;
+	int columnCount(const QModelIndex &) const noexcept override;
 	QVariant data(const QModelIndex &index, int role=Qt::BackgroundColorRole) const noexcept override;
-	QVariant headerData(int section, Qt::Orientation orientation, int role=Qt::DisplayRole) const noexcept override;
+	QVariant headerData(int, Qt::Orientation, int role=Qt::DisplayRole) const noexcept override;
 	
 	QModelIndex previous_=QModelIndex();
 	std::shared_ptr<heatmap_layer> current_layer_=nullptr;
@@ -48,7 +48,7 @@ public:
 
 public slots:
 	void select_grid(const QModelIndex &index) noexcept;
-	void change_rule(const int index) noexcept;
+	void change_method(const int index) noexcept;
 
 signals:
 	void current_grid_changed(const QString &filepath1, const QString &filepath2, const int clone_pair_size);

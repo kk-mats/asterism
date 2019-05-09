@@ -25,7 +25,6 @@ public:
 
 		int min() const noexcept;
 		int max() const noexcept;
-
 		std::vector<std::pair<QString, QString>> details() const noexcept;
 
 		bool update(const std::shared_ptr<detection_result> &primitive) noexcept;
@@ -47,7 +46,6 @@ public:
 		matching_rate(const std::shared_ptr<detection_result> &primitive) noexcept;
 
 		int average_matching_rate() const noexcept;
-
 		std::vector<std::pair<QString, QString>> details() const noexcept;
 
 		bool update(const std::shared_ptr<detection_result> &primitive) noexcept;
@@ -57,26 +55,26 @@ public:
 	};
 
 
-	struct rule final
+	struct method final
 	{
-		rule() noexcept=default;
+		method() noexcept=default;
 		struct clone_pair_size final{};
 		struct matching_rate final{};
 	};
 
 	heatmap_layer() noexcept=default;
-	heatmap_layer(const std::shared_ptr<detection_result> &primitive, const rule::clone_pair_size) noexcept;
-	heatmap_layer(const std::shared_ptr<detection_result> &primitive, const rule::matching_rate) noexcept;
+	heatmap_layer(const std::shared_ptr<detection_result> &primitive, const method::clone_pair_size) noexcept;
+	heatmap_layer(const std::shared_ptr<detection_result> &primitive, const method::matching_rate) noexcept;
 	
 	template <class T>
 	using is_convertible_from=typename std::enable_if_t<std::is_same_v<T, clone_pair_size> || std::is_same_v<T, matching_rate>>;
 
-	void change_rule(const rule::clone_pair_size) noexcept;
-	void change_rule(const rule::matching_rate) noexcept;
+	void change_method(const method::clone_pair_size) noexcept;
+	void change_method(const method::matching_rate) noexcept;
 
 	bool update() noexcept;
 
-	int rule_index() const noexcept;
+	int method_index() const noexcept;
 	QString name() const noexcept;
 	int width() const noexcept;
 	std::vector<std::pair<QString, QString>> details() const noexcept;

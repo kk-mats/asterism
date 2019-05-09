@@ -7,12 +7,12 @@ scatter_plot_model::scatter_plot_model(QObject *parent) noexcept
 	: QAbstractTableModel(parent)
 {}
 
-int scatter_plot_model::rowCount(const QModelIndex &parent [[maybe_unused]] ) const noexcept
+int scatter_plot_model::rowCount(const QModelIndex &) const noexcept
 {
 	return this->current_layer_!=nullptr ? this->current_layer_->width() : 0;
 }
 
-int scatter_plot_model::columnCount(const QModelIndex &parent [[maybe_unused]] ) const noexcept
+int scatter_plot_model::columnCount(const QModelIndex &) const noexcept
 {
 	return this->current_layer_!=nullptr ? this->current_layer_->width() : 0;
 }
@@ -29,7 +29,7 @@ QVariant scatter_plot_model::data(const QModelIndex &index, int role) const noex
 	return QVariant();
 }
 
-QVariant scatter_plot_model::headerData(int section [[maybe_unused]] , Qt::Orientation orientation [[maybe_unused]] , int role) const noexcept
+QVariant scatter_plot_model::headerData(int, Qt::Orientation, int role) const noexcept
 {
 	if(role==Qt::SizeHintRole)
 	{
@@ -70,18 +70,6 @@ void scatter_plot_widget::update_layer() noexcept
 	this->model_->endResetModel();
 }
 
-void scatter_plot_widget::change_rule(const int index) noexcept
-{
-	if(index==0)
-	{
-		this->model_->current_layer_->change_rule(heatmap_layer::rule::clone_pair_size());
-	}
-	else
-	{
-		this->model_->current_layer_->change_rule(heatmap_layer::rule::matching_rate());
-	}
-}
-
 void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 {
 	if(index.isValid() && this->model_->previous_!=index)
@@ -89,6 +77,18 @@ void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 		this->setCurrentIndex(index);
 		this->model_->previous_=index;
 		emit current_grid_changed(this->results_->file_at(index.row())->canonical_file_path(), this->results_->file_at(index.column())->canonical_file_path(), 100);
+	}
+}
+
+void scatter_plot_widget::change_method(const int index) noexcept
+{
+	if(index==0)
+	{
+		this->model_->current_layer_->change_method(heatmap_layer::method::clone_pair_size());
+	}
+	else
+	{
+		this->model_->current_layer_->change_method(heatmap_layer::method::matching_rate());
 	}
 }
 }

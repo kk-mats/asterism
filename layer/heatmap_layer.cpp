@@ -84,6 +84,11 @@ heatmap_layer::matching_rate::matching_rate(const std::shared_ptr<detection_resu
 	this->update(primitive);
 }
 
+int heatmap_layer::matching_rate::average_matching_rate() const noexcept
+{
+	return this->average_matching_rate_;
+}
+
 std::vector<std::pair<QString, QString>> heatmap_layer::matching_rate::details() const noexcept
 {
 	return
@@ -98,24 +103,24 @@ bool heatmap_layer::matching_rate::update(const std::shared_ptr<detection_result
 }
 
 
-heatmap_layer::heatmap_layer(const std::shared_ptr<detection_result> &primitive, const rule::clone_pair_size) noexcept
+heatmap_layer::heatmap_layer(const std::shared_ptr<detection_result> &primitive, const method::clone_pair_size) noexcept
 	: primitive_(primitive)
 {
 	this->value_=std::move(clone_pair_size(this->primitive_));
 }
 
-heatmap_layer::heatmap_layer(const std::shared_ptr<detection_result> &primitive, const rule::matching_rate) noexcept
+heatmap_layer::heatmap_layer(const std::shared_ptr<detection_result> &primitive, const method::matching_rate) noexcept
 	: primitive_(primitive)
 {
 	this->value_=std::move(matching_rate(this->primitive_));
 }
 
-void heatmap_layer::change_rule(const rule::clone_pair_size) noexcept
+void heatmap_layer::change_method(const method::clone_pair_size) noexcept
 {
 	this->value_=std::move(clone_pair_size(this->primitive_));
 }
 
-void heatmap_layer::change_rule(const rule::matching_rate) noexcept
+void heatmap_layer::change_method(const method::matching_rate) noexcept
 {
 	this->value_=std::move(matching_rate(this->primitive_));
 }
@@ -125,7 +130,7 @@ bool heatmap_layer::update() noexcept
 	return std::visit([&](auto &&h){return h.update(this->primitive_); }, this->value_);
 }
 
-int heatmap_layer::rule_index() const noexcept
+int heatmap_layer::method_index() const noexcept
 {
 	return this->value_.index();
 }
