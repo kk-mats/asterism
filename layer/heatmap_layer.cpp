@@ -193,6 +193,11 @@ QString heatmap_layer::name() const noexcept
 	return this->primitive_->environment().name();
 }
 
+std::shared_ptr<detection_result> heatmap_layer::primitive() const noexcept
+{
+	return this->primitive_;
+}
+
 int heatmap_layer::width() const noexcept
 {
 	return this->primitive_->clone_pair_layer()->width();

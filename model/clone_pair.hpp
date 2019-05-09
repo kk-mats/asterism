@@ -13,6 +13,8 @@ public:
 	clone_pair(const fragment &fragment1, const fragment &fragment2, const unsigned int similarity) noexcept;
 	clone_pair(fragment &&fragment1, fragment &&fragment2, const unsigned int similarity) noexcept;
 
+	QString string() const noexcept;
+
 	bool operator ==(const clone_pair &other) const noexcept;
 	bool operator <(const clone_pair &other) const noexcept;
 
@@ -37,6 +39,7 @@ QDebug operator <<(QDebug logger, const clone_pair &clone_pair) noexcept;
 float good(const std::shared_ptr<clone_pair> &p1, const std::shared_ptr<clone_pair> &p2) noexcept;
 float ok(const std::shared_ptr<clone_pair> &p1, const std::shared_ptr<clone_pair> &p2) noexcept;
 
+Q_DECLARE_METATYPE(std::shared_ptr<clone_pair>)
 }
 
 #endif // CLONE_PAIR_HPP

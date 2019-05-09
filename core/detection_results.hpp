@@ -11,6 +11,7 @@
 #include "matching_table.hpp"
 #include "model/detection_result.hpp"
 #include "layer/heatmap_layer.hpp"
+#include "gui/matched_clone_pair_list_widget.hpp"
 
 namespace asterism
 {

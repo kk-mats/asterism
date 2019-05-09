@@ -88,6 +88,7 @@ public:
 
 	int method_index() const noexcept;
 	QString name() const noexcept;
+	std::shared_ptr<detection_result> primitive() const noexcept;
 	int width() const noexcept;
 	color_selector selector() const noexcept;
 	std::vector<std::pair<QString, QString>> details() const noexcept;

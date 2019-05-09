@@ -53,7 +53,8 @@ public slots:
 	void select_grid(const QModelIndex &index) noexcept;
 
 signals:
-	void current_grid_changed(const QString &filepath1, const QString &filepath2, const int clone_pair_size);
+	void current_grid_changed(const QString &file1, const QString &file2, const int clone_pair_size);
+	void current_grid_changed(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive);
 
 private:
 	int grid_size=15;

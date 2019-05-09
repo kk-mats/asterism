@@ -9,6 +9,7 @@
 #include "current_grid_detail_widget.hpp"
 #include "scatter_plot_widget.hpp"
 #include "color_bar_widget.hpp"
+#include "matched_clone_pair_list_widget.hpp"
 
 namespace asterism
 {
@@ -36,6 +37,7 @@ private:
 	scatter_plot_widget *scatter_plot_widget_;
 	QComboBox *method_selector_=new QComboBox(this);
 	color_bar_widget *color_bar_widget_=new color_bar_widget(this);
+	matched_list_widget *matched_list_widget_=new matched_list_widget(this);
 };
 
 }

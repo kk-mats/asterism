@@ -43,7 +43,7 @@ public:
 
 		unit(const key &key) noexcept;
 
-		int count_matching_pair(const std::shared_ptr<clone_pair> &p, const bool search_left, const std::shared_ptr<file_index> &file_index) const noexcept;
+		shared_vector<clone_pair> matched_pair(const std::shared_ptr<clone_pair> &p, const bool search_left, const std::shared_ptr<file_index> &file_index) const noexcept;
 		void update() noexcept;
 
 	private:
@@ -62,6 +62,7 @@ public:
 	void append(const shared_list<detection_result> &results) noexcept;
 	void remove(const std::shared_ptr<detection_result> &result) noexcept;
 
+	std::vector<std::pair<std::shared_ptr<detection_result>, shared_vector<clone_pair>>> matched_pair(const std::shared_ptr<detection_result> &primitive, const std::shared_ptr<clone_pair> &p, const std::shared_ptr<file_index> &file_index) const noexcept;
 	int count_matching_pair(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p, const std::shared_ptr<file_index> &file_index) const noexcept;
 	bool has_matching_pair(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p, const std::shared_ptr<file_index> &file_index) const noexcept;
 

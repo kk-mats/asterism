@@ -12,6 +12,16 @@ fragment::fragment(const std::shared_ptr<file> &file, const uint32_t begin, cons
 	:file_(file), begin_(begin), end_(end)
 {}
 
+QString fragment::string() const noexcept
+{
+	return "begin="+QString::number(this->begin_)+", end="+QString::number(this->end_)+", path="+this->file_->canonical_file_path();
+}
+
+bool fragment::operator==(const fragment &other) const noexcept
+{
+	return this->file_==other.file_ && this->begin_==other.begin_ && this->end_==other.end_;
+}
+
 // operator
 bool fragment::operator <(const fragment &other) const noexcept
 {

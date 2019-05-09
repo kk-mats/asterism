@@ -16,6 +16,16 @@ clone_pair::clone_pair(fragment &&fragment1, fragment &&fragment2, const unsigne
 	: fragments_(std::minmax<fragment>(std::move(fragment1), std::move(fragment2))), similairty_(similarity)
 {}
 
+QString clone_pair::string() const noexcept
+{
+	return "("+this->fragment1().string()+"), ("+this->fragment2().string()+"), similarity="+QString::number(this->similarity());
+}
+
+bool clone_pair::operator==(const clone_pair &other) const noexcept
+{
+	return this->fragments_==other.fragments_;
+}
+
 bool clone_pair::operator <(const clone_pair &other) const noexcept
 {
 	return this->fragments_.first<other.fragments_.first;

@@ -112,6 +112,9 @@
     <ClCompile Include="gui\color_bar_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gui\matched_clone_pair_list_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="clone_format\clone_io.hpp">
@@ -217,6 +220,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="gui\color_bar_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\matched_clone_pair_list_widget.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

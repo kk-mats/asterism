@@ -14,10 +14,13 @@ public:
 	fragment() noexcept;
 	fragment(const std::shared_ptr<file> &file, const uint32_t begin, const uint32_t end) noexcept;
 
+	QString string() const noexcept;
+
 	std::weak_ptr<file> file_ptr() const noexcept;
 	uint32_t begin() const noexcept;
 	uint32_t end() const noexcept;
 
+	bool operator ==(const fragment &other) const noexcept;
 	bool operator <(const fragment &other) const noexcept;
 	uint32_t operator &(const fragment &other) const noexcept;
 	uint32_t operator |(const fragment &other) const noexcept;
@@ -36,6 +39,8 @@ float overlap(const fragment &f1, const fragment &f2) noexcept;
 float contained(const fragment &f1, const fragment &f2) noexcept;
 
 QDebug operator <<(QDebug logger, const fragment &fragment) noexcept;
+
+Q_DECLARE_METATYPE(fragment)
 }
 
 #endif // FRAGMENT_HPP

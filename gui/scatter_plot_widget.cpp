@@ -19,7 +19,7 @@ int scatter_plot_model::columnCount(const QModelIndex &) const noexcept
 
 QVariant scatter_plot_model::data(const QModelIndex &index, int role) const noexcept
 {
-	if(index.isValid()&&role==Qt::BackgroundColorRole)
+	if(index.isValid() && role==Qt::BackgroundColorRole)
 	{
 		auto r=*this->current_layer_;
 		auto c=r[grid_2d_coordinate::to_linear(index.row(), index.column())];
@@ -89,7 +89,12 @@ void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 	{
 		this->setCurrentIndex(index);
 		this->model_->previous_=index;
-		emit current_grid_changed(this->results_->file_at(index.row())->canonical_file_path(), this->results_->file_at(index.column())->canonical_file_path(), 100);
+		auto x=this->results_->file_at(index.row()), y=this->results_->file_at(index.column());
+		emit current_grid_changed(x->canonical_file_path(), y->canonical_file_path(), 100);
+		if(this->model_->current_layer_->method_index()!=0)
+		{
+			emit current_grid_changed(x, y, this->model_->current_layer_->primitive());
+		}
 	}
 }
 }

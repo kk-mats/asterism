@@ -34,20 +34,37 @@ matching_table::unit::unit(const key &key) noexcept
 	this->update();
 }
 
-int matching_table::unit::count_matching_pair(const std::shared_ptr<clone_pair> &p, const bool search_left, const std::shared_ptr<file_index> &file_index) const noexcept
+shared_vector<clone_pair> matching_table::unit::matched_pair(const std::shared_ptr<clone_pair> &p, const bool search_left, const std::shared_ptr<file_index> &file_index) const noexcept
 {
 	const int x=file_index->at(p->fragment1().file_ptr());
 	const int y=file_index->at(p->fragment2().file_ptr());
 	
 	const auto &grid=this->layer_[grid_2d_coordinate::to_linear(x, y)];
-	
+	shared_vector<clone_pair> r;
+
 	if(search_left)
 	{
 		// detection_result "left" may have clone pairs which are matched for clone_pair "p"
-		return std::count_if(grid.begin(), grid.end(), [&](const auto &mp){ return mp.first==p; });
+		for(const auto &mp:grid)
+		{
+			if(mp.first==p)
+			{
+				r.push_back(mp.second);
+			}
+		}
 	}
-	// detection_result "right" may have clone pairs which are matched for clone_pair "p"
-	return std::count_if(grid.begin(), grid.end(), [&](const auto &mp){ return mp.second==p; });
+	else
+	{
+		// detection_result "right" may have clone pairs which are matched for clone_pair "p"
+		for(const auto &mp:grid)
+		{
+			if(mp.second==p)
+			{
+				r.push_back(mp.first);
+			}
+		}
+	}
+	return r;
 }
 
 void matching_table::unit::update() noexcept
@@ -154,18 +171,19 @@ void matching_table::remove(const std::shared_ptr<detection_result> &result) noe
 	this->update();
 }
 
-int matching_table::count_matching_pair(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p, const std::shared_ptr<file_index> &file_index) const noexcept
+std::vector<std::pair<std::shared_ptr<detection_result>, shared_vector<clone_pair>>> matching_table::matched_pair(const std::shared_ptr<detection_result> &primitive, const std::shared_ptr<clone_pair> &p, const std::shared_ptr<file_index> &file_index) const noexcept
 {
-	int r=0;
 	bool search_left;
+	std::vector<std::pair<std::shared_ptr<detection_result>, shared_vector<clone_pair>>> r;
+
 	for(const auto &u:this->values_)
 	{
-		search_left=u.first.right()==result;
-		if(!search_left && u.first.left()!=result)
+		search_left=u.first.right()==primitive;
+		if(!search_left && u.first.left()!=primitive)
 		{
 			continue;
 		}
-		r+=u.second.count_matching_pair(p, search_left, file_index);
+		r.emplace_back(search_left ? u.first.left() : u.first.right(), u.second.matched_pair(p, search_left, file_index));
 	}
 	return r;
 }
@@ -180,7 +198,7 @@ bool matching_table::has_matching_pair(const std::shared_ptr<detection_result> &
 		{
 			continue;
 		}
-		if(u.second.count_matching_pair(p, search_left, file_index)>0)
+		if(u.second.matched_pair(p, search_left, file_index).size()>0)
 		{
 			return true;
 		}
