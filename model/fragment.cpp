@@ -73,12 +73,12 @@ uint32_t fragment::end() const noexcept
 
 float overlap(const fragment &f1, const fragment &f2) noexcept
 {
-	return float(f1&f2)/(f1|f2);
+	return f1.begin_<=f2.end_ && f2.begin_<=f1.end_ ? float(f1&f2)/(f1|f2) : 0;
 }
 
 float contained(const fragment &f1, const fragment &f2) noexcept
 {
-	return float(f1&f2)/(f1.end_-f1.begin_);
+	return f1.begin_<=f2.end_ && f2.begin_<=f1.end_ ? float(f1&f2)/(f1.end_-f1.begin_) : 0;
 }
 
 QDebug operator <<(QDebug logger, const fragment &fragment) noexcept

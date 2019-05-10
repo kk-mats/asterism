@@ -30,7 +30,7 @@ class color_selector
 {
 public:
 	color_selector() noexcept=default;
-	color_selector(const QColor &color, const int index=0) noexcept;
+	color_selector(const int index, const QColor &color) noexcept;
 	color_selector(const std::vector<std::pair<int, QColor>> &anchors) noexcept;
 
 	void set_anchor(const int index, const QColor &color) noexcept;

@@ -45,7 +45,7 @@ signed_color operator /(const signed_color &c, const float f) noexcept
 	return signed_color(c.r/f, c.g/f, c.b/f);
 }
 
-color_selector::color_selector(const QColor &color, const int index) noexcept
+color_selector::color_selector(const int index, const QColor &color) noexcept
 	: first_(index), last_(index)
 {
 	this->color_source_[index]=signed_color(color);

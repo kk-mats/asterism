@@ -68,6 +68,19 @@
 						"begin":10,
 						"end":19
 					}
+				},
+				{
+					"similarity":85,
+					"fragment1":{
+						"file_id":2,
+						"begin":28,
+						"end":29
+					},
+					"fragment2":{
+						"file_id":2,
+						"begin":40,
+						"end":60
+					}
 				}
 			]
 		},
@@ -121,6 +134,19 @@
 						"file_id":2,
 						"begin":10,
 						"end":20
+					}
+				},
+				{
+					"similarity":85,
+					"fragment1":{
+						"file_id":2,
+						"begin":28,
+						"end":29
+					},
+					"fragment2":{
+						"file_id":2,
+						"begin":40,
+						"end":60
 					}
 				}
 			]

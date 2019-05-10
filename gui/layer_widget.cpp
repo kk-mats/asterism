@@ -20,7 +20,7 @@ layer_widget::layer_widget(const detection_results *results, QWidget *parent) no
 
 	auto *plot_layout=new QHBoxLayout;
 	plot_layout->addWidget(this->scatter_plot_widget_);
-	plot_layout->addWidget(this->matched_list_widget_);
+	//plot_layout->addWidget(this->matched_list_widget_);
 
 	auto *layout=new QVBoxLayout;
 	layout->addWidget(this->current_grid_detail_widget_);
@@ -31,7 +31,7 @@ layer_widget::layer_widget(const detection_results *results, QWidget *parent) no
 	
 	connect(this->method_selector_, qOverload<int>(&QComboBox::currentIndexChanged), this, &layer_widget::change_method);
 	connect(this->scatter_plot_widget_, qOverload<const QString&, const QString&, int>(&scatter_plot_widget::current_grid_changed), this->current_grid_detail_widget_, &current_grid_detail_widget::change_current_grid);
-	connect(this->scatter_plot_widget_, qOverload<const std::shared_ptr<file>&, const std::shared_ptr<file>&, const std::shared_ptr<detection_result>&>(&scatter_plot_widget::current_grid_changed), (matched_list_model *)this->matched_list_widget_->model(), &matched_list_model::change_current_grid);
+	//connect(this->scatter_plot_widget_, qOverload<const std::shared_ptr<file>&, const std::shared_ptr<file>&, const std::shared_ptr<detection_result>&>(&scatter_plot_widget::current_grid_changed), (matched_list_model *)this->matched_list_widget_->model(), &matched_list_model::change_current_grid);
 }
 
 

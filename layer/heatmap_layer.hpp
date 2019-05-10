@@ -34,7 +34,7 @@ public:
 		int min_=std::numeric_limits<int>::max();
 		int max_=0;
 		int sum_=0;
-		color_selector selector_=color_selector(Qt::white, 0);
+		color_selector selector_=color_selector(0, Qt::white);
 		void make(const std::shared_ptr<detection_result> &primitive) noexcept;
 	};
 

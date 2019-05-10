@@ -118,7 +118,7 @@ bool heatmap_layer::matching_rate::update(const std::shared_ptr<detection_result
 	this->width_=primitive->clone_pair_layer()->width();
 	this->values_.resize(primitive->clone_pair_layer()->size());
 
-	int matched_all=0;
+	float matched_all=0;
 
 	for(auto i=this->begin1d(), end=this->end1d(); i!=end; ++i)
 	{

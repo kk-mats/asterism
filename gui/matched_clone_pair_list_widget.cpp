@@ -63,12 +63,12 @@ int matched_list_model::rowCount(const QModelIndex &parent) const noexcept
 	{
 		return this->matched_clone_pair_.size();
 	}
-	/*
+	
 	if(parent.data().canConvert<top_clone_pair>())
 	{
 		return parent.data().value<top_clone_pair>().children_.size();
 	}
-
+	/*
 	if(parent.data().canConvert<result_category>())
 	{
 		return parent.data().value<result_category>().children_.size();
@@ -107,19 +107,19 @@ QModelIndex matched_list_model::index(int row, int column, const QModelIndex &pa
 
 	if(parent.data().canConvert<top_clone_pair>())
 	{
-		const auto t=parent.data().value<top_clone_pair>().children_;
+		const auto &t=parent.data().value<top_clone_pair>().children_;
 		return row<t.size() ? this->createIndex(row, 0, (void *)&t[row]) : QModelIndex();
 	}
 
 	if(parent.data().canConvert<result_category>())
 	{
-		const auto t=parent.data().value<result_category>().children_;
+		const auto &t=parent.data().value<result_category>().children_;
 		return row<t.size() ? this->createIndex(row, 0, (void*)&t[row]) : QModelIndex();
 	}
 
 	if(parent.data().canConvert<std::shared_ptr<clone_pair>>() && column==1)
 	{
-		const auto t=parent.data().value<std::shared_ptr<clone_pair>>();
+		const auto &t=parent.data().value<std::shared_ptr<clone_pair>>();
 		switch(row)
 		{
 			case 0: return this->createIndex(row, 0, &t->fragment1());
@@ -182,6 +182,7 @@ void matched_list_model::change_current_grid(const std::shared_ptr<file> &file1,
 			rc.children_=r.second;
 			top.children_.push_back(rc);
 		}
+		this->matched_clone_pair_.push_back(top);
 	}
 
 	return;

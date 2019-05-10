@@ -40,10 +40,10 @@ private:
 	layer_widget *layer_widget_;
 
 	layer_list_widget *layer_list_widget_=new layer_list_widget(this);
-	QDockWidget *layer_list_dock_=new QDockWidget(QStringLiteral("Layers"), this);
+	QDockWidget *layer_list_dock_=new QDockWidget(QStringLiteral("Detection Results"), this);
 	
 	layer_detail_widget *layer_detail_widget_=new layer_detail_widget(this);
-	QDockWidget *layer_detail_dock_=new QDockWidget(QStringLiteral("Layer Details"), this);
+	QDockWidget *layer_detail_dock_=new QDockWidget(QStringLiteral("Detection Result Details"), this);
 
 	QMenu *file_menu_;
 	QAction *open_project_act_;
