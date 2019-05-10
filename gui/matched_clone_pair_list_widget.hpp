@@ -18,12 +18,26 @@ class matched_list_model final
 public:
 	struct item final
 	{
+		item() noexcept=default;
+		item(const QString &self, item *parent) noexcept;
+		item(const std::shared_ptr<clone_pair> &self, item *parent) noexcept;
+		item(const std::shared_ptr<detection_result> &self, item *parent) noexcept;
 		~item() noexcept;
 		int row() const noexcept;
+		int size() const noexcept;
 		QVariant data(const int row, const int column) const noexcept;
 		QVariant self_;
 		item *parent_=nullptr;
 		QVector<item *> children_;
+
+	private:
+		bool is_string() const noexcept;
+		bool is_clone_pair() const noexcept;
+		bool is_detection_result() const noexcept;
+
+		QString to_string() const noexcept;
+		std::shared_ptr<clone_pair> to_clone_pair() const noexcept;
+		std::shared_ptr<detection_result> to_detection_result() const noexcept;
 	};
 
 	using QAbstractItemModel::QAbstractItemModel;

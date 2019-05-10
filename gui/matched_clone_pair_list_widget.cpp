@@ -3,6 +3,31 @@
 namespace asterism
 {
 
+matched_list_model::item::item(const QString &self, item *parent) noexcept
+	: parent_(parent)
+{
+	this->self_.setValue(self);
+}
+
+matched_list_model::item::item(const std::shared_ptr<clone_pair> &self, item *parent) noexcept
+	: parent_(parent)
+{
+	this->self_.setValue(self);
+
+	auto *value=new item("value", this);
+	value->children_.append(new item(self->fragment1().string(), value));
+	value->children_.append(new item(self->fragment2().string(), value));
+	value->children_.append(new item(QString::number(self->similarity()), value));
+
+	this->children_.append(value);
+}
+
+matched_list_model::item::item(const std::shared_ptr<detection_result> &self, item *parent) noexcept
+	: parent_(parent)
+{
+	this->self_.setValue(self);
+}
+
 matched_list_model::item::~item() noexcept
 {
 	qDeleteAll(this->children_);
@@ -14,19 +39,66 @@ int matched_list_model::item::row() const noexcept
 	return this->parent_!=nullptr ? this->parent_->children_.indexOf(const_cast<item *>(this)) : 0;
 }
 
+int matched_list_model::item::size() const noexcept
+{
+	if(this->is_detection_result())
+	{
+		return this->children_.size();
+	}
+
+	// [disbled]for showing fragment, fragment, similarity
+	return this->children_.size();// +3;
+}
+
 QVariant matched_list_model::item::data(const int row, const int column) const noexcept
 {
-	if(this->self_.canConvert<std::shared_ptr<clone_pair>>())
+	if(this->is_string())
 	{
-		return this->self_.value<std::shared_ptr<clone_pair>>()->string();
+		return this->to_string();
 	}
-	else if(this->self_.canConvert<std::shared_ptr<detection_result>>())
+	else if(this->is_clone_pair())
 	{
-		return this->self_.value<std::shared_ptr<detection_result>>()->environment().name();
+		return "clone pair ["+QString::number(row)+"]"; //this->to_clone_pair()->string();
+	}
+	else if(this->is_detection_result())
+	{
+		return "In <"+this->to_detection_result()->environment().name()+">";
 	}
 
 	return QVariant();
 }
+
+
+bool matched_list_model::item::is_string() const noexcept
+{
+	return this->self_.canConvert<QString>();
+}
+
+bool matched_list_model::item::is_clone_pair() const noexcept
+{
+	return this->self_.canConvert<std::shared_ptr<clone_pair>>();
+}
+
+bool matched_list_model::item::is_detection_result() const noexcept
+{
+	return this->self_.canConvert<std::shared_ptr<detection_result>>();
+}
+
+QString matched_list_model::item::to_string() const noexcept
+{
+	return this->self_.value<QString>();
+}
+
+std::shared_ptr<clone_pair> matched_list_model::item::to_clone_pair() const noexcept
+{
+	return this->self_.value<std::shared_ptr<clone_pair>>();
+}
+
+std::shared_ptr<detection_result> matched_list_model::item::to_detection_result() const noexcept
+{
+	return this->self_.value<std::shared_ptr<detection_result>>();
+}
+
 
 matched_list_model::~matched_list_model() noexcept
 {
@@ -71,7 +143,7 @@ int matched_list_model::rowCount(const QModelIndex &parent) const noexcept
 	}
 	item *parent_item=parent.isValid() ? static_cast<item *>(parent.internalPointer()) : this->root_;
 
-	return parent_item->children_.size();
+	return parent_item->size();
 }
 
 int matched_list_model::columnCount(const QModelIndex &parent) const noexcept
@@ -118,21 +190,15 @@ void matched_list_model::change_current_grid(const std::shared_ptr<file> &file1,
 
 	for(const auto &p:(*primitive->clone_pair_layer())[grid_2d_coordinate::to_linear(file_index_->at(file1), file_index_->at(file2))])
 	{
-		item *top_item=new item;
-		top_item->parent_=this->root_;
-		top_item->self_.setValue(p);
+		item *top_item=new item(p, this->root_);
 
 		for(const auto &r:matching_table_->matched_pair(primitive, p, file_index_))
 		{
-			item *result_item=new item;
-			result_item->parent_=top_item;
-			result_item->self_.setValue(r.first);
+			item *result_item=new item(r.first, top_item);
 
 			for(const auto &mp:r.second)
 			{
-				item *mp_item=new item;
-				mp_item->parent_=result_item;
-				mp_item->self_.setValue(mp);
+				item *mp_item=new item(mp, result_item);
 				result_item->children_.append(mp_item);
 			}
 			top_item->children_.append(result_item);
@@ -153,5 +219,6 @@ matched_list_widget::matched_list_widget(QWidget *parent)
 matched_list_widget::~matched_list_widget()
 {
 }
+
 
 }
