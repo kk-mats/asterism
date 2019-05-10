@@ -58,9 +58,10 @@ public:
 		static inline std::shared_ptr<matching_table> matching_table_=nullptr;
 		static inline color_selector selector_=color_selector(
 			{
-				{0, QColor(233, 30, 30)},
-				{99, QColor(204, 255, 144)},
-				{100, Qt::darkBlue}
+				{0, QColor(0xff, 0x00, 0x00)}, // red
+				{50, QColor(0xff, 0xb2, 0x00)}, // yellow
+				{99, QColor(0xf5, 0xfc, 0x94)}, // light yellow
+				{100, QColor(0xb4, 0xe3, 0xff)} // light blue
 			}
 		);
 		int average_matching_rate_=0;

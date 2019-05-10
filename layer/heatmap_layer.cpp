@@ -67,8 +67,8 @@ void heatmap_layer::clone_pair_size::make(const std::shared_ptr<detection_result
 		}
 	}
 
-	const auto low=QColor(204, 255, 144);
-	const auto high=QColor(233, 30, 30);
+	const auto low=QColor(0xf5, 0xfc, 0x94);
+	const auto high=QColor(0xff, 0x00, 0x00);
 	if(0<this->min_)
 	{
 		this->selector_.set_anchor(Qt::white, this->min_-1);
@@ -108,7 +108,7 @@ std::vector<std::pair<QString, QString>> heatmap_layer::matching_rate::details()
 {
 	return
 	{
-		{"average_matching_rate", QString::number(this->average_matching_rate_)}
+		{"average matching rate", QString::number(this->average_matching_rate_)}
 	};
 }
 
@@ -118,7 +118,7 @@ bool heatmap_layer::matching_rate::update(const std::shared_ptr<detection_result
 	this->width_=primitive->clone_pair_layer()->width();
 	this->values_.resize(primitive->clone_pair_layer()->size());
 
-	float matched_all=0;
+	int matched_all=0;
 
 	for(auto i=this->begin1d(), end=this->end1d(); i!=end; ++i)
 	{
@@ -140,7 +140,7 @@ bool heatmap_layer::matching_rate::update(const std::shared_ptr<detection_result
 
 		matched_all+=matched;
 
-		if(auto color=selector_.color_at(matched/size*100); !color)
+		if(auto color=selector_.color_at(matched*100/size); !color)
 		{
 			qCritical()<<heatmap_generating_error::color_index_out_of_range;
 			return false;
@@ -151,7 +151,7 @@ bool heatmap_layer::matching_rate::update(const std::shared_ptr<detection_result
 		}
 	}
 
-	this->average_matching_rate_=matched_all/primitive->clone_pairs().size()*100;
+	this->average_matching_rate_=matched_all*100/primitive->clone_pairs().size();
 	return true;
 }
 
