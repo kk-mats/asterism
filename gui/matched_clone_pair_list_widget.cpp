@@ -3,14 +3,34 @@
 namespace asterism
 {
 
-matched_list_widget::matched_list_widget(QWidget *parent)
-	: QTreeView(parent)
+matched_list_model::item::~item() noexcept
 {
-	this->setModel(this->model_);
+	qDeleteAll(this->children_);
 }
 
-matched_list_widget::~matched_list_widget()
+
+int matched_list_model::item::row() const noexcept
 {
+	return this->parent_!=nullptr ? this->parent_->children_.indexOf(const_cast<item *>(this)) : 0;
+}
+
+QVariant matched_list_model::item::data(const int row, const int column) const noexcept
+{
+	if(this->self_.canConvert<std::shared_ptr<clone_pair>>())
+	{
+		return this->self_.value<std::shared_ptr<clone_pair>>()->string();
+	}
+	else if(this->self_.canConvert<std::shared_ptr<detection_result>>())
+	{
+		return this->self_.value<std::shared_ptr<detection_result>>()->environment().name();
+	}
+
+	return QVariant();
+}
+
+matched_list_model::~matched_list_model() noexcept
+{
+	delete this->root_;
 }
 
 void matched_list_model::bind(const std::shared_ptr<file_index> &file_table, const std::shared_ptr<matching_table> &matching_table) noexcept
@@ -21,31 +41,17 @@ void matched_list_model::bind(const std::shared_ptr<file_index> &file_table, con
 
 QVariant matched_list_model::data(const QModelIndex &index, int role) const noexcept
 {
-	if(role==Qt::DisplayRole && index.isValid())
+	if(!index.isValid() || role!=Qt::DisplayRole)
 	{
-		if(index.data().canConvert<top_clone_pair>())
-		{
-			return index.data().value<top_clone_pair>().self_->string();
-		}
-
-		if(index.data().canConvert<result_category>())
-		{
-			const auto t=index.data().value<result_category>().self_;
-			return "name="+t->environment().name()+", source="+t->environment().source();
-		}
-
-		if(index.data().canConvert<std::shared_ptr<clone_pair>>())
-		{
-			return index.data().value<std::shared_ptr<clone_pair>>()->string();
-		}
-
-		if(index.data().canConvert<fragment>())
-		{
-			return index.data().value<fragment>().string();
-		}
+		return QVariant();
 	}
 
-	return QVariant();
+	return static_cast<item *>(index.internalPointer())->data(index.row(), index.column());	
+}
+
+Qt::ItemFlags matched_list_model::flags(const QModelIndex &index) const noexcept
+{
+	return index.isValid() ? QAbstractItemModel::flags(index) : 0;
 }
 
 QVariant matched_list_model::headerData(int section, Qt::Orientation orientation, int role) const noexcept
@@ -59,133 +65,93 @@ QVariant matched_list_model::headerData(int section, Qt::Orientation orientation
 
 int matched_list_model::rowCount(const QModelIndex &parent) const noexcept
 {
-	if(!parent.isValid())
+	if(parent.column()>0)
 	{
-		return this->matched_clone_pair_.size();
+		return 0;
 	}
-	
-	if(parent.data().canConvert<top_clone_pair>())
-	{
-		return parent.data().value<top_clone_pair>().children_.size();
-	}
-	/*
-	if(parent.data().canConvert<result_category>())
-	{
-		return parent.data().value<result_category>().children_.size();
-	}
+	item *parent_item=parent.isValid() ? static_cast<item *>(parent.internalPointer()) : this->root_;
 
-	if(parent.data().canConvert<std::shared_ptr<clone_pair>>())
-	{
-		// clone_pair.fragment1, clone_pair.fragment2 and clone_pair.similarity 
-		return 2;
-	}
-	*/
-	return 0;
+	return parent_item->children_.size();
 }
 
 int matched_list_model::columnCount(const QModelIndex &parent) const noexcept
 {
-	if(parent.data().canConvert<std::shared_ptr<clone_pair>>())
-	{
-		// clone_pair.fragment1, clone_pair.fragment2 and clone_pair.similarity 
-		return 1;
-	}
 	return 1;
 }
 
 QModelIndex matched_list_model::index(int row, int column, const QModelIndex &parent) const noexcept
 {
-	if(!parent.isValid())
+	if(!this->hasIndex(row, column, parent))
 	{
-		if(column==0 && row<this->matched_clone_pair_.size())
-		{
-			return this->createIndex(row, 0, (void *)&this->matched_clone_pair_[row]);
-		}
-
 		return QModelIndex();
 	}
 
-	if(parent.data().canConvert<top_clone_pair>())
-	{
-		const auto &t=parent.data().value<top_clone_pair>().children_;
-		return row<t.size() ? this->createIndex(row, 0, (void *)&t[row]) : QModelIndex();
-	}
+	item *parent_item=parent.isValid() ? static_cast<item *>(parent.internalPointer()) : this->root_;
+	item *child_item=parent_item->children_[row];
 
-	if(parent.data().canConvert<result_category>())
-	{
-		const auto &t=parent.data().value<result_category>().children_;
-		return row<t.size() ? this->createIndex(row, 0, (void*)&t[row]) : QModelIndex();
-	}
-
-	if(parent.data().canConvert<std::shared_ptr<clone_pair>>() && column==1)
-	{
-		const auto &t=parent.data().value<std::shared_ptr<clone_pair>>();
-		switch(row)
-		{
-			case 0: return this->createIndex(row, 0, &t->fragment1());
-			case 1: return this->createIndex(row, 1, &t->fragment2());
-		}
-	}
-	return QModelIndex();
+	return child_item!=nullptr ? this->createIndex(row, column, child_item) : QModelIndex();
 }
 
 QModelIndex matched_list_model::parent(const QModelIndex &index) const noexcept
 {
-	if(index.isValid())
+	if(!index.isValid())
 	{
-		if(index.data().canConvert<result_category>())
-		{
-			const auto t=index.data().value<result_category>();
-			for(int r=0; r<this->matched_clone_pair_.size(); ++r)
-			{
-				if(this->matched_clone_pair_[r].children_.indexOf(t)>-1)
-				{
-					return this->createIndex(r, 0, (void *)&this->matched_clone_pair_[r]);
-				}
-			}
-		}
-		else if(index.data().canConvert<std::shared_ptr<clone_pair>>())
-		{
-			const auto t=index.data().value<std::shared_ptr<clone_pair>>();
-			for(const auto &top:this->matched_clone_pair_)
-			{
-				for(int r=0; r<top.children_.size(); ++r)
-				{
-					if(top.children_[r].children_.indexOf(t)>-1)
-					{
-						return this->createIndex(r, 0, (void *)&top.children_[r]);
-					}
-				}
-			}
-		}
+		return QModelIndex();
 	}
-	return QModelIndex();
-}
 
-bool matched_list_model::result_category::operator==(const result_category &other) const noexcept
-{
-	return this->self_==other.self_;
+	item *child_item=static_cast<item *>(index.internalPointer());
+	item *parent_item=child_item->parent_;
+
+	if(parent_item==this->root_)
+	{
+		return QModelIndex();
+	}
+
+	return this->createIndex(parent_item->row(), 0, parent_item);
 }
 
 void matched_list_model::change_current_grid(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive) noexcept
 {
-	this->matched_clone_pair_.clear();
+	this->beginResetModel();
+	delete this->root_;
+	this->root_=new item;
+
 	for(const auto &p:(*primitive->clone_pair_layer())[grid_2d_coordinate::to_linear(file_index_->at(file1), file_index_->at(file2))])
 	{
-		auto rr=matching_table_->matched_pair(primitive, p, file_index_);
-		top_clone_pair top;
-		top.self_=p;
-		for(const auto &r:rr)
+		item *top_item=new item;
+		top_item->parent_=this->root_;
+		top_item->self_.setValue(p);
+
+		for(const auto &r:matching_table_->matched_pair(primitive, p, file_index_))
 		{
-			result_category rc;
-			rc.self_=r.first;
-			rc.children_=r.second;
-			top.children_.push_back(rc);
+			item *result_item=new item;
+			result_item->parent_=top_item;
+			result_item->self_.setValue(r.first);
+
+			for(const auto &mp:r.second)
+			{
+				item *mp_item=new item;
+				mp_item->parent_=result_item;
+				mp_item->self_.setValue(mp);
+				result_item->children_.append(mp_item);
+			}
+			top_item->children_.append(result_item);
 		}
-		this->matched_clone_pair_.push_back(top);
+		this->root_->children_.append(top_item);
 	}
 
+	this->endResetModel();
 	return;
+}
+
+matched_list_widget::matched_list_widget(QWidget *parent)
+	: QTreeView(parent)
+{
+	this->setModel(this->model_);
+}
+
+matched_list_widget::~matched_list_widget()
+{
 }
 
 }
