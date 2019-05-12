@@ -36,13 +36,12 @@ using shared_map=QHash<K, std::shared_ptr<V>>;
 class file final
 {
 public:
-	using id_t=object_id_t<file>;
-
 	file() noexcept;
 	file(const QString &canonical_file_path) noexcept;
 	file(QString &&canonical_file_path) noexcept;
 
-	id_t id() const noexcept;
+	int id() const noexcept;
+	void set_id(const int id) noexcept;
 	QString canonical_file_path() const noexcept;
 
 	bool operator <(const file &other) const noexcept;
@@ -54,11 +53,8 @@ public:
 	friend uint qHash(const file &key, uint seed) noexcept;
 
 private:
-	id_t id_;
+	int id_;
 	QString canonical_file_path_;
-
-	static inline uint32_t id_ctr_=0;
-	static id_t new_id() noexcept;
 };
 
 uint qHash(const file &key, uint seed) noexcept;

@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 	this->create_actions();
 	this->create_menus();
-
 	this->setWindowTitle("Asterism");
 }
 

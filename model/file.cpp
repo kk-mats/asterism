@@ -21,9 +21,14 @@ QString file::canonical_file_path() const noexcept
 	return this->canonical_file_path_;
 }
 
-file::id_t file::id() const noexcept
+int file::id() const noexcept
 {
 	return this->id_;
+}
+
+void file::set_id(const int id) noexcept
+{
+	this->id_=id;
 }
 
 bool file::operator <(const file &other) const noexcept
@@ -39,13 +44,6 @@ bool file::operator ==(const QString &path) const noexcept
 bool file::operator ==(const file &other) const noexcept
 {
 	return this->canonical_file_path_==other.canonical_file_path_;
-}
-
-file::id_t file::new_id() noexcept
-{
-	auto id=file::id_t(id_ctr_);
-	++id_ctr_;
-	return id;
 }
 
 uint qHash(const file &key, uint seed) noexcept

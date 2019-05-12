@@ -55,11 +55,12 @@ void scatter_plot_model::change_method(const int method_index) noexcept
 scatter_plot_widget::scatter_plot_widget(const detection_results *results, QWidget *parent)
 	: QTableView(parent), results_(results)
 {
+	/*
 	auto p=this->palette();
 	p.setColor(QPalette::Inactive, QPalette::Highlight, Qt::gray);
-	this->setPalette(p);
-	this->setSelectionMode(QAbstractItemView::SingleSelection);
+	this->setPalette(p);*/
 
+	this->setSelectionMode(QAbstractItemView::SingleSelection);
 	this->setModel(this->model_);
 
 	this->verticalHeader()->hide();
