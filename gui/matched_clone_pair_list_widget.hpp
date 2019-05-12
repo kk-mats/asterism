@@ -16,28 +16,43 @@ class matched_list_model final
 	Q_OBJECT
 
 public:
-	struct item final
+	class item final
 	{
+	public:
 		item() noexcept=default;
-		item(const QString &self, item *parent) noexcept;
-		item(const std::shared_ptr<clone_pair> &self, item *parent) noexcept;
-		item(const std::shared_ptr<detection_result> &self, item *parent) noexcept;
+		item(const QVariant &self, const QVariant &text, item *parent) noexcept;
+		item(const std::shared_ptr<clone_pair> &self, const QVariant &text, item *parent) noexcept;
+		item(const std::shared_ptr<detection_result> &self, const QVariant &text, item *parent) noexcept;
 		~item() noexcept;
+
 		int row() const noexcept;
-		int size() const noexcept;
+		int column_size() const noexcept;
+		int children_size() const noexcept;
+
+		QVariant self(const int i) const noexcept;
+		item* parent() const noexcept;
+		item* child(const int i) const noexcept;
 		QVariant data(const int row, const int column) const noexcept;
-		QVariant self_;
+
+		void append_child(item *child) noexcept;
+		void emplace_child(const QVariant &child, const QVariant &text) noexcept;
+		void emplace_children(const QVector<std::pair<QVariant, QVariant>> &children) noexcept;
+
+	private:
+
+		QVector<QVariant> self_;
 		item *parent_=nullptr;
 		QVector<item *> children_;
 
-	private:
-		bool is_string() const noexcept;
-		bool is_clone_pair() const noexcept;
-		bool is_detection_result() const noexcept;
+		bool is_string(const int i) const noexcept;
+		bool is_int(const int i) const noexcept;
+		bool is_clone_pair(const int i) const noexcept;
+		bool is_detection_result(const int i) const noexcept;
 
-		QString to_string() const noexcept;
-		std::shared_ptr<clone_pair> to_clone_pair() const noexcept;
-		std::shared_ptr<detection_result> to_detection_result() const noexcept;
+		QString to_string(const int i) const noexcept;
+		int to_int(const int i) const noexcept;
+		std::shared_ptr<clone_pair> to_clone_pair(const int i) const noexcept;
+		std::shared_ptr<detection_result> to_detection_result(const int i) const noexcept;
 	};
 
 	using QAbstractItemModel::QAbstractItemModel;
@@ -58,7 +73,7 @@ public slots:
 	void change_current_grid(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive) noexcept;
 
 private:
-	item *root_=new item;
+	item *root_=new item(QStringLiteral(""), "Description", nullptr);;
 	static inline std::shared_ptr<matching_table> matching_table_=nullptr;
 	static inline std::shared_ptr<file_index> file_index_=nullptr;
 };

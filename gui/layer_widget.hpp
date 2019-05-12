@@ -3,6 +3,7 @@
 
 #include <QComboBox>
 #include <QLabel>
+#include <QSplitter>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
@@ -37,6 +38,7 @@ private:
 	scatter_plot_widget *scatter_plot_widget_;
 	QComboBox *method_selector_=new QComboBox(this);
 	color_bar_widget *color_bar_widget_=new color_bar_widget(this);
+	QSplitter *splitter_=new QSplitter(this);
 	matched_list_widget *matched_list_widget_=new matched_list_widget(this);
 };
 

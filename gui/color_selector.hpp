@@ -44,7 +44,7 @@ public:
 	QMap<int, signed_color>::const_key_value_iterator end() const noexcept;
 
 private:
-	int first_, last_;
+	int first_=std::numeric_limits<int>::max(), last_;
 	QMap<int, signed_color> color_source_;
 };
 

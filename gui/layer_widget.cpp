@@ -8,7 +8,7 @@ layer_widget::layer_widget(const detection_results *results, QWidget *parent) no
 	this->scatter_plot_widget_=new scatter_plot_widget(results);
 
 	this->method_selector_->addItem("Clone Pair Size");
-	this->method_selector_->addItem("Matching Rate");
+	this->method_selector_->addItem("Mismatch Rate");
 	this->method_selector_->setDisabled(true);
 
 	auto *colorize_method_label=new QLabel(tr("Colorize Method: "), this);
@@ -17,15 +17,16 @@ layer_widget::layer_widget(const detection_results *results, QWidget *parent) no
 	bottom_layout->addWidget(this->method_selector_);
 	bottom_layout->addStretch();
 	bottom_layout->addWidget(this->color_bar_widget_);
-
-	auto *plot_layout=new QHBoxLayout;
-	plot_layout->addWidget(this->scatter_plot_widget_);
-	plot_layout->addWidget(this->matched_list_widget_);
+	
+	this->splitter_->setOpaqueResize(false);
+	this->splitter_->addWidget(this->scatter_plot_widget_);
+	this->splitter_->addWidget(this->matched_list_widget_);
 
 	auto *layout=new QVBoxLayout;
 	layout->addWidget(this->current_grid_detail_widget_);
-	layout->addLayout(plot_layout);
+	layout->addWidget(this->splitter_);
 	layout->addLayout(bottom_layout);
+	layout->setStretch(1, 5);
 
 	this->setLayout(layout);
 	
@@ -41,7 +42,7 @@ void layer_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexce
 	this->scatter_plot_widget_->set_layer(this->layer_);
 	this->method_selector_->setCurrentIndex(this->layer_->method_index());
 	this->method_selector_->setEnabled(true);
-	this->color_bar_widget_->set_selector(this->layer_->selector());
+	this->color_bar_widget_->set_selector(this->layer_->selector(), this->layer_->method_index());
 }
 
 void layer_widget::update_layer() noexcept
@@ -52,7 +53,7 @@ void layer_widget::update_layer() noexcept
 void layer_widget::change_method(const int method_index) noexcept
 {
 	((scatter_plot_model *)this->scatter_plot_widget_->model())->change_method(method_index);
-	this->color_bar_widget_->set_selector(this->layer_->selector());
+	this->color_bar_widget_->set_selector(this->layer_->selector(), method_index);
 	emit method_changed(method_index);
 }
 

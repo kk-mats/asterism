@@ -47,7 +47,7 @@ void scatter_plot_model::change_method(const int method_index) noexcept
 	}
 	else
 	{
-		this->current_layer_->change_method(heatmap_layer::method::matching_rate());
+		this->current_layer_->change_method(heatmap_layer::method::mismatch_rate());
 	}
 	this->endResetModel();
 }
@@ -55,6 +55,9 @@ void scatter_plot_model::change_method(const int method_index) noexcept
 scatter_plot_widget::scatter_plot_widget(const detection_results *results, QWidget *parent)
 	: QTableView(parent), results_(results)
 {
+	auto p=this->palette();
+	p.setColor(QPalette::Inactive, QPalette::Highlight, Qt::gray);
+	this->setPalette(p);
 	this->setSelectionMode(QAbstractItemView::SingleSelection);
 
 	this->setModel(this->model_);

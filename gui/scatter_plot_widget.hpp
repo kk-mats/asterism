@@ -7,6 +7,7 @@
 #include <QAbstractItemDelegate>
 #include <QStyledItemDelegate>
 #include <QPainter>
+#include <QPalette>
 #include <QItemSelectionModel>
 
 #include "core/logger.hpp"

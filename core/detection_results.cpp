@@ -6,7 +6,7 @@ namespace asterism
 detection_results::detection_results(const QString &target_path) noexcept
 	: target_path_(target_path)
 {
-	heatmap_layer::matching_rate::bind(this->file_index_, this->matching_table_);
+	heatmap_layer::mismatch_rate::bind(this->file_index_, this->matching_table_);
 	matched_list_model::bind(this->file_index_, this->matching_table_);
 }
 

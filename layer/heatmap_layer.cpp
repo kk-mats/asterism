@@ -39,14 +39,14 @@ bool heatmap_layer::clone_pair_size::update(const std::shared_ptr<detection_resu
 	this->values_.resize(primitive->clone_pair_layer()->size());
 	for(auto i=this->begin1d(), end=this->end1d(); i!=end; ++i)
 	{
-		if(auto color=this->selector_.color_at((*primitive->clone_pair_layer())[i].size()); !color)
+		if(auto color=this->selector_.color_at((*primitive->clone_pair_layer())[i].size()); color)
 		{
-			qCritical()<<heatmap_generating_error::color_index_out_of_range;
-			return false;
+			(*this)[i]=color.value();
 		}
 		else
 		{
-			(*this)[i]=color.value();
+			qCritical()<<heatmap_generating_error::color_index_out_of_range;
+			return false;
 		}
 	}
 	return true;
@@ -83,36 +83,31 @@ void heatmap_layer::clone_pair_size::make(const std::shared_ptr<detection_result
 	this->update(primitive);
 }
 
-void heatmap_layer::matching_rate::bind(const std::shared_ptr<file_index> &file_index, const std::shared_ptr<matching_table> &matching_table) noexcept
+void heatmap_layer::mismatch_rate::bind(const std::shared_ptr<file_index> &file_index, const std::shared_ptr<matching_table> &matching_table) noexcept
 {
 	file_index_=file_index;
 	matching_table_=matching_table;
 }
 
-heatmap_layer::matching_rate::matching_rate(const std::shared_ptr<detection_result> &primitive) noexcept
+heatmap_layer::mismatch_rate::mismatch_rate(const std::shared_ptr<detection_result> &primitive) noexcept
 {
 	this->update(primitive);
 }
 
-int heatmap_layer::matching_rate::average_matching_rate() const noexcept
-{
-	return this->average_matching_rate_;
-}
-
-color_selector heatmap_layer::matching_rate::selector() const noexcept
+color_selector heatmap_layer::mismatch_rate::selector() const noexcept
 {
 	return selector_;
 }
 
-std::vector<std::pair<QString, QString>> heatmap_layer::matching_rate::details() const noexcept
+std::vector<std::pair<QString, QString>> heatmap_layer::mismatch_rate::details() const noexcept
 {
 	return
 	{
-		{"average matching rate", QString::number(this->average_matching_rate_)}
+		{"average mismatch rate", QString::number(this->average_mismatch_rate_)}
 	};
 }
 
-bool heatmap_layer::matching_rate::update(const std::shared_ptr<detection_result> &primitive) noexcept
+bool heatmap_layer::mismatch_rate::update(const std::shared_ptr<detection_result> &primitive) noexcept
 {
 	const auto no_clone_pair=Qt::white;
 	this->width_=primitive->clone_pair_layer()->width();
@@ -140,18 +135,22 @@ bool heatmap_layer::matching_rate::update(const std::shared_ptr<detection_result
 
 		matched_all+=matched;
 
-		if(auto color=selector_.color_at(matched*100/size); !color)
+		if(auto rate=100-matched*100/size; rate==0)
+		{
+			(*this)[i]=QColor(0xb4, 0xff, 0x70);
+		}
+		else if(auto color=selector_.color_at(rate); color)
+		{
+			(*this)[i]=color.value();
+		}
+		else
 		{
 			qCritical()<<heatmap_generating_error::color_index_out_of_range;
 			return false;
 		}
-		else
-		{
-			(*this)[i]=color.value();
-		}
 	}
 
-	this->average_matching_rate_=matched_all*100/primitive->clone_pairs().size();
+	this->average_mismatch_rate_=100-matched_all*100/primitive->clone_pairs().size();
 	return true;
 }
 
@@ -162,10 +161,10 @@ heatmap_layer::heatmap_layer(const std::shared_ptr<detection_result> &primitive,
 	this->value_=std::move(clone_pair_size(this->primitive_));
 }
 
-heatmap_layer::heatmap_layer(const std::shared_ptr<detection_result> &primitive, const method::matching_rate) noexcept
+heatmap_layer::heatmap_layer(const std::shared_ptr<detection_result> &primitive, const method::mismatch_rate) noexcept
 	: primitive_(primitive)
 {
-	this->value_=std::move(matching_rate(this->primitive_));
+	this->value_=std::move(mismatch_rate(this->primitive_));
 }
 
 void heatmap_layer::change_method(const method::clone_pair_size) noexcept
@@ -173,9 +172,9 @@ void heatmap_layer::change_method(const method::clone_pair_size) noexcept
 	this->value_=std::move(clone_pair_size(this->primitive_));
 }
 
-void heatmap_layer::change_method(const method::matching_rate) noexcept
+void heatmap_layer::change_method(const method::mismatch_rate) noexcept
 {
-	this->value_=std::move(matching_rate(this->primitive_));
+	this->value_=std::move(mismatch_rate(this->primitive_));
 }
 
 bool heatmap_layer::update() noexcept

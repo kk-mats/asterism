@@ -39,15 +39,14 @@ public:
 	};
 
 
-	class matching_rate final
+	class mismatch_rate final
 		: public file_separated_grid_layer<QColor>
 	{
 	public:
 		static void bind(const std::shared_ptr<file_index> &file_index, const std::shared_ptr<matching_table> &matching_table) noexcept;
-		matching_rate() noexcept=default;
-		matching_rate(const std::shared_ptr<detection_result> &primitive) noexcept;
+		mismatch_rate() noexcept=default;
+		mismatch_rate(const std::shared_ptr<detection_result> &primitive) noexcept;
 
-		int average_matching_rate() const noexcept;
 		color_selector selector() const noexcept;
 		std::vector<std::pair<QString, QString>> details() const noexcept;
 
@@ -58,13 +57,12 @@ public:
 		static inline std::shared_ptr<matching_table> matching_table_=nullptr;
 		static inline color_selector selector_=color_selector(
 			{
-				{0, QColor(0xff, 0x00, 0x00)}, // red
+				{1, QColor(0xf5, 0xfc, 0x94)}, // light yellow
 				{50, QColor(0xff, 0xb2, 0x00)}, // yellow
-				{99, QColor(0xf5, 0xfc, 0x94)}, // light yellow
-				{100, QColor(0xb4, 0xe3, 0xff)} // light blue
+				{100, QColor(0xff, 0x00, 0x00)}  // red
 			}
 		);
-		int average_matching_rate_=0;
+		int average_mismatch_rate_=0;
 	};
 
 
@@ -72,18 +70,18 @@ public:
 	{
 		method() noexcept=default;
 		struct clone_pair_size final{};
-		struct matching_rate final{};
+		struct mismatch_rate final{};
 	};
 
 	heatmap_layer() noexcept=default;
 	heatmap_layer(const std::shared_ptr<detection_result> &primitive, const method::clone_pair_size) noexcept;
-	heatmap_layer(const std::shared_ptr<detection_result> &primitive, const method::matching_rate) noexcept;
+	heatmap_layer(const std::shared_ptr<detection_result> &primitive, const method::mismatch_rate) noexcept;
 	
 	template <class T>
-	using is_convertible_from=typename std::enable_if_t<std::is_same_v<T, clone_pair_size> || std::is_same_v<T, matching_rate>>;
+	using is_convertible_from=typename std::enable_if_t<std::is_same_v<T, clone_pair_size> || std::is_same_v<T, mismatch_rate>>;
 
 	void change_method(const method::clone_pair_size) noexcept;
-	void change_method(const method::matching_rate) noexcept;
+	void change_method(const method::mismatch_rate) noexcept;
 
 	bool update() noexcept;
 
@@ -113,7 +111,7 @@ public:
 
 private:
 	std::shared_ptr<detection_result> primitive_;
-	std::variant<clone_pair_size, matching_rate> value_;
+	std::variant<clone_pair_size, mismatch_rate> value_;
 };
 
 }
