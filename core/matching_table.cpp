@@ -34,10 +34,10 @@ matching_table::unit::unit(const key &key) noexcept
 	this->update();
 }
 
-shared_vector<clone_pair> matching_table::unit::matched_pair(const std::shared_ptr<clone_pair> &p, const bool search_left, const std::shared_ptr<file_index> &file_index) const noexcept
+shared_vector<clone_pair> matching_table::unit::matched_pair(const std::shared_ptr<clone_pair> &p, const bool search_left) const noexcept
 {
-	const int x=file_index->at(p->fragment1().file_ptr());
-	const int y=file_index->at(p->fragment2().file_ptr());
+	const int x=p->fragment1().file_ptr()->id();
+	const int y=p->fragment2().file_ptr()->id();
 	
 	const auto &grid=this->layer_[grid_2d_coordinate::to_linear(x, y)];
 	shared_vector<clone_pair> r;
@@ -171,7 +171,7 @@ void matching_table::remove(const std::shared_ptr<detection_result> &result) noe
 	this->update();
 }
 
-std::vector<std::pair<std::shared_ptr<detection_result>, shared_vector<clone_pair>>> matching_table::matched_pair(const std::shared_ptr<detection_result> &primitive, const std::shared_ptr<clone_pair> &p, const std::shared_ptr<file_index> &file_index) const noexcept
+std::vector<std::pair<std::shared_ptr<detection_result>, shared_vector<clone_pair>>> matching_table::matched_pair(const std::shared_ptr<detection_result> &primitive, const std::shared_ptr<clone_pair> &p) const noexcept
 {
 	bool search_left;
 	std::vector<std::pair<std::shared_ptr<detection_result>, shared_vector<clone_pair>>> r;
@@ -183,12 +183,12 @@ std::vector<std::pair<std::shared_ptr<detection_result>, shared_vector<clone_pai
 		{
 			continue;
 		}
-		r.emplace_back(search_left ? u.first.left() : u.first.right(), u.second.matched_pair(p, search_left, file_index));
+		r.emplace_back(search_left ? u.first.left() : u.first.right(), u.second.matched_pair(p, search_left));
 	}
 	return r;
 }
 
-bool matching_table::has_matching_pair(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p, const std::shared_ptr<file_index> &file_index) const noexcept
+bool matching_table::has_matching_pair(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p) const noexcept
 {
 	bool search_left;
 	for(const auto &u:this->values_)
@@ -198,7 +198,7 @@ bool matching_table::has_matching_pair(const std::shared_ptr<detection_result> &
 		{
 			continue;
 		}
-		if(u.second.matched_pair(p, search_left, file_index).size()>0)
+		if(u.second.matched_pair(p, search_left).size()>0)
 		{
 			return true;
 		}

@@ -3,8 +3,8 @@
 namespace asterism
 {
 
-grid_2d_coordinate::grid_2d_coordinate(const std::weak_ptr<file> &x, const std::weak_ptr<file> &y, const std::shared_ptr<file_index> &file_index) noexcept
-	: x_y_(std::minmax(file_index->at(x), file_index->at(y)))
+grid_2d_coordinate::grid_2d_coordinate(const std::shared_ptr<file> &x, const std::shared_ptr<file> &y) noexcept
+	: x_y_(std::minmax(x->id(), y->id()))
 {}
 
 int grid_2d_coordinate::to_linear() const noexcept

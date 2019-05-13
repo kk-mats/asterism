@@ -89,11 +89,11 @@ void scatter_plot_widget::update_layer() noexcept
 
 void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 {
-	if(index.isValid() && this->model_->previous_!=index)
+	if(index.isValid() && this->model_->previous_!=index && this->model_->previous_.row()!=index.column() && this->model_->previous_.column()!=index.row())
 	{
 		this->setCurrentIndex(index);
 		this->model_->previous_=index;
-		auto x=this->results_->file_at(index.row()), y=this->results_->file_at(index.column());
+		auto [x, y]=std::minmax(this->results_->file_at(index.row()), this->results_->file_at(index.column()));
 		emit current_grid_changed(x->canonical_file_path(), y->canonical_file_path(), 100);
 		if(this->model_->current_layer_->method_index()!=0)
 		{

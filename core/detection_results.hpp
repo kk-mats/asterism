@@ -33,13 +33,11 @@ public:
 
 	void set_target_path(const QString &target_path) noexcept;
 	QString target_path() const noexcept;
-	const std::shared_ptr<file_index> file_index_map() const noexcept;
 
 private:
 	QString target_path_;
 	shared_set<file> files_;
 	shared_list<detection_result> results_;
-	std::shared_ptr<file_index> file_index_=std::make_shared<file_index>();
 	std::shared_ptr<matching_table> matching_table_=std::make_shared<matching_table>();
 
 

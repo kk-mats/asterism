@@ -83,9 +83,8 @@ void heatmap_layer::clone_pair_size::make(const std::shared_ptr<detection_result
 	this->update(primitive);
 }
 
-void heatmap_layer::mismatch_rate::bind(const std::shared_ptr<file_index> &file_index, const std::shared_ptr<matching_table> &matching_table) noexcept
+void heatmap_layer::mismatch_rate::bind(const std::shared_ptr<matching_table> &matching_table) noexcept
 {
-	file_index_=file_index;
 	matching_table_=matching_table;
 }
 
@@ -127,7 +126,7 @@ bool heatmap_layer::mismatch_rate::update(const std::shared_ptr<detection_result
 		int matched=0;
 		for(const auto &p:(*primitive->clone_pair_layer())[i])
 		{
-			if(matching_table_->has_matching_pair(primitive, p, file_index_))
+			if(matching_table_->has_matching_pair(primitive, p))
 			{
 				++matched;
 			}

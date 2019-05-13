@@ -8,10 +8,9 @@
 namespace asterism
 {
 
-using file_index=std::unordered_map<std::weak_ptr<file>, int>;
-
 class grid_coordinate
 {
+
 public:
 	virtual int to_linear() const noexcept=0;
 };
@@ -40,7 +39,7 @@ class grid_2d_coordinate final
 	: public grid_coordinate
 {
 public:
-	grid_2d_coordinate(const std::weak_ptr<file> &x, const std::weak_ptr<file> &y, const std::shared_ptr<file_index> &file_index) noexcept;
+	grid_2d_coordinate(const std::shared_ptr<file> &x, const std::shared_ptr<file> &y) noexcept;
 
 	int x() const noexcept;
 	int y() const noexcept;
@@ -63,12 +62,12 @@ public:
 		: width_(0)
 	{}
 
-	file_separated_grid_layer(const std::shared_ptr<file_index> &file_index) noexcept
-		: width_(file_index->size()), values_(this->required_size(this->width_))
+	file_separated_grid_layer(const int file_size) noexcept
+		: width_(file_size), values_(this->required_size(this->width_))
 	{}
 
-	file_separated_grid_layer(const std::shared_ptr<file_index> &file_index, const val_T &initial) noexcept
-		: width_(file_index->size()), values_(this->required_size(this->width_), initial)
+	file_separated_grid_layer(const int file_size, const val_T &initial) noexcept
+		: width_(file_size), values_(this->required_size(this->width_), initial)
 	{}
 
 	auto begin() const noexcept

@@ -9,12 +9,12 @@ matched_list_model::item::item(const std::shared_ptr<clone_pair> &self, const QV
 	auto *value=new item(QStringLiteral("Value"), "", this);
 	auto *f1_item=new item(QStringLiteral("Fragment1"), "", value);
 	const auto f1=self->fragment1();
-	f1_item->emplace_children({{"Path", f1.file_ptr().lock()->canonical_file_path()}, {"Begin", f1.begin()}, {"End", f1.end()}});
+	f1_item->emplace_children({{"Path", f1.file_ptr()->canonical_file_path()}, {"Begin", f1.begin()}, {"End", f1.end()}});
 	value->append_child(f1_item);
 	
 	auto *f2_item=new item(QStringLiteral("Fragment2"), "", value);
 	const auto f2=self->fragment2();
-	f2_item->emplace_children({{"Path", f2.file_ptr().lock()->canonical_file_path()}, {"Begin", f2.begin()}, {"End", f2.end()}});
+	f2_item->emplace_children({{"Path", f2.file_ptr()->canonical_file_path()}, {"Begin", f2.begin()}, {"End", f2.end()}});
 	value->append_child(f2_item);
 
 	value->emplace_child(QStringLiteral("Similarity"), self->similarity());
@@ -152,10 +152,9 @@ matched_list_model::~matched_list_model() noexcept
 	delete this->root_;
 }
 
-void matched_list_model::bind(const std::shared_ptr<file_index> &file_table, const std::shared_ptr<matching_table> &matching_table) noexcept
+void matched_list_model::bind(const std::shared_ptr<matching_table> &matching_table) noexcept
 {
 	matching_table_=matching_table;
-	file_index_=file_table;
 }
 
 QVariant matched_list_model::data(const QModelIndex &index, int role) const noexcept
@@ -235,11 +234,11 @@ void matched_list_model::change_current_grid(const std::shared_ptr<file> &file1,
 	delete this->root_;
 	this->root_=new item(QStringLiteral(""), "Description", nullptr);
 
-	for(const auto &p:(*primitive->clone_pair_layer())[grid_2d_coordinate::to_linear(file_index_->at(file1), file_index_->at(file2))])
+	for(const auto &p:(*primitive->clone_pair_layer())[grid_2d_coordinate::to_linear(file1->id(), file2->id())])
 	{
 		item *top_item=new item(p, "", this->root_);
 
-		for(const auto &r:matching_table_->matched_pair(primitive, p, file_index_))
+		for(const auto &r:matching_table_->matched_pair(primitive, p))
 		{
 			item *result_item=new item(r.first, QString::number(r.second.size())+" matched", top_item);
 

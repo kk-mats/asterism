@@ -43,7 +43,7 @@ public:
 		: public file_separated_grid_layer<QColor>
 	{
 	public:
-		static void bind(const std::shared_ptr<file_index> &file_index, const std::shared_ptr<matching_table> &matching_table) noexcept;
+		static void bind( const std::shared_ptr<matching_table> &matching_table) noexcept;
 		mismatch_rate() noexcept=default;
 		mismatch_rate(const std::shared_ptr<detection_result> &primitive) noexcept;
 
@@ -53,7 +53,6 @@ public:
 		bool update(const std::shared_ptr<detection_result> &primitive) noexcept;
 
 	private:
-		static inline std::shared_ptr<file_index> file_index_=nullptr;
 		static inline std::shared_ptr<matching_table> matching_table_=nullptr;
 		static inline color_selector selector_=color_selector(
 			{

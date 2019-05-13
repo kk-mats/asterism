@@ -58,7 +58,7 @@ public:
 	using QAbstractItemModel::QAbstractItemModel;
 	~matched_list_model() noexcept;
 
-	static void bind(const std::shared_ptr<file_index> &file_index, const std::shared_ptr<matching_table> &matching_table) noexcept;
+	static void bind(const std::shared_ptr<matching_table> &matching_table) noexcept;
 
 	QVariant data(const QModelIndex &index, int role) const noexcept override;
 	Qt::ItemFlags flags(const QModelIndex &index) const noexcept override;
@@ -75,7 +75,6 @@ public slots:
 private:
 	item *root_=new item(QStringLiteral(""), "Description", nullptr);;
 	static inline std::shared_ptr<matching_table> matching_table_=nullptr;
-	static inline std::shared_ptr<file_index> file_index_=nullptr;
 };
 
 class matched_list_widget

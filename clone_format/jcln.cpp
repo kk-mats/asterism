@@ -44,12 +44,12 @@ bool jcln::write(const detection_results &results, const QString &path) noexcept
 }
 
 
-QJsonValue jcln::writer::to_qjson(const std::weak_ptr<file> &file_ptr) noexcept
+QJsonValue jcln::writer::to_qjson(const std::shared_ptr<file> &file_ptr) noexcept
 {
 	return QJsonObject
 	{
-		{FILE_ID, this->file_index_->at(file_ptr)},
-		{PATH, file_ptr.lock()->canonical_file_path()}
+		{FILE_ID, file_ptr->id()},
+		{PATH, file_ptr->canonical_file_path()}
 	};
 }
 
@@ -57,7 +57,7 @@ QJsonValue jcln::writer::to_qjson(const fragment &fragment) noexcept
 {
 	return QJsonObject
 	{
-		{FILE_ID, int(this->file_index_->at(fragment.file_ptr()))},
+		{FILE_ID, int(fragment.file_ptr()->id())},
 		{BEGIN, int(fragment.begin())},
 		{END, int(fragment.end())}
 	};

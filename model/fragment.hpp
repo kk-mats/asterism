@@ -16,7 +16,7 @@ public:
 
 	QString string() const noexcept;
 
-	std::weak_ptr<file> file_ptr() const noexcept;
+	std::shared_ptr<file> file_ptr() const noexcept;
 	uint32_t begin() const noexcept;
 	uint32_t end() const noexcept;
 

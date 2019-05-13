@@ -35,14 +35,14 @@ std::shared_ptr<clone_pair_grid_layer> detection_result::clone_pair_layer() cons
 	return this->clone_pair_grid_layer_;
 }
 
-std::shared_ptr<clone_pair_grid_layer> detection_result::update_layer(const std::shared_ptr<file_index> &file_index) noexcept
+std::shared_ptr<clone_pair_grid_layer> detection_result::update_layer(const int file_size) noexcept
 {
 	if(this->clone_pair_grid_layer_==nullptr)
 	{
-		this->clone_pair_grid_layer_=std::make_shared<clone_pair_grid_layer>(this->clone_pairs_, file_index);
+		this->clone_pair_grid_layer_=std::make_shared<clone_pair_grid_layer>(this->clone_pairs_, file_size);
 	}
 
-	this->clone_pair_grid_layer_->update(this->clone_pairs_, file_index);
+	this->clone_pair_grid_layer_->update(this->clone_pairs_, file_size);
 	return this->clone_pair_grid_layer_;
 }
 
