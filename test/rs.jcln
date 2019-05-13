@@ -19,6 +19,7 @@
 	"results":[
 		{
 			"environment":{
+				"name" : "CCSW",
 				"source":"r1_src",
 				"clone_detector":{
 					"name":"CCFinderSW",
@@ -86,6 +87,7 @@
 		},
 		{
 			"environment":{
+				"name" : "NCD",
 				"source":"r55_src",
 				"clone_detector":{
 					"name":"NiCAD",

@@ -194,6 +194,11 @@ bool jcln::reader::read_detection_result(const QJsonObject &json) noexcept
 		qCritical()<<code_clone_loading_error::invalid_file_format;
 		return false;
 	}
+	auto name=environment[SOURCE].toString();
+	if(environment.contains(NAME) && environment[NAME].isString())
+	{
+		name=environment[NAME].toString();
+	}
 
 	// environment.clone_detector
 	const auto clone_detector=environment[CLONE_DETECTOR].toObject();
@@ -216,7 +221,7 @@ bool jcln::reader::read_detection_result(const QJsonObject &json) noexcept
 		clone_pairs.insert(std::make_shared<clone_pair>(std::move(p.value())));
 	}
 
-	this->results_.empalce(result_environment(clone_detector[NAME].toString(), environment[SOURCE].toString()), std::move(clone_pairs));
+	this->results_.empalce(result_environment(clone_detector[NAME].toString(), environment[SOURCE].toString(), name), std::move(clone_pairs));
 	return true;
 }
 

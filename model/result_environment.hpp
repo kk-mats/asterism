@@ -39,7 +39,7 @@ class result_environment final
 public:
 	result_environment();
 	result_environment(const result_environment &) noexcept;
-	result_environment(const QString &clone_detector_name, const QString &source) noexcept;
+	result_environment(const QString &clone_detector_name, const QString &source, const QString &name) noexcept;
 	result_environment(const clone_detector &clone_detector, const QString &source) noexcept;
 
 	void set_name(const QString &name) noexcept;

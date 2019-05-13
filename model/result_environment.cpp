@@ -53,8 +53,8 @@ result_environment::result_environment(const result_environment &other) noexcept
 	: clone_detector_(other.clone_detector_), source_(other.source_), name_(other.name_)
 {}
 
-result_environment::result_environment(const QString &clone_detector_name, const QString &source) noexcept
-	: clone_detector_(clone_detector::from_string(clone_detector_name)), source_(source), name_(source)
+result_environment::result_environment(const QString &clone_detector_name, const QString &source, const QString &name) noexcept
+	: clone_detector_(clone_detector::from_string(clone_detector_name)), source_(source), name_(name)
 {}
 
 result_environment::result_environment(const clone_detector &clone_detector, const QString &source) noexcept
