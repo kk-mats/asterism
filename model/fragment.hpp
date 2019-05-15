@@ -19,6 +19,7 @@ public:
 	std::shared_ptr<file> file_ptr() const noexcept;
 	uint32_t begin() const noexcept;
 	uint32_t end() const noexcept;
+	int length() const noexcept;
 
 	bool operator ==(const fragment &other) const noexcept;
 	bool operator <(const fragment &other) const noexcept;

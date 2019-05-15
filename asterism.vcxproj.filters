@@ -115,6 +115,9 @@
     <ClCompile Include="gui\matched_clone_pair_list_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="core\bk.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="clone_format\clone_io.hpp">
@@ -172,6 +175,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="clone_format\json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\bk.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
