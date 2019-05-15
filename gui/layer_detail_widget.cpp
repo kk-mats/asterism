@@ -57,8 +57,16 @@ layer_detail_widget::layer_detail_widget(QWidget *parent) noexcept
 void layer_detail_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept
 {
 	this->model_->beginResetModel();
-	this->model_->current_=layer;
-	this->model_->details_=layer->details();
+	if(layer!=nullptr)
+	{
+		this->model_->current_=layer;
+		this->model_->details_=layer->details();
+	}
+	else
+	{
+		this->model_->current_=nullptr;
+		this->model_->details_.clear();
+	}
 	this->model_->endResetModel();
 }
 

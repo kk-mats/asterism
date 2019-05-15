@@ -14,22 +14,51 @@
 namespace asterism
 {
 
+class query final
+{
+public:
+	query(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &body) noexcept;
+
+	std::shared_ptr<detection_result> result() const noexcept;
+	std::shared_ptr<clone_pair> body() const noexcept;
+
+private:
+	std::shared_ptr<detection_result> result_;
+	std::shared_ptr<clone_pair> body_;
+};
+
+class response final
+{
+public:
+	response(const std::shared_ptr<detection_result> &result, const shared_vector<clone_pair> &clone_pairs) noexcept;
+
+	std::shared_ptr<detection_result> result() const noexcept;
+	int size() const noexcept;
+	shared_vector<clone_pair>::const_iterator begin() const noexcept;
+	shared_vector<clone_pair>::const_iterator end() const noexcept;
+
+	std::shared_ptr<clone_pair> operator [](const int i) const noexcept;
+
+private:
+	std::shared_ptr<detection_result> result_;
+	shared_vector<clone_pair> clone_pairs_;
+};
+
 class matching_table final
 {
 public:
 	class key final
 	{
 	public:
-		struct hash
-		{
-			std::size_t operator ()(const key &key) const noexcept;
-		};
-
+		key(const key &k) noexcept;
+		key(key &&k) noexcept;
 		key(const std::shared_ptr<detection_result> &left, const std::shared_ptr<detection_result> &right) noexcept;
 
 		std::shared_ptr<detection_result> left() const noexcept;
 		std::shared_ptr<detection_result> right() const noexcept;
 
+		key& operator =(const key &other) noexcept;
+		key& operator =(key &&other) noexcept;
 		bool operator ==(const key &other) const noexcept;
 
 	private:
@@ -41,10 +70,19 @@ public:
 	public:
 		using value_t=std::vector<std::pair<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>>>;
 
-		unit(const key &key) noexcept;
+		unit(const unit &u) noexcept;
+		unit(const std::shared_ptr<detection_result> &left, const std::shared_ptr<detection_result> &right) noexcept;
+
+		unit& operator =(const unit &other) noexcept;
+		unit& operator =(unit &&other) noexcept;
 
 		shared_vector<clone_pair> matched_pair(const std::shared_ptr<clone_pair> &p, const bool search_left) const noexcept;
 		void update() noexcept;
+
+		shared_vector<clone_pair> matched_in_left() const noexcept;
+		shared_vector<clone_pair> matched_in_right() const noexcept;
+
+		key unit_key() const noexcept;
 
 	private:
 		static inline float threshold_=0.8f;
@@ -62,13 +100,13 @@ public:
 	void append(const shared_list<detection_result> &results) noexcept;
 	void remove(const std::shared_ptr<detection_result> &result) noexcept;
 
-	std::vector<std::pair<std::shared_ptr<detection_result>, shared_vector<clone_pair>>> matched_pair(const std::shared_ptr<detection_result> &primitive, const std::shared_ptr<clone_pair> &p) const noexcept;
+	std::vector<response> matched_pair(const query &q) const noexcept;
 	int count_matching_pair(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p) const noexcept;
 	bool has_matching_pair(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p) const noexcept;
 
 private:
 	shared_list<detection_result> results_;
-	std::unordered_map<key, unit, key::hash> values_;
+	std::vector<std::pair<key, unit>> values_;
 };
 
 }

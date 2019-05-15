@@ -25,13 +25,13 @@ public:
 	
 	void update_layer() noexcept;
 
-signals:
-	void method_changed(const int method_index);
-
 public slots:
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
 	void change_method(const int method_index) noexcept;
-	
+
+signals:
+	void method_changed(const int method_index);
+
 private:
 	std::shared_ptr<heatmap_layer> layer_;
 	current_grid_detail_widget *current_grid_detail_widget_=new current_grid_detail_widget(this);

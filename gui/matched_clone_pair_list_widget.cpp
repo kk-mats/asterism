@@ -6,18 +6,17 @@ namespace asterism
 matched_list_model::item::item(const std::shared_ptr<clone_pair> &self, const QVariant &text, item *parent) noexcept
 	: item(QVariant::fromValue(self), text, parent)
 {
-	auto *value=new item(QStringLiteral("Value"), "", this);
-	auto *f1_item=new item(QStringLiteral("Fragment1"), "", value);
+	auto *value=new item(tr("Value"), "", this);
+	value->emplace_child(tr("Similarity"), self->similarity());
+	auto *f1_item=new item(tr("Fragment1"), "", value);
 	const auto f1=self->fragment1();
-	f1_item->emplace_children({{"Path", f1.file_ptr()->canonical_file_path()}, {"Begin", f1.begin()}, {"End", f1.end()}});
+	f1_item->emplace_children({{tr("Path"), f1.file_ptr()->canonical_file_path()}, {tr("Begin"), f1.begin()}, {tr("End"), f1.end()}});
 	value->append_child(f1_item);
 	
-	auto *f2_item=new item(QStringLiteral("Fragment2"), "", value);
+	auto *f2_item=new item(tr("Fragment2"), "", value);
 	const auto f2=self->fragment2();
-	f2_item->emplace_children({{"Path", f2.file_ptr()->canonical_file_path()}, {"Begin", f2.begin()}, {"End", f2.end()}});
+	f2_item->emplace_children({{tr("Path"), f2.file_ptr()->canonical_file_path()}, {tr("Begin"), f2.begin()}, {tr("End"), f2.end()}});
 	value->append_child(f2_item);
-
-	value->emplace_child(QStringLiteral("Similarity"), self->similarity());
 
 	this->children_.append(value);
 }
@@ -95,11 +94,11 @@ QVariant matched_list_model::item::data(const int row, const int column) const n
 {
 	if(this->is_clone_pair(column))
 	{
-		return "clone pair ["+QString::number(row)+"]";
+		return tr("clone pair [")+QString::number(row)+"]";
 	}
 	if(this->is_detection_result(column))
 	{
-		return "In <"+this->to_detection_result(column)->environment().name()+">";
+		return tr("In <")+this->to_detection_result(column)->environment().name()+">";
 	}
 
 	return this->self_[column];
@@ -232,17 +231,17 @@ void matched_list_model::change_current_grid(const std::shared_ptr<file> &file1,
 {
 	this->beginResetModel();
 	delete this->root_;
-	this->root_=new item(QStringLiteral(""), "Description", nullptr);
+	this->root_=new item(tr(""), "Description", nullptr);
 
 	for(const auto &p:(*primitive->clone_pair_layer())[grid_2d_coordinate::to_linear(file1->id(), file2->id())])
 	{
 		item *top_item=new item(p, "", this->root_);
 
-		for(const auto &r:matching_table_->matched_pair(primitive, p))
+		for(const auto &r:matching_table_->matched_pair(query(primitive, p)))
 		{
-			item *result_item=new item(r.first, QString::number(r.second.size())+" matched", top_item);
+			item *result_item=new item(r.result(), QString::number(r.size())+" matched", top_item);
 
-			for(const auto &mp:r.second)
+			for(const auto &mp:r)
 			{
 				item *mp_item=new item(mp, "", result_item);
 				result_item->append_child(mp_item);

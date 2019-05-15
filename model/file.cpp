@@ -60,11 +60,11 @@ uint qHash(const std::shared_ptr<file>& key, uint seed) noexcept
 {
 	return qHash(key->canonical_file_path(), seed);
 }
-
+/*
 bool operator ==(const std::weak_ptr<file> &lhs, const std::weak_ptr<file> &rhs) noexcept
 {
 	return lhs.lock()==rhs.lock();
-}
+}*/
 
 bool operator ==(const std::shared_ptr<file> &lhs, const std::shared_ptr<file> &rhs) noexcept
 {
@@ -75,6 +75,11 @@ QDebug operator <<(QDebug logger, const file &file) noexcept
 {
 	logger.nospace()<<file.canonical_file_path_;
 	return logger;
+}
+
+size_t file::hash::operator()(const std::shared_ptr<file> &f) const noexcept
+{
+	return std::hash<std::string>()(f->canonical_file_path().toStdString());
 }
 
 }

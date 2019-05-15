@@ -2,6 +2,7 @@
 #define LAYER_LIST_WIDGET_HPP
 
 
+#include <QMenu>
 #include <QListView>
 #include <QAbstractListModel>
 
@@ -52,11 +53,21 @@ public:
 public slots:
 	void select_layer_ptr(const QModelIndex &index) noexcept;
 
+private slots:
+	void show_context_menu(const QPoint &pos) noexcept;
+	void click_rename() noexcept;
+	void click_remove() noexcept;
+
 signals:
 	void current_layer_changed(const std::shared_ptr<heatmap_layer> &layer);
+	void remove(const std::shared_ptr<detection_result> &result);
 
 private:
 	layer_list_model *model_=new layer_list_model(this);
+/*
+	QMenu *context_menu_=new QMenu(this);
+	QAction *rename_act_=new QAction(tr("Rename"), this);
+	QAction *remove_act_=new QAction(tr("Remove"), this);*/
 };
 
 }

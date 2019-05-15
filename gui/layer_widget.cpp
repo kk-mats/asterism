@@ -40,9 +40,14 @@ void layer_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexce
 {
 	this->layer_=layer;
 	this->scatter_plot_widget_->set_layer(this->layer_);
-	this->method_selector_->setCurrentIndex(this->layer_->method_index());
-	this->method_selector_->setEnabled(true);
-	this->color_bar_widget_->set_selector(this->layer_->selector(), this->layer_->method_index());
+	if(layer!=nullptr)
+	{
+		this->method_selector_->setCurrentIndex(this->layer_->method_index());
+		this->method_selector_->setEnabled(true);
+		this->color_bar_widget_->set_selector(this->layer_->selector(), this->layer_->method_index());
+		return;
+	}
+	this->method_selector_->setDisabled(true);
 }
 
 void layer_widget::update_layer() noexcept

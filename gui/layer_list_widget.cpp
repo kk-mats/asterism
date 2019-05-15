@@ -59,8 +59,16 @@ bool layer_list_model::setData(const QModelIndex &index, const QVariant &value, 
 layer_list_widget::layer_list_widget(QWidget *parent) noexcept
 	: QListView(parent)
 {
+	this->setContextMenuPolicy(Qt::CustomContextMenu);/*
+	this->rename_act_->setStatusTip(tr("Rename Detection Result"));
+	this->remove_act_->setStatusTip(tr("Remove Detection Result"));
+	connect(this->remove_act_, &QAction::triggered, this, &layer_list_widget::click_remove);*/
+
+
 	this->setModel(this->model_);
+
 	connect(this, &layer_list_widget::clicked, this, &layer_list_widget::select_layer_ptr);
+	connect(this, &layer_list_widget::customContextMenuRequested, this, &layer_list_widget::show_context_menu);
 }
 
 void layer_list_widget::update_layers() noexcept
@@ -106,6 +114,43 @@ void layer_list_widget::select_layer_ptr(const QModelIndex &index) noexcept
 	}
 	this->model_->current_index_=index.row();
 	emit this->current_layer_changed(this->model_->layers_[index.row()]);
+}
+
+void layer_list_widget::show_context_menu(const QPoint &pos) noexcept
+{
+	QMenu *cm_=new QMenu;
+	QAction *rename_act_=cm_->addAction("Rename", this, &layer_list_widget::click_rename);
+	QAction *remove_act_=cm_->addAction("Remove", this, &layer_list_widget::click_remove);
+	rename_act_->setStatusTip(tr("Rename Detection Result"));
+	remove_act_->setStatusTip(tr("Remove Detection Result"));
+	cm_->exec(this->mapToGlobal(pos));
+}
+
+void layer_list_widget::click_rename() noexcept
+{
+	auto i=this->currentIndex().row();
+}
+
+void layer_list_widget::click_remove() noexcept
+{
+	auto i=this->currentIndex().row();
+	const auto ptr=this->model_->layers_[i]->primitive();
+	this->model_->removeRow(i);
+
+	emit remove(ptr);
+
+	const auto size=this->model_->layers_.size();
+	if(size!=0)
+	{
+		this->model_->current_index_=i<size ? i : size-1;
+		emit current_layer_changed(this->model_->layers_[this->model_->current_index_]);
+	}
+	else
+	{
+		this->model_->current_index_=-1;
+		emit current_layer_changed(nullptr);
+	}
+	
 }
 
 }

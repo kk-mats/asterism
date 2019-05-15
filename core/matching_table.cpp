@@ -3,10 +3,57 @@
 namespace asterism
 {
 
-std::size_t matching_table::key::hash::operator()(const key &key) const noexcept
+query::query(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &body) noexcept
+	: result_(result), body_(body)
+{}
+
+std::shared_ptr<detection_result> query::result() const noexcept
 {
-	return qHash((key.left()->environment().source()))+qHash(key.right()->environment().source());
+	return this->result_;
 }
+
+std::shared_ptr<clone_pair> query::body() const noexcept
+{
+	return this->body_;
+}
+
+response::response(const std::shared_ptr<detection_result> &result, const shared_vector<clone_pair> &clone_pairs) noexcept
+	: result_(result), clone_pairs_(clone_pairs)
+{}
+
+std::shared_ptr<detection_result> response::result() const noexcept
+{
+	return this->result_;
+}
+
+int response::size() const noexcept
+{
+	return this->clone_pairs_.size();
+}
+
+shared_vector<clone_pair>::const_iterator response::begin() const noexcept
+{
+	return this->clone_pairs_.begin();
+}
+
+shared_vector<clone_pair>::const_iterator response::end() const noexcept
+{
+	return this->clone_pairs_.end();
+}
+
+std::shared_ptr<clone_pair> response::operator [](const int i) const noexcept
+{
+	return this->clone_pairs_[i];
+}
+
+
+matching_table::key::key(const key &k) noexcept
+	: r_(k.r_)
+{}
+
+matching_table::key::key(key &&k) noexcept
+	: r_(std::move(k.r_))
+{}
 
 matching_table::key::key(const std::shared_ptr<detection_result> &left, const std::shared_ptr<detection_result> &right) noexcept
 	: r_(std::minmax(left, right))
@@ -22,16 +69,59 @@ std::shared_ptr<detection_result> matching_table::key::right() const noexcept
 	return this->r_.second;
 }
 
+matching_table::key& matching_table::key::operator =(const key &other) noexcept
+{
+	if(this==&other)
+	{
+		this->r_=other.r_;
+	}
+	return *this;
+}
+
+matching_table::key& matching_table::key::operator =(key &&other) noexcept
+{
+	if(this==&other)
+	{
+		this->r_=std::move(other.r_);
+	}
+	return *this;
+}
+
 bool matching_table::key::operator==(const key &other) const noexcept
 {
 	return this->r_==other.r_;
 }
 
+matching_table::unit::unit(const unit &u) noexcept
+	: key_(u.key_), layer_(u.layer_)
+{}
 
-matching_table::unit::unit(const key &key) noexcept
-	: key_(key)
+matching_table::unit::unit(const std::shared_ptr<detection_result> &left, const std::shared_ptr<detection_result> &right) noexcept
+	: key_(left, right)
 {
 	this->update();
+}
+
+matching_table::unit& matching_table::unit::operator=(const unit & other) noexcept
+{
+	if(this!=&other)
+	{
+		this->key_=other.key_;
+		this->layer_=other.layer_;
+	}
+
+	return *this;
+}
+
+matching_table::unit& matching_table::unit::operator=(unit &&other) noexcept
+{
+	if(this!=&other)
+	{
+		this->key_=std::move(other.key_);
+		this->layer_=std::move(other.layer_);
+	}
+
+	return *this;
 }
 
 shared_vector<clone_pair> matching_table::unit::matched_pair(const std::shared_ptr<clone_pair> &p, const bool search_left) const noexcept
@@ -77,6 +167,37 @@ void matching_table::unit::update() noexcept
 	{
 		this->layer_[i]=std::move(this->map_mutually((*left)[i], (*right)[i]));
 	}
+}
+
+shared_vector<clone_pair> matching_table::unit::matched_in_left() const noexcept
+{
+	shared_vector<clone_pair> r;
+	for(const auto &g:this->layer_)
+	{
+		for(const auto &mp:g)
+		{
+			r.push_back(mp.first);
+		}
+	}
+	return r;
+}
+
+shared_vector<clone_pair> matching_table::unit::matched_in_right() const noexcept
+{
+	shared_vector<clone_pair> r;
+	for(const auto &g:this->layer_)
+	{
+		for(const auto &mp:g)
+		{
+			r.push_back(mp.second);
+		}
+	}
+	return r;
+}
+
+matching_table::key matching_table::unit::unit_key() const noexcept
+{
+	return this->key_;
 }
 
 bool matching_table::unit::better(const float ok_v, const float good_v, const float ok_max, const float good_max, const float t) noexcept
@@ -135,8 +256,9 @@ void matching_table::update() noexcept
 	{
 		for(auto right=left+1, right_end=this->results_.end(); right!=right_end; ++right)
 		{
-			key key(*left, *right);
-			this->values_.emplace(key, unit(key));
+			unit u(*left, *right);
+			auto k=u.unit_key();
+			this->values_.emplace_back(k, u);
 		}
 	}
 
@@ -168,22 +290,22 @@ void matching_table::append(const shared_list<detection_result> &results) noexce
 void matching_table::remove(const std::shared_ptr<detection_result> &result) noexcept
 {
 	this->results_.removeOne(result);
-	this->update();
+	this->values_.erase(std::remove_if(this->values_.begin(), this->values_.end(), [&](const auto &p){ return p.first.left()==result || p.first.right()==result; }), this->values_.end());
 }
 
-std::vector<std::pair<std::shared_ptr<detection_result>, shared_vector<clone_pair>>> matching_table::matched_pair(const std::shared_ptr<detection_result> &primitive, const std::shared_ptr<clone_pair> &p) const noexcept
+std::vector<response> matching_table::matched_pair(const query &q) const noexcept
 {
 	bool search_left;
-	std::vector<std::pair<std::shared_ptr<detection_result>, shared_vector<clone_pair>>> r;
+	std::vector<response> r;
 
 	for(const auto &u:this->values_)
 	{
-		search_left=u.first.right()==primitive;
-		if(!search_left && u.first.left()!=primitive)
+		search_left=u.first.right()==q.result();
+		if(!search_left && u.first.left()!=q.result())
 		{
 			continue;
 		}
-		r.emplace_back(search_left ? u.first.left() : u.first.right(), u.second.matched_pair(p, search_left));
+		r.emplace_back(search_left ? u.first.left() : u.first.right(), u.second.matched_pair(q.body(), search_left));
 	}
 	return r;
 }
@@ -205,6 +327,7 @@ bool matching_table::has_matching_pair(const std::shared_ptr<detection_result> &
 	}
 	return false;
 }
+
 
 }
 

@@ -54,6 +54,11 @@ void MainWindow::open_file() noexcept
 	}
 }
 
+void MainWindow::remove(const std::shared_ptr<detection_result> &result) noexcept
+{
+	this->results_.remove(result);
+}
+
 void MainWindow::initialize_docks() noexcept
 {
 	this->layer_list_dock_->setWidget(this->layer_list_widget_);

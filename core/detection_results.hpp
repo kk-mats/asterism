@@ -7,6 +7,7 @@
 #include <QModelIndex>
 #include <memory>
 #include <type_traits>
+#include <unordered_set>
 
 #include "matching_table.hpp"
 #include "model/detection_result.hpp"
@@ -25,9 +26,9 @@ public:
 	std::shared_ptr<detection_result> empalce(result_environment &&environment, shared_set<clone_pair> &&clone_pairs) noexcept;
 
 	void update_layers() noexcept;
-	bool remove(std::shared_ptr<detection_result> &&ptr) noexcept;
+	bool remove(const std::shared_ptr<detection_result> &ptr) noexcept;
 	const shared_list<detection_result>& results() const noexcept;
-	const shared_set<file>& files() const noexcept;
+	const shared_vector<file>& files() const noexcept;
 
 	std::shared_ptr<file> file_at(const int index) const noexcept;
 
@@ -36,7 +37,7 @@ public:
 
 private:
 	QString target_path_;
-	shared_set<file> files_;
+	shared_vector<file> files_;
 	shared_list<detection_result> results_;
 	std::shared_ptr<matching_table> matching_table_=std::make_shared<matching_table>();
 

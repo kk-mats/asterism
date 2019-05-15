@@ -33,6 +33,8 @@ private slots:
 	void open_project() noexcept;
 	void open_file() noexcept;
 
+	void remove(const std::shared_ptr<detection_result> &result) noexcept;
+
 private:
 	detection_results results_;
 	std::shared_ptr<detection_result> current_layer_=nullptr;
