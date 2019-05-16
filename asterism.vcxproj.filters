@@ -103,9 +103,6 @@
     <ClCompile Include="gui\layer_detail_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="clone_format\json.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="gui\matching_rate_heatmap_generation_dialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,6 +114,12 @@
     </ClCompile>
     <ClCompile Include="core\bk.cpp">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clone_format\csv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clone_format\json.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +181,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\bk.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clone_format\csv.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

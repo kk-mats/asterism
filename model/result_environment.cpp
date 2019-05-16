@@ -35,6 +35,10 @@ clone_detector clone_detector::from_string(const QString &clone_detector_name) n
 	{
 		return nicad;
 	}
+	else if(ar_fuser==clone_detector_name)
+	{
+		return ar_fuser;
+	}
 	return undefined;
 }
 
@@ -43,6 +47,7 @@ const clone_detector clone_detector::ccvolti("CCVolti");
 const clone_detector clone_detector::ccfinderx("CCFinderX");
 const clone_detector clone_detector::ccfindersw("CCFinderSW");
 const clone_detector clone_detector::nicad("NiCAD");
+const clone_detector clone_detector::ar_fuser("Asterism Result Fuser");
 
 
 result_environment::result_environment()

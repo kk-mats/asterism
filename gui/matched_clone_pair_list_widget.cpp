@@ -162,8 +162,6 @@ QVariant matched_list_model::data(const QModelIndex &index, int role) const noex
 	{
 		return QVariant();
 	}
-	auto cr=static_cast<item *>(index.internalPointer());
-	auto i=index.column();
 
 	return static_cast<item *>(index.internalPointer())->data(index.row(), index.column());	
 }

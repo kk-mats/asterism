@@ -70,6 +70,14 @@ const shared_vector<file>& detection_results::files() const noexcept
 	return this->files_;
 }
 
+detection_result detection_results::fuse() noexcept
+{
+	return detection_result(
+		std::move(result_environment(clone_detector::ar_fuser, "not implemented")),
+		std::move(bk_fuser::run(this->results_, *this->matching_table_))
+	);
+}
+
 std::shared_ptr<file> detection_results::file_at(const int index) const noexcept
 {
 	auto itr=std::find_if(this->files_.begin(), this->files_.end(), [=](const auto &f){ return f->id()==index; });

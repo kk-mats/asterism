@@ -54,6 +54,14 @@ void MainWindow::open_file() noexcept
 	}
 }
 
+void MainWindow::fuse_results() noexcept
+{
+	if(auto filepath=QFileDialog::getSaveFileName(this, tr("Export Fusion Result"), "X:\\projects\\asterism", tr(".csv")); !filepath.isEmpty())
+	{
+		clone_io::write_csv(filepath, this->results_.fuse(), this->results_.target_path());
+	}
+}
+
 void MainWindow::remove(const std::shared_ptr<detection_result> &result) noexcept
 {
 	this->results_.remove(result);
@@ -79,6 +87,9 @@ void MainWindow::create_actions() noexcept
 	this->open_file_act_->setStatusTip(tr("Open file"));
 	connect(this->open_file_act_, &QAction::triggered, this, &MainWindow::open_file);
 
+	this->fuse_results_act_=new QAction(tr("&Fuse Results"), this);
+	connect(this->fuse_results_act_, &QAction::triggered, this, &MainWindow::fuse_results);
+
 	this->quit_act_=new QAction(tr("&Quit"), this);
 	this->quit_act_->setShortcuts(QKeySequence::Quit);
 	this->quit_act_->setStatusTip(tr("Quit"));
@@ -91,6 +102,9 @@ void MainWindow::create_menus() noexcept
 	this->file_menu_=this->menuBar()->addMenu(tr("&File"));
 	this->file_menu_->addAction(this->open_project_act_);
 	this->file_menu_->addAction(this->open_file_act_);
+	this->file_menu_->addSeparator();
+	this->export_menu_=this->file_menu_->addMenu(tr("Export"));
+	this->export_menu_->addAction(this->fuse_results_act_);
 	this->file_menu_->addSeparator();
 	this->file_menu_->addAction(this->quit_act_);
 }

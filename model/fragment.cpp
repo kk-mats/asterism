@@ -12,6 +12,11 @@ fragment::fragment(const std::shared_ptr<file> &file, const uint32_t begin, cons
 	:file_(file), begin_(begin), end_(end)
 {}
 
+bool fragment::is_overlapped(const fragment &other) const noexcept
+{
+	return this->begin_<=other.end_ && other.begin_<=this->end_;
+}
+
 QString fragment::string() const noexcept
 {
 	return "begin="+QString::number(this->begin_)+", end="+QString::number(this->end_)+", path="+this->file_->canonical_file_path();
@@ -78,12 +83,12 @@ int fragment::length() const noexcept
 
 float overlap(const fragment &f1, const fragment &f2) noexcept
 {
-	return f1.begin_<=f2.end_ && f2.begin_<=f1.end_ ? float(f1&f2)/(f1|f2) : 0;
+	return f1.is_overlapped(f2) ? float(f1&f2)/(f1|f2) : 0;
 }
 
 float contained(const fragment &f1, const fragment &f2) noexcept
 {
-	return f1.begin_<=f2.end_ && f2.begin_<=f1.end_ ? float(f1&f2)/(f1.end_-f1.begin_) : 0;
+	return f1.is_overlapped(f2) ? float(f1&f2)/(f1.end_-f1.begin_) : 0;
 }
 
 QDebug operator <<(QDebug logger, const fragment &fragment) noexcept

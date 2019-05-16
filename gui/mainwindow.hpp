@@ -32,6 +32,7 @@ public:
 private slots:
 	void open_project() noexcept;
 	void open_file() noexcept;
+	void fuse_results() noexcept;
 
 	void remove(const std::shared_ptr<detection_result> &result) noexcept;
 
@@ -43,15 +44,17 @@ private:
 
 	layer_list_widget *layer_list_widget_=new layer_list_widget(this);
 	QDockWidget *layer_list_dock_=new QDockWidget(QStringLiteral("Detection Results"), this);
-	
+
 	layer_detail_widget *layer_detail_widget_=new layer_detail_widget(this);
 	QDockWidget *layer_detail_dock_=new QDockWidget(QStringLiteral("Detection Result Details"), this);
 
 	QMenu *file_menu_;
 	QAction *open_project_act_;
 	QAction *open_file_act_;
+	QMenu *export_menu_;
+	QAction *fuse_results_act_;
 	QAction *quit_act_;
-
+	   
 	void initialize_docks() noexcept;
 
 	void create_actions() noexcept;

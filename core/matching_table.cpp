@@ -17,6 +17,11 @@ std::shared_ptr<clone_pair> query::body() const noexcept
 	return this->body_;
 }
 
+bool query::operator==(const query & other) const noexcept
+{
+	return this->result_==other.result_ && this->body_==other.body_;
+}
+
 response::response(const std::shared_ptr<detection_result> &result, const shared_vector<clone_pair> &clone_pairs) noexcept
 	: result_(result), clone_pairs_(clone_pairs)
 {}
@@ -328,6 +333,11 @@ bool matching_table::has_matching_pair(const std::shared_ptr<detection_result> &
 	return false;
 }
 
+
+uint qHash(const query &key, uint seed) noexcept
+{
+	return qHash(key.body_, seed);
+}
 
 }
 

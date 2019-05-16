@@ -22,10 +22,16 @@ public:
 	std::shared_ptr<detection_result> result() const noexcept;
 	std::shared_ptr<clone_pair> body() const noexcept;
 
+	bool operator ==(const query &other) const noexcept;
+	
+	friend uint qHash(const query &key, uint seed) noexcept;
+
 private:
 	std::shared_ptr<detection_result> result_;
 	std::shared_ptr<clone_pair> body_;
 };
+
+uint qHash(const query &key, uint seed) noexcept;
 
 class response final
 {

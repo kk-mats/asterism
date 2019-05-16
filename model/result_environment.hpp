@@ -22,6 +22,9 @@ public:
 	static const clone_detector ccfinderx;
 	static const clone_detector ccfindersw;
 	static const clone_detector nicad;
+	static const clone_detector ar_fuser;
+	static const clone_detector ar_intersecter;
+	static const clone_detector ar_uniter;
 
 	static clone_detector from_string(const QString &clone_detector_name) noexcept;
 
