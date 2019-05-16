@@ -6,23 +6,25 @@ namespace asterism
 shared_set<clone_pair> bk_fuser::run(const shared_list<detection_result>& results, const matching_table & m) noexcept
 {
 	shared_set<clone_pair> f;
-	QSet<query> p;
-
-	for(const auto &r:results)
+	for(auto i=(*results.begin())->clone_pair_layer()->begin1d(), end=(*results.begin())->clone_pair_layer()->end1d(); i!=end; ++i)
 	{
-		for(const auto &cp:r->clone_pairs())
+		QSet<query> p;
+		for(const auto &r:results)
 		{
-			p.insert(query(r, cp));
+			for(const auto &cp:(*r->clone_pair_layer())[i])
+			{
+				p.insert(query(r, cp));
+			}
 		}
-	}
 
-	while(!p.isEmpty())
-	{
-		shared_set<clone_pair> r;
-		bron_kerbosch(r, p, QSet<query>(), m);
-		if(r.size()>=2)
+		while(!p.isEmpty())
 		{
-			f.insert(maximal(r));
+			shared_set<clone_pair> r;
+			bron_kerbosch(r, p, QSet<query>(), m);
+			if(r.size()>=2)
+			{
+				f.insert(maximal(r));
+			}
 		}
 	}
 
