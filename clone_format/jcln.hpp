@@ -20,7 +20,7 @@ public:
 	static bool write(const detection_results &results, const QString &path) noexcept;
 
 private:
-	class writer
+	class writer final
 	{
 	public:
 		writer() noexcept=default;
@@ -33,7 +33,7 @@ private:
 		QJsonValue to_qjson(const std::shared_ptr<detection_result> &detection_result) noexcept;
 	};
 
-	class reader
+	class reader final
 	{
 	public:
 		reader() noexcept=default;
