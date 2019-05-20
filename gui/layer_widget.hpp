@@ -38,7 +38,6 @@ private:
 	current_grid_detail_widget *current_grid_detail_widget_=new current_grid_detail_widget(this);
 	scatter_plot_widget *scatter_plot_widget_;
 	QComboBox *method_selector_=new QComboBox(this);
-	QLabel *grid_size_label_=new QLabel(tr("Grid Size: "), this);
 	QSpinBox *grid_size_selector_=new QSpinBox(this);
 	color_bar_widget *color_bar_widget_=new color_bar_widget(this);
 	QSplitter *splitter_=new QSplitter(this);

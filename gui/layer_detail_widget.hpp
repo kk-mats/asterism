@@ -20,10 +20,15 @@ public:
 	int rowCount(const QModelIndex &parent=QModelIndex()) const noexcept override;
 	int columnCount(const QModelIndex &parent=QModelIndex()) const noexcept override;
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const noexcept override;
+	bool setData(const QModelIndex &index, const QVariant &value, int role) noexcept;
 	QVariant headerData(int, Qt::Orientation, int) const noexcept override;
+	Qt::ItemFlags flags(const QModelIndex &index) const noexcept override;
 
 	std::shared_ptr<heatmap_layer> current_;
 	std::vector<std::pair<QString, QString>> details_;
+
+signals:
+	void result_name_changed(const QString &name);
 };
 
 
@@ -38,6 +43,10 @@ public:
 public slots:
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
 	void change_method(const int method_index) noexcept;
+	void change_result_name(const QString &name) noexcept;
+
+signals:
+	void result_name_changed(const QString &name);
 
 private:
 	layer_detail_model *model_=new layer_detail_model(this);

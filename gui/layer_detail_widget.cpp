@@ -39,9 +39,31 @@ QVariant layer_detail_model::data(const QModelIndex &index, int role) const noex
 	return QVariant();
 }
 
+bool layer_detail_model::setData(const QModelIndex &index, const QVariant &value, int role) noexcept
+{
+	if(!index.isValid() || role!=Qt::EditRole || index.row()!=0 || index.column()!=1 || !value.canConvert<QString>() || this->details_[0].second==value.toString())
+	{
+		return false;
+	}
+	this->details_[0].second=value.toString();
+	emit dataChanged(index, index);
+	emit result_name_changed(value.toString());
+	return true;
+}
+
 QVariant layer_detail_model::headerData(int, Qt::Orientation, int) const noexcept
 {
 	return QVariant();
+}
+
+Qt::ItemFlags layer_detail_model::flags(const QModelIndex &index) const noexcept
+{
+	auto f=QAbstractTableModel::flags(index);
+	if(index.isValid() && index.row()==0 && index.column()==1)
+	{
+		f|=Qt::ItemIsEditable;
+	}
+	return f;
 }
 
 
@@ -52,6 +74,8 @@ layer_detail_widget::layer_detail_widget(QWidget *parent) noexcept
 	this->verticalHeader()->hide();
 	this->horizontalHeader()->hide();
 	this->horizontalHeader()->setStretchLastSection(true);
+
+	connect(this->model_, &layer_detail_model::result_name_changed, this, &layer_detail_widget::result_name_changed);
 }
 
 void layer_detail_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept
@@ -75,6 +99,12 @@ void layer_detail_widget::change_method(const int) noexcept
 	this->model_->beginResetModel();
 	this->model_->details_=this->model_->current_->details();
 	this->model_->endResetModel();
+}
+
+void layer_detail_widget::change_result_name(const QString &name) noexcept
+{
+	this->model_->details_[0].second=name;
+	emit dataChanged()
 }
 
 }

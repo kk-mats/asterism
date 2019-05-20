@@ -16,10 +16,18 @@ layer_widget::layer_widget(const detection_results *results, QWidget *parent) no
 	this->grid_size_selector_->setValue(16);
 
 	auto *colorize_method_label=new QLabel(tr("Colorize Method: "), this);
+	auto *method_selector_layout=new QHBoxLayout;
+	method_selector_layout->addWidget(colorize_method_label);
+	method_selector_layout->addWidget(this->method_selector_);
+
+	auto *grid_size_label_=new QLabel(tr("Grid Size: "), this);
+	auto *grid_size_selector_layout=new QHBoxLayout;
+	grid_size_selector_layout->addWidget(grid_size_label_);
+	grid_size_selector_layout->addWidget(this->grid_size_selector_);
+
 	auto *bottom_layout=new QHBoxLayout;
-	bottom_layout->addWidget(colorize_method_label);
-	bottom_layout->addWidget(this->method_selector_);
-	bottom_layout->addWidget(this->grid_size_selector_);
+	bottom_layout->addLayout(method_selector_layout);
+	bottom_layout->addLayout(grid_size_selector_layout);
 	bottom_layout->addStretch();
 	bottom_layout->addWidget(this->color_bar_widget_);
 	

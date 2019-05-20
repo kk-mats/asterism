@@ -31,7 +31,7 @@ shared_set<clone_pair> bk_fuser::run(const shared_list<detection_result>& result
 	return f;
 }
 
-bool bk_fuser::bron_kerbosch(shared_set<clone_pair> &r, QSet<query>& p, const QSet<query>& x, const matching_table & m) noexcept
+bool bk_fuser::bron_kerbosch(shared_set<clone_pair> &r, QSet<query> &p, const QSet<query> &x, const matching_table & m) noexcept
 {
 	if(p.size()==0 && x.size()==0)
 	{

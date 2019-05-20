@@ -57,6 +57,7 @@ private slots:
 	void show_context_menu(const QPoint &pos) noexcept;
 	void click_rename() noexcept;
 	void click_remove() noexcept;
+	void change_result_name(const QString &name) noexcept;
 
 signals:
 	void current_layer_changed(const std::shared_ptr<heatmap_layer> &layer);
