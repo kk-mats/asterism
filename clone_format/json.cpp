@@ -7,7 +7,7 @@ std::shared_ptr<detection_result> json::read(const QString &path, detection_resu
 {
 	QFile file(path);
 
-	if(!file.open(QIODevice::ReadOnly))
+	if(!file.open(QIODevice::ReadOnly | QFile::Text))
 	{
 		qCritical()<<code_clone_loading_error::file_not_found<<path;
 		return nullptr;

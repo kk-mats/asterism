@@ -71,6 +71,16 @@ void result_environment::set_name(const QString &name) noexcept
 	this->name_=name;
 }
 
+void result_environment::add_parameter(const QString &key, const QString &value) noexcept
+{
+	this->parameters_.insert(key, value);
+}
+
+void result_environment::set_parameters(const QHash<QString, QString> &parameters) noexcept
+{
+	this->parameters_=parameters;
+}
+
 QString result_environment::name() const noexcept
 {
 	return this->name_;

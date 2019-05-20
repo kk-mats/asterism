@@ -38,8 +38,8 @@ QDebug operator <<(QDebug logger, const clone_pair &clone_pair) noexcept;
 
 float good(const std::shared_ptr<clone_pair> &p1, const std::shared_ptr<clone_pair> &p2) noexcept;
 float ok(const std::shared_ptr<clone_pair> &p1, const std::shared_ptr<clone_pair> &p2) noexcept;
-
-Q_DECLARE_METATYPE(std::shared_ptr<clone_pair>)
 }
+
+Q_DECLARE_METATYPE(std::shared_ptr<asterism::clone_pair>)
 
 #endif // CLONE_PAIR_HPP

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += xml core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -39,16 +39,26 @@ DISTFILES += \
 
 HEADERS += \
     clone_format/clone_io.hpp \
+    clone_format/csv.hpp \
     clone_format/format_tags.hpp \
     clone_format/jcln.hpp \
+    clone_format/json.hpp \
+    clone_format/nicad.hpp \
+    core/bk.hpp \
     core/detection_results.hpp \
     core/logger.hpp \
     core/matching_table.hpp \
     core/utility.hpp \
+    gui/color_bar_widget.hpp \
     gui/color_selector.hpp \
+    gui/current_grid_detail_widget.hpp \
+    gui/layer_detail_widget.hpp \
+    gui/layer_list_widget.hpp \
+    gui/layer_widget.hpp \
     gui/mainwindow.hpp \
-    gui/scatter_plot_model.hpp \
-    gui/scatter_plot_view.hpp \
+    gui/matched_clone_pair_list_widget.hpp \
+    gui/matching_rate_heatmap_generation_dialog.hpp \
+    gui/scatter_plot_widget.hpp \
     layer/clone_pair_grid_layer.hpp \
     layer/file_separated_grid_layer.hpp \
     layer/heatmap_layer.hpp \
@@ -61,15 +71,25 @@ HEADERS += \
 
 SOURCES += \
     clone_format/clone_io.cpp \
+    clone_format/csv.cpp \
     clone_format/jcln.cpp \
+    clone_format/json.cpp \
+    clone_format/nicad.cpp \
+    core/bk.cpp \
     core/detection_results.cpp \
     core/logger.cpp \
     core/matching_table.cpp \
     core/utility.cpp \
+    gui/color_bar_widget.cpp \
     gui/color_selector.cpp \
+    gui/current_grid_detail_widget.cpp \
+    gui/layer_detail_widget.cpp \
+    gui/layer_list_widget.cpp \
+    gui/layer_widget.cpp \
     gui/mainwindow.cpp \
-    gui/scatter_plot_model.cpp \
-    gui/scatter_plot_view.cpp \
+    gui/matched_clone_pair_list_widget.cpp \
+    gui/matching_rate_heatmap_generation_dialog.cpp \
+    gui/scatter_plot_widget.cpp \
     layer/clone_pair_grid_layer.cpp \
     layer/file_separated_grid_layer.cpp \
     layer/heatmap_layer.cpp \

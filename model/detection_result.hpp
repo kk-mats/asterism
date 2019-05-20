@@ -40,7 +40,8 @@ uint qHash(const detection_result &key, uint seed) noexcept;
 uint qHash(const std::shared_ptr<detection_result> &key, uint seed) noexcept;
 
 QDebug operator <<(QDebug logger, const detection_result &detection_result) noexcept;
-
-Q_DECLARE_METATYPE(std::shared_ptr<detection_result>)
 }
+
+Q_DECLARE_METATYPE(std::shared_ptr<asterism::detection_result>)
+
 #endif // DETECTION_RESULT_HPP

@@ -4,6 +4,7 @@
 #include "jcln.hpp"
 #include "json.hpp"
 #include "csv.hpp"
+#include "nicad.hpp"
 
 namespace asterism
 {
@@ -15,6 +16,7 @@ public:
 
 	static std::optional<detection_results> read_jcln(const QString &file) noexcept;
 	static std::shared_ptr<detection_result> read_json(const QString &file, detection_results &results) noexcept;
+	static std::shared_ptr<detection_result> read_nicad(const QString &file, detection_results &results) noexcept;
 
 	static bool write_csv(const QString &file, const detection_result &result, const QString &project_root) noexcept;
 };

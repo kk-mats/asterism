@@ -21,7 +21,7 @@ public:
 	uint32_t begin() const noexcept;
 	uint32_t end() const noexcept;
 	int length() const noexcept;
-		
+
 	bool operator ==(const fragment &other) const noexcept;
 	bool operator <(const fragment &other) const noexcept;
 	uint32_t operator &(const fragment &other) const noexcept;
@@ -41,8 +41,8 @@ float overlap(const fragment &f1, const fragment &f2) noexcept;
 float contained(const fragment &f1, const fragment &f2) noexcept;
 
 QDebug operator <<(QDebug logger, const fragment &fragment) noexcept;
-
-Q_DECLARE_METATYPE(fragment)
 }
+
+Q_DECLARE_METATYPE(asterism::fragment)
 
 #endif // FRAGMENT_HPP

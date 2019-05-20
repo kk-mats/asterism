@@ -43,9 +43,19 @@ void MainWindow::open_project() noexcept
 
 void MainWindow::open_file() noexcept
 {
-	if(auto filepath=QFileDialog::getOpenFileName(this, tr("Open File"), "X:\\projects\\asterism", tr("CCFinderSW (*.json)")); !filepath.isEmpty())
+	if(auto filepath=QFileDialog::getOpenFileName(this, tr("Open File"), "X:\\projects\\asterism", tr("NiCAD (*.xml);; CCFinderSW (*.json)")); !filepath.isEmpty())
 	{
-		if(auto result=clone_io::read_json(filepath, this->results_); result)
+		std::shared_ptr<detection_result> result;
+		if(filepath.endsWith(".xml"))
+		{
+			result=clone_io::read_nicad(filepath, this->results_);
+		}
+		else if(filepath.endsWith(".json"))
+		{
+			result=clone_io::read_json(filepath, this->results_);
+		}
+
+		if(result)
 		{
 			this->update();
 			this->layer_list_widget_->emplace_clone_size_heatmap_layer(result);

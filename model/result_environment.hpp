@@ -46,6 +46,8 @@ public:
 	result_environment(const clone_detector &clone_detector, const QString &source) noexcept;
 
 	void set_name(const QString &name) noexcept;
+	void add_parameter(const QString &key, const QString &value) noexcept;
+	void set_parameters(const QHash<QString, QString> &parameters) noexcept;
 
 	QString name() const noexcept;
 	QString source() const noexcept;

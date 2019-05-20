@@ -32,6 +32,13 @@ public:
 	static inline const QString BEGIN="begin";
 	static inline const QString END="end";
 
+	static inline const QString CLONES="clones";
+	static inline const QString SYSTEMINFO="systeminfo";
+	static inline const QString CLONE="clone";
+	static inline const QString PROCESSOR="processor";
+	static inline const QString FILE="file";
+	static inline const QString STARTLINE="startline";
+	static inline const QString ENDLINE="endline";
 };
 
 }
