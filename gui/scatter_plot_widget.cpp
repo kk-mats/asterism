@@ -65,10 +65,7 @@ scatter_plot_widget::scatter_plot_widget(const detection_results *results, QWidg
 
 	this->verticalHeader()->hide();
 	this->horizontalHeader()->hide();
-	this->verticalHeader()->setMinimumSectionSize(grid_size);
-	this->horizontalHeader()->setMinimumSectionSize(grid_size);
-	this->verticalHeader()->setDefaultSectionSize(grid_size);
-	this->horizontalHeader()->setDefaultSectionSize(grid_size);
+	this->set_grid_size();
 
 	connect(this, &scatter_plot_widget::clicked, this, &scatter_plot_widget::select_grid);
 }
@@ -102,4 +99,21 @@ void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 		}
 	}
 }
+
+void scatter_plot_widget::change_grid_size(const int size) noexcept
+{
+	this->set_grid_size(size);
+	//this->resizeRowsToContents();
+	//this->resizeColumnsToContents();
+}
+
+void scatter_plot_widget::set_grid_size(const int size) noexcept
+{
+	this->grid_size_=size;
+	this->verticalHeader()->setMinimumSectionSize(grid_size_);
+	this->horizontalHeader()->setMinimumSectionSize(grid_size_);
+	this->verticalHeader()->setDefaultSectionSize(grid_size_);
+	this->horizontalHeader()->setDefaultSectionSize(grid_size_);
+}
+
 }

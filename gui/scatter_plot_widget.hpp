@@ -52,15 +52,18 @@ public:
 
 public slots:
 	void select_grid(const QModelIndex &index) noexcept;
+	void change_grid_size(const int size) noexcept;
 
 signals:
 	void current_grid_changed(const QString &file1, const QString &file2, const int clone_pair_size);
 	void current_grid_changed(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive);
 
 private:
-	int grid_size=15;
+	int grid_size_;
 	const detection_results *results_;
 	scatter_plot_model *model_=new scatter_plot_model(this);
+
+	void set_grid_size(const int size=16) noexcept;
 };
 
 }
