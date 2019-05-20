@@ -27,9 +27,9 @@ std::vector<std::pair<QString, QString>> heatmap_layer::clone_pair_size::details
 {
 	return
 	{
-		{"clone pair size min", QString::number(this->min_)},
-		{"clone pair size max", QString::number(this->max_)},
-		{"clone pair size sum", QString::number(this->sum_)}
+		{"#Clone Pair", QString::number(this->min_)},
+		{"Max #Clone Pair", QString::number(this->max_)},
+		{"Sum #Clone Pair", QString::number(this->sum_)}
 	};
 }
 
@@ -102,7 +102,7 @@ std::vector<std::pair<QString, QString>> heatmap_layer::mismatch_rate::details()
 {
 	return
 	{
-		{"average mismatch rate", QString::number(this->average_mismatch_rate_)}
+		{"Average Mismatch Rate", QString::number(this->average_mismatch_rate_)}
 	};
 }
 
@@ -209,8 +209,8 @@ color_selector heatmap_layer::selector() const noexcept
 std::vector<std::pair<QString, QString>> heatmap_layer::details() const noexcept
 {
 	std::vector<std::pair<QString, QString>> d={
-		{"name", this->name()},
-		{"source", this->primitive_->environment().source()}
+		{"Name", this->name()},
+		{"Source", this->primitive_->environment().source()}
 	};
 	auto r=std::visit([](const auto &h){ return h.details(); }, this->value_);
 	d.insert(d.end(), r.begin(), r.end());

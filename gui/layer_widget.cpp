@@ -7,7 +7,7 @@ layer_widget::layer_widget(const detection_results *results, QWidget *parent) no
 {
 	this->scatter_plot_widget_=new scatter_plot_widget(results);
 
-	this->method_selector_->addItem("Clone Pair Size");
+	this->method_selector_->addItem("#Clone Pair");
 	this->method_selector_->addItem("Mismatch Rate");
 	this->method_selector_->setDisabled(true);
 

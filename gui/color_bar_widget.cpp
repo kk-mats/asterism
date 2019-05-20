@@ -55,7 +55,7 @@ void color_bar_widget::set_selector(const color_selector &selector, const int me
 	this->mismatch0_->setVisible(method_index==1);
 	this->mismatch0_bar_->setVisible(method_index==1);
 	this->begin_->setText(QString::number(selector.first()));
-	this->end_->setText(QString::number(selector.last())+(method_index==1 ? "%" : " clone pair(s)"));
+	this->end_->setText(QString::number(selector.last())+(method_index==1 ? "%" : " Clone Pair(s)"));
 	this->color_bar_->selector_=selector;
 	this->color_bar_->repaint();
 }
