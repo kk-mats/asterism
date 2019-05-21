@@ -77,7 +77,7 @@ private:
 	static inline std::shared_ptr<matching_table> matching_table_=nullptr;
 };
 
-class matched_list_widget
+class matched_list_widget final
 	: public QTreeView
 {
 	Q_OBJECT

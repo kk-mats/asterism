@@ -38,24 +38,9 @@ QVariant scatter_plot_model::headerData(int, Qt::Orientation, int role) const no
 	return QVariant();
 }
 
-void scatter_plot_model::change_method(const int method_index) noexcept
-{
-	this->beginResetModel();
-	if(method_index==0)
-	{
-		this->current_layer_->change_method(heatmap_layer::method::clone_pair_size());
-	}
-	else
-	{
-		this->current_layer_->change_method(heatmap_layer::method::mismatch_rate());
-	}
-	this->endResetModel();
-}
-
 scatter_plot_widget::scatter_plot_widget(const detection_results *results, QWidget *parent)
 	: QTableView(parent), results_(results)
 {
-	
 	auto p=this->palette();
 	p.setColor(QPalette::Inactive, QPalette::Highlight, Qt::gray);
 	this->setPalette(p);
@@ -73,10 +58,18 @@ scatter_plot_widget::scatter_plot_widget(const detection_results *results, QWidg
 
 void scatter_plot_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept
 {
+	this->model_->previous_=this->currentIndex();
 	this->model_->beginResetModel();
 	this->model_->current_layer_=layer;
 	this->model_->endResetModel();
 	this->setCurrentIndex(this->model_->previous_);
+	if(!this->currentIndex().isValid())
+	{
+		return;
+	}
+
+	auto [x, y]=std::minmax(this->results_->file_at(this->currentIndex().row()), this->results_->file_at(this->currentIndex().column()));
+	emit current_grid_changed(x, y, this->model_->current_layer_->primitive());
 }
 
 void scatter_plot_widget::update_layer() noexcept
@@ -89,22 +82,36 @@ void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 {
 	if(index.isValid() && this->model_->previous_!=index && this->model_->previous_.row()!=index.column() && this->model_->previous_.column()!=index.row())
 	{
+		this->model_->previous_=this->currentIndex();
 		this->setCurrentIndex(index);
-		this->model_->previous_=index;
 		auto [x, y]=std::minmax(this->results_->file_at(index.row()), this->results_->file_at(index.column()));
 		emit current_grid_changed(x->canonical_file_path(), y->canonical_file_path(), 100);
-		if(this->model_->current_layer_->method_index()!=0)
-		{
-			emit current_grid_changed(x, y, this->model_->current_layer_->primitive());
-		}
+		emit current_grid_changed(x, y, this->model_->current_layer_->primitive());
 	}
 }
 
 void scatter_plot_widget::change_grid_size(const int size) noexcept
 {
 	this->set_grid_size(size);
-	//this->resizeRowsToContents();
-	//this->resizeColumnsToContents();
+}
+
+void scatter_plot_widget::change_method(const int method_index) noexcept
+{
+	this->model_->previous_=this->currentIndex();
+
+	this->model_->beginResetModel();
+	if(method_index==0)
+	{
+		this->model_->current_layer_->change_method(heatmap_layer::method::clone_pair_size());
+	}
+	else
+	{
+		this->model_->current_layer_->change_method(heatmap_layer::method::mismatch_rate());
+	}
+	this->model_->endResetModel();
+
+	this->setCurrentIndex(this->model_->previous_);
+	this->select_grid(this->currentIndex());
 }
 
 void scatter_plot_widget::set_grid_size(const int size) noexcept

@@ -71,7 +71,7 @@ void layer_widget::update_layer() noexcept
 
 void layer_widget::change_method(const int method_index) noexcept
 {
-	((scatter_plot_model *)this->scatter_plot_widget_->model())->change_method(method_index);
+	this->scatter_plot_widget_->change_method(method_index);
 	this->color_bar_widget_->set_selector(this->layer_->selector(), method_index);
 	emit method_changed(method_index);
 }

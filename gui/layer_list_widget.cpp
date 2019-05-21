@@ -153,4 +153,10 @@ void layer_list_widget::click_remove() noexcept
 	
 }
 
+void layer_list_widget::change_result_name(const QString &name) noexcept
+{
+	const auto index=this->currentIndex();
+	emit dataChanged(index, index);
+}
+
 }

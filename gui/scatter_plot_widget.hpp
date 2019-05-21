@@ -34,9 +34,6 @@ public:
 
 	QModelIndex previous_=QModelIndex();
 	std::shared_ptr<heatmap_layer> current_layer_=nullptr;
-
-public slots:
-	void change_method(const int method_index) noexcept;
 };
 
 class scatter_plot_widget final
@@ -53,6 +50,7 @@ public:
 public slots:
 	void select_grid(const QModelIndex &index) noexcept;
 	void change_grid_size(const int size) noexcept;
+	void change_method(const int method_index) noexcept;
 
 signals:
 	void current_grid_changed(const QString &file1, const QString &file2, const int clone_pair_size);

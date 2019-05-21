@@ -104,7 +104,8 @@ void layer_detail_widget::change_method(const int) noexcept
 void layer_detail_widget::change_result_name(const QString &name) noexcept
 {
 	this->model_->details_[0].second=name;
-	emit dataChanged()
+	const auto index=this->model_->index(0, 1);
+	emit dataChanged(index, index);
 }
 
 }
