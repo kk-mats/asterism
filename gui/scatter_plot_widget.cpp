@@ -3,6 +3,24 @@
 namespace asterism
 {
 
+void current_grid_delegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const noexcept
+{
+	auto op=option;
+	this->initStyleOption(&op, index);
+
+	if(index.isValid() && op.state&QStyle::State_Selected)
+	{
+		painter->save();
+
+		painter->fillRect(op.rect, QBrush(index.data().value<QColor>()));
+		painter->setPen(QPen(QBrush(Qt::black), 4));
+		painter->drawRect(op.rect);
+
+		painter->restore();
+	}
+	QStyledItemDelegate::paint(painter, option, index);
+}
+
 scatter_plot_model::scatter_plot_model(QObject *parent) noexcept
 	: QAbstractTableModel(parent)
 {}
@@ -41,9 +59,13 @@ QVariant scatter_plot_model::headerData(int, Qt::Orientation, int role) const no
 scatter_plot_widget::scatter_plot_widget(const detection_results *results, QWidget *parent)
 	: QTableView(parent), results_(results)
 {
+	this->setItemDelegate(new current_grid_delegate(this));
+
+	/*
 	auto p=this->palette();
 	p.setColor(QPalette::Inactive, QPalette::Highlight, Qt::gray);
 	this->setPalette(p);
+	*/
 
 	this->setSelectionMode(QAbstractItemView::SingleSelection);
 	this->setModel(this->model_);

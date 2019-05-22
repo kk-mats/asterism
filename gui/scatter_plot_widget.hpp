@@ -3,13 +3,12 @@
 
 #include <QHeaderView>
 #include <QTableView>
-#include <QResizeEvent>
-#include <QAbstractItemDelegate>
 #include <QStyledItemDelegate>
 #include <QPainter>
+#include <QPen>
 #include <QPalette>
 #include <QItemSelectionModel>
-#include <QPixmap>
+#include <QImage>
 
 #include "core/logger.hpp"
 #include "core/detection_results.hpp"
@@ -17,6 +16,16 @@
 
 namespace asterism
 {
+
+class current_grid_delegate final
+	: public QStyledItemDelegate
+{
+	Q_OBJECT
+
+public:
+	using QStyledItemDelegate::QStyledItemDelegate;
+	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const noexcept override;
+};
 
 class scatter_plot_model final
 	: public QAbstractTableModel
