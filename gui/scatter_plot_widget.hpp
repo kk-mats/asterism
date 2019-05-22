@@ -28,6 +28,7 @@ class scatter_plot_model final
 public:
 	explicit scatter_plot_model(QObject *parent=nullptr) noexcept;
 
+	int grid_size_;
 	int rowCount(const QModelIndex &) const noexcept override;
 	int columnCount(const QModelIndex &) const noexcept override;
 	QVariant data(const QModelIndex &index, int role=Qt::BackgroundColorRole) const noexcept override;
@@ -47,7 +48,7 @@ public:
 
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
 	void update_layer() noexcept;
-	QPixmap export_current_scatter_plot() noexcept;
+	QImage export_current_scatter_plot() noexcept;
 
 public slots:
 	void select_grid(const QModelIndex &index) noexcept;
@@ -55,11 +56,10 @@ public slots:
 	void change_method(const int method_index) noexcept;
 
 signals:
-	void current_grid_changed(const QString &file1, const QString &file2, const int clone_pair_size);
+	void current_grid_changed(const QString &file1, const QString &file2);
 	void current_grid_changed(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive);
 
 private:
-	int grid_size_;
 	const detection_results *results_;
 	scatter_plot_model *model_=new scatter_plot_model(this);
 

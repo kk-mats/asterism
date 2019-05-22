@@ -84,13 +84,7 @@ void MainWindow::export_current_scatter_plot() noexcept
 
 	if(const auto filepath=QFileDialog::getSaveFileName(this, tr("Export Current Scatter Plot"), "X:\\projects\\asterism", tr("PNG (*.png);; Bitmap(*bmp)")); !filepath.isEmpty())
 	{
-		auto b=this->layer_widget_->export_current_scatter_plot().toImage();
-		
-		if(!b.isNull())
-		{
-			auto f=b.save(filepath);
-			f=!f;
-		}
+		auto b=this->layer_widget_->export_current_scatter_plot().save(filepath);
 	}
 }
 

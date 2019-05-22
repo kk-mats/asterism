@@ -25,7 +25,7 @@ public:
 	explicit layer_widget(const detection_results *results, QWidget *parent=nullptr) noexcept;
 	
 	void update_layer() noexcept;
-	QPixmap export_current_scatter_plot() noexcept;
+	QImage export_current_scatter_plot() noexcept;
 
 public slots:
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;

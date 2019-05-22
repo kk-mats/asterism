@@ -33,7 +33,7 @@ QVariant scatter_plot_model::headerData(int, Qt::Orientation, int role) const no
 {
 	if(role==Qt::SizeHintRole)
 	{
-		return QSize(1, 1);
+		return QSize(this->grid_size_, this->grid_size_);
 	}
 	return QVariant();
 }
@@ -78,15 +78,19 @@ void scatter_plot_widget::update_layer() noexcept
 	this->model_->endResetModel();
 }
 
-QPixmap scatter_plot_widget::export_current_scatter_plot() noexcept
+QImage scatter_plot_widget::export_current_scatter_plot() noexcept
 {
-	auto m=this->horizontalHeader()->size().width();
-	QPixmap r(m, m);
-	if(!r.isNull())
+	const auto width=this->model_->current_layer_->width();
+	QImage img(width, width, QImage::Format::Format_ARGB32);
+	for(auto y=0; y<width; ++y)
 	{
-		this->render(&r);
+		for(auto x=0; x<width; ++x)
+		{
+			img.setPixelColor(x, y, (*this->model_->current_layer_)[grid_2d_coordinate::to_linear(x, y)]);
+		}
 	}
-	return r;
+
+	return img;
 }
 
 void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
@@ -96,7 +100,7 @@ void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 		this->model_->previous_=this->currentIndex();
 		this->setCurrentIndex(index);
 		auto [x, y]=std::minmax(this->results_->file_at(index.row()), this->results_->file_at(index.column()));
-		emit current_grid_changed(x->canonical_file_path(), y->canonical_file_path(), 100);
+		emit current_grid_changed(x->canonical_file_path(), y->canonical_file_path());
 		emit current_grid_changed(x, y, this->model_->current_layer_->primitive());
 	}
 }
@@ -108,8 +112,7 @@ void scatter_plot_widget::change_grid_size(const int size) noexcept
 
 void scatter_plot_widget::change_method(const int method_index) noexcept
 {
-	this->model_->previous_=this->currentIndex();
-
+	const auto current_index=this->currentIndex();
 	this->model_->beginResetModel();
 	if(method_index==0)
 	{
@@ -120,16 +123,17 @@ void scatter_plot_widget::change_method(const int method_index) noexcept
 		this->model_->current_layer_->change_method(heatmap_layer::method::mismatch_rate());
 	}
 	this->model_->endResetModel();
-	this->select_grid(this->currentIndex());
+	this->model_->previous_=this->currentIndex();
+	this->select_grid(current_index);
 }
 
 void scatter_plot_widget::set_grid_size(const int size) noexcept
 {
-	this->grid_size_=size;
-	this->verticalHeader()->setMinimumSectionSize(grid_size_);
-	this->horizontalHeader()->setMinimumSectionSize(grid_size_);
-	this->verticalHeader()->setDefaultSectionSize(grid_size_);
-	this->horizontalHeader()->setDefaultSectionSize(grid_size_);
+	this->model_->grid_size_=size;
+	this->verticalHeader()->setMinimumSectionSize(size);
+	this->horizontalHeader()->setMinimumSectionSize(size);
+	this->verticalHeader()->setDefaultSectionSize(size);
+	this->horizontalHeader()->setDefaultSectionSize(size);
 }
 
 }

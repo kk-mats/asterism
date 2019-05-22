@@ -18,7 +18,7 @@ current_grid_detail_widget::current_grid_detail_widget(QWidget *parent) noexcept
 	this->setLayout(layout);
 }
 
-void current_grid_detail_widget::change_current_grid(const QString &file1, const QString &file2, const int clone_pair_size) noexcept
+void current_grid_detail_widget::change_current_grid(const QString &file1, const QString &file2) noexcept
 {
 	this->filepath1_->setText(file1);
 	this->filepath2_->setText(file2);
