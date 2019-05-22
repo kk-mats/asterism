@@ -87,10 +87,11 @@ Qt::ItemFlags layer_list_model::flags(const QModelIndex &index) const noexcept
 
 bool layer_list_model::change_result_name(const QString &name) noexcept
 {
-	if(auto &result=this->layers_[this->current_index_]; !name.isEmpty() && result->name()!=name && !this->has_conflict(name))
+	const auto canonical_name=name.trimmed();
+	if(auto &result=this->layers_[this->current_index_]; !canonical_name.isEmpty() && result->name()!=canonical_name && !this->has_conflict(canonical_name))
 	{
-		result->set_name(name);
-		emit result_name_changed(name);
+		result->set_name(canonical_name);
+		emit result_name_changed(canonical_name);
 		return true;
 	}
 	return false;
