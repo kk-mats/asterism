@@ -50,12 +50,8 @@ const clone_detector clone_detector::nicad("NiCAD");
 const clone_detector clone_detector::ar_fuser("Asterism Result Fuser");
 
 
-result_environment::result_environment()
+result_environment::result_environment() noexcept
 	: clone_detector_(clone_detector::undefined)
-{}
-
-result_environment::result_environment(const result_environment &other) noexcept
-	: clone_detector_(other.clone_detector_), source_(other.source_), name_(other.name_)
 {}
 
 result_environment::result_environment(const QString &clone_detector_name, const QString &source, const QString &name) noexcept

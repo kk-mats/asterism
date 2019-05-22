@@ -257,11 +257,11 @@ matching_table::unit::value_t matching_table::unit::map_mutually(const shared_ve
 
 void matching_table::update() noexcept
 {
-	for(auto left=this->results_.begin(), left_end=this->results_.end()-1; left!=left_end; ++left)
+	for(auto left=0; left<this->results_.size()-1; ++left)
 	{
-		for(auto right=left+1, right_end=this->results_.end(); right!=right_end; ++right)
+		for(auto right=left+1; right<this->results_.size(); ++right)
 		{
-			unit u(*left, *right);
+			unit u(this->results_[left], this->results_[right]);
 			auto k=u.unit_key();
 			this->values_.emplace_back(k, u);
 		}
@@ -280,15 +280,9 @@ void matching_table::append(const std::shared_ptr<detection_result> &result) noe
 	std::sort(this->results_.begin(), this->results_.end());
 }
 
-void matching_table::append(const shared_list<detection_result> &results) noexcept
+void matching_table::append(const shared_vector<detection_result> &results) noexcept
 {
-	for(const auto &r:results)
-	{
-		if(this->results_.indexOf(r)<0)
-		{
-			this->results_.append(r);
-		}
-	}
+	this->results_.append(results);
 	std::sort(this->results_.begin(), this->results_.end());
 }
 

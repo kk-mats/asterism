@@ -34,6 +34,8 @@ public:
 
 	static inline const QString CLONES="clones";
 	static inline const QString SYSTEMINFO="systeminfo";
+	static inline const QString CLONEINFO="cloneinfo";
+	static inline const QString RUNINFO="runinfo";
 	static inline const QString CLONE="clone";
 	static inline const QString PROCESSOR="processor";
 	static inline const QString FILE="file";

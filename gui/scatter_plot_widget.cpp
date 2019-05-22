@@ -80,7 +80,7 @@ void scatter_plot_widget::update_layer() noexcept
 
 QPixmap scatter_plot_widget::export_current_scatter_plot() noexcept
 {
-	auto m=this->horizontalHeader()->frameWidth();
+	auto m=this->horizontalHeader()->size().width();
 	QPixmap r(m, m);
 	if(!r.isNull())
 	{

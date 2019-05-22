@@ -40,8 +40,8 @@ enum class tool
 class result_environment final
 {
 public:
-	result_environment();
-	result_environment(const result_environment &) noexcept;
+	result_environment() noexcept;
+	result_environment(const result_environment &)=default;
 	result_environment(const QString &clone_detector_name, const QString &source, const QString &name) noexcept;
 	result_environment(const clone_detector &clone_detector, const QString &source) noexcept;
 
@@ -52,7 +52,7 @@ public:
 	QString name() const noexcept;
 	QString source() const noexcept;
 	QHash<QString, QString> parameters() const noexcept;
-
+	
 	bool operator ==(const result_environment &other) const noexcept;
 
 private:

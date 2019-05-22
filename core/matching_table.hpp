@@ -103,7 +103,7 @@ public:
 	void update() noexcept;
 
 	void append(const std::shared_ptr<detection_result> &result) noexcept;
-	void append(const shared_list<detection_result> &results) noexcept;
+	void append(const shared_vector<detection_result> &results) noexcept;
 	void remove(const std::shared_ptr<detection_result> &result) noexcept;
 
 	std::vector<response> matched_pair(const query &q) const noexcept;
@@ -111,7 +111,7 @@ public:
 	bool has_matching_pair(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p) const noexcept;
 
 private:
-	shared_list<detection_result> results_;
+	shared_vector<detection_result> results_;
 	std::vector<std::pair<key, unit>> values_;
 };
 

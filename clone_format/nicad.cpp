@@ -13,127 +13,118 @@ std::shared_ptr<detection_result> nicad::read(const QString &path, detection_res
 		return nullptr;
 	}
 
-	QDomElement root;
-	if(QDomDocument xx; !xx.setContent(&file) || (root=xx.documentElement()).tagName()!=CLONES)
-	{
-		qCritical()<<code_clone_loading_error::invalid_file_format;
-		return nullptr;
-	}
-
-	return reader(path, results).read(root);
+	return reader(file, results).read();
 }
 
-nicad::reader::reader(const QString &path, detection_results &results) noexcept
-	: source_(path), results_(results)
+nicad::reader::reader(QFile &file, detection_results &results) noexcept
+	: is_(&file), results_(results)
 {}
 
-std::shared_ptr<detection_result> nicad::reader::read(const QDomElement &root) noexcept
+std::shared_ptr<detection_result> nicad::reader::read() noexcept
 {
-	const auto envs=root.elementsByTagName(SYSTEMINFO);
-	result_environment env;
-	if(const auto envs=root.elementsByTagName(SYSTEMINFO); envs.size()!=1)
+	std::optional<result_environment> environment=std::nullopt;
+	shared_set<clone_pair> clone_pairs;
+
+	// QXmlReader::atEnd() returns false when an error occurred
+	while(!this->is_.atEnd() && this->is_.readNext())
+	{
+		if(this->is_.isStartElement())
+		{
+			const auto name=this->is_.name();
+			if(name==CLONE)
+			{
+				auto p=this->read_clone();
+				if(!p)
+				{
+					break;
+				}
+				clone_pairs.insert(p.value());
+			}
+			else if(name==SYSTEMINFO && !(environment=this->read_environment()))
+			{
+				break;
+			}
+		}
+	}
+
+	if(!this->is_.atEnd())
 	{
 		qCritical()<<code_clone_loading_error::invalid_file_format;
 		return nullptr;
 	}
-	else if(const auto env_opt=this->read_environment(envs.at(0)); !env_opt)
+
+	return this->results_.empalce(std::move(environment.value()), std::move(clone_pairs));
+}
+
+std::optional<result_environment> nicad::reader::read_environment() noexcept
+{
+	const auto attributes=this->is_.attributes();
+
+	if(!attributes.hasAttribute(PROCESSOR) || attributes.value(PROCESSOR)!="nicad5")
 	{
-		qCritical()<<code_clone_loading_error::invalid_file_format;
-		return nullptr;
+		return std::nullopt;
 	}
-	else
+
+	result_environment environment(clone_detector::nicad, static_cast<QFile*>(this->is_.device())->fileName());
+	for(const auto &attribute:attributes)
 	{
-		const auto clone_pairs=root.elementsByTagName(CLONE);
-		shared_set<clone_pair> ps;
-		for(int i=0; i<clone_pairs.size(); ++i)
+		if(attribute.name()!=PROCESSOR)
 		{
-			if(const auto clone_pair_opt=this->read_clone(clone_pairs.at(i)); !clone_pair_opt)
-			{
-				qCritical()<<code_clone_loading_error::invalid_file_format;
-				return nullptr;
-			}
-			else
-			{
-				ps.insert(clone_pair_opt.value());
-			}
+			environment.add_parameter(attribute.name().toString(), attribute.value().toString());
 		}
-		env=env_opt.value();
-		return this->results_.empalce(std::move(env), std::move(ps));
 	}
 
-	qCritical()<<code_clone_loading_error::invalid_file_format;
-	return nullptr;
+	return std::make_optional(environment);
 }
 
-std::optional<result_environment> nicad::reader::read_environment(const QDomNode &dom) noexcept
+std::optional<std::shared_ptr<clone_pair>> nicad::reader::read_clone() noexcept
 {
-	if(!dom.isElement())
+	const auto attributes=this->is_.attributes();
+	if(!attributes.hasAttribute(SIMILARITY))
 	{
 		return std::nullopt;
 	}
 
-	if(const auto env=dom.toElement(); env.hasAttribute(PROCESSOR) && env.attribute(PROCESSOR).startsWith("nicad"))
+	bool ok=false;
+	const auto similarity=attributes.value(SIMILARITY).toInt(&ok);
+	if(!ok)
 	{
-		result_environment e(clone_detector::nicad, this->source_);
-		auto params=env.attributes();
-		for(int i=0; i<params.size(); ++i)
-		{
-			if(params.item(i).isAttr())
-			{
-				const auto param=params.item(i).toAttr();
-				e.add_parameter(param.name(), param.value());
-			}
-		}
-		return e;
+		return std::nullopt;
 	}
-	return std::nullopt;
+
+	if(!this->is_.readNextStartElement())
+	{
+		return std::nullopt;
+	}
+	const auto f1=this->read_fragment();
+
+	if(this->is_.readNext()!=QXmlStreamReader::TokenType::EndElement || !this->is_.readNextStartElement())
+	{
+		return std::nullopt;
+	}
+	const auto f2=this->read_fragment();
+
+	return std::make_shared<clone_pair>(f1.value(), f2.value(), similarity);
 }
 
-std::optional<std::shared_ptr<clone_pair>> nicad::reader::read_clone(const QDomNode &dom) noexcept
+std::optional<fragment> nicad::reader::read_fragment() noexcept
 {
-	if(const auto children=dom.childNodes(); children.size()!=2 || !children.at(0).isElement() || !children.at(1).isElement())
+	const auto attributes=this->is_.attributes();
+	if(!attributes.hasAttribute(FILE) || !attributes.hasAttribute(STARTLINE) || !attributes.hasAttribute(ENDLINE))
 	{
 		return std::nullopt;
 	}
-	else if(const auto f1_opt=this->read_fragment(children.at(0)), f2_opt=this->read_fragment(children.at(1)); !f1_opt || !f2_opt)
-	{
-		return std::nullopt;
-	}
-	else if(const auto attributes=dom.attributes(); !attributes.contains(SIMILARITY))
-	{
-		return std::nullopt;
-	}
-	else if(const auto similarity_attribute=attributes.namedItem(SIMILARITY); !similarity_attribute.isAttr())
-	{
-		return std::nullopt;
-	}
-	else
-	{
-		const auto similarity=similarity_attribute.toAttr().value().toInt();
-		return std::make_shared<clone_pair>(std::move(f1_opt.value()), std::move(f2_opt.value()), similarity);
-	}
-}
 
-std::optional<fragment> nicad::reader::read_fragment(const QDomNode &dom) noexcept
-{
-	if(!dom.isElement())
+	bool ok1=false, ok2=false;
+	const auto startline=attributes.value(STARTLINE).toInt(&ok1);
+	const auto endline=attributes.value(ENDLINE).toInt(&ok2);
+
+	if(!ok1 || !ok2)
 	{
 		return std::nullopt;
 	}
-	
-	if(const auto f=dom.toElement(); !f.hasAttribute(FILE) || !f.hasAttribute(STARTLINE) || !f.hasAttribute(ENDLINE))
-	{
-		return std::nullopt;
-	}
-	else
-	{
-		const auto file_ptr=this->results_.emplace(f.attribute(FILE));
-		return std::make_optional<fragment>(
-			file_ptr,
-			f.attribute(STARTLINE).toInt(),
-			f.attribute(ENDLINE).toInt()
-		);
-	}
+
+	return std::make_optional<fragment>(this->results_.emplace(attributes.value(FILE).toString()), startline, endline);
 }
 
 }
