@@ -252,6 +252,12 @@ void matched_list_model::change_current_grid(const std::shared_ptr<file> &file1,
 	this->endResetModel();
 }
 
+void matched_list_model::update() noexcept
+{
+	this->beginResetModel();
+	this->endResetModel();
+}
+
 matched_list_widget::matched_list_widget(QWidget *parent)
 	: QTreeView(parent)
 {
@@ -264,5 +270,9 @@ matched_list_widget::~matched_list_widget()
 {
 }
 
+void matched_list_widget::change_result_name() noexcept
+{
+	this->model_->update();
+}
 
 }

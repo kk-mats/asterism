@@ -78,6 +78,17 @@ void scatter_plot_widget::update_layer() noexcept
 	this->model_->endResetModel();
 }
 
+QPixmap scatter_plot_widget::export_current_scatter_plot() noexcept
+{
+	auto m=this->horizontalHeader()->frameWidth();
+	QPixmap r(m, m);
+	if(!r.isNull())
+	{
+		this->render(&r);
+	}
+	return r;
+}
+
 void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 {
 	if(index.isValid() && this->model_->previous_!=index && this->model_->previous_.row()!=index.column() && this->model_->previous_.column()!=index.row())
@@ -109,8 +120,6 @@ void scatter_plot_widget::change_method(const int method_index) noexcept
 		this->model_->current_layer_->change_method(heatmap_layer::method::mismatch_rate());
 	}
 	this->model_->endResetModel();
-
-	this->setCurrentIndex(this->model_->previous_);
 	this->select_grid(this->currentIndex());
 }
 

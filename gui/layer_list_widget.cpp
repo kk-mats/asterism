@@ -43,32 +43,69 @@ bool layer_list_model::insertRows(const int row, const int count, const QModelIn
 	return true;
 }
 
+bool layer_list_model::has_conflict(const QString &name) const noexcept
+{
+	for(const auto &h:this->layers_)
+	{
+		if(h->name()==name)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 bool layer_list_model::setData(const QModelIndex &index, const QVariant &value, int role) noexcept
 {
-	if(!index.isValid() || role!=Qt::EditRole || !value.canConvert<std::shared_ptr<detection_result>>())
+	if(!index.isValid() || role!=Qt::EditRole)
 	{
 		return false;
 	}
 
-	this->layers_[index.row()]=std::make_shared<heatmap_layer>(value.value<std::shared_ptr<detection_result>>(), heatmap_layer::method::clone_pair_size());
-	emit dataChanged(index, index, {role});
+	if(value.canConvert<QString>())
+	{
+		return this->change_result_name(value.toString());
+	}
+	else if(value.canConvert<std::shared_ptr<detection_result>>())
+	{
+		this->layers_[index.row()]=std::make_shared<heatmap_layer>(value.value<std::shared_ptr<detection_result>>(), heatmap_layer::method::clone_pair_size());
+		emit dataChanged(index, index, {role});
+		return true;
+	}
+	return false;
+}
 
-	return true;
+Qt::ItemFlags layer_list_model::flags(const QModelIndex &index) const noexcept
+{
+	auto f=QAbstractListModel::flags(index);
+	if(index.isValid())
+	{
+		f|=Qt::ItemIsEditable;
+	}
+	return f;
+}
+
+bool layer_list_model::change_result_name(const QString &name) noexcept
+{
+	if(auto &result=this->layers_[this->current_index_]; !name.isEmpty() && result->name()!=name && !this->has_conflict(name))
+	{
+		result->set_name(name);
+		emit result_name_changed(name);
+		return true;
+	}
+	return false;
 }
 
 layer_list_widget::layer_list_widget(QWidget *parent) noexcept
 	: QListView(parent)
 {
-	this->setContextMenuPolicy(Qt::CustomContextMenu);/*
-	this->rename_act_->setStatusTip(tr("Rename Detection Result"));
-	this->remove_act_->setStatusTip(tr("Remove Detection Result"));
-	connect(this->remove_act_, &QAction::triggered, this, &layer_list_widget::click_remove);*/
-
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	this->setModel(this->model_);
 
 	connect(this, &layer_list_widget::clicked, this, &layer_list_widget::select_layer_ptr);
 	connect(this, &layer_list_widget::customContextMenuRequested, this, &layer_list_widget::show_context_menu);
+	connect(this->model_, &layer_list_model::result_name_changed, this, &layer_list_widget::result_name_changed);
 }
 
 void layer_list_widget::update_layers() noexcept
@@ -155,8 +192,10 @@ void layer_list_widget::click_remove() noexcept
 
 void layer_list_widget::change_result_name(const QString &name) noexcept
 {
-	const auto index=this->currentIndex();
-	emit dataChanged(index, index);
+	if(this->model_->change_result_name(name))
+	{
+		emit dataChanged(this->currentIndex(), this->currentIndex());
+	}
 }
 
 }

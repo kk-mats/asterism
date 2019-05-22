@@ -9,6 +9,7 @@
 #include <QPainter>
 #include <QPalette>
 #include <QItemSelectionModel>
+#include <QPixmap>
 
 #include "core/logger.hpp"
 #include "core/detection_results.hpp"
@@ -46,6 +47,7 @@ public:
 
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept;
 	void update_layer() noexcept;
+	QPixmap export_current_scatter_plot() noexcept;
 
 public slots:
 	void select_grid(const QModelIndex &index) noexcept;

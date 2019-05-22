@@ -85,7 +85,10 @@ public:
 	bool update() noexcept;
 
 	int method_index() const noexcept;
+
 	QString name() const noexcept;
+	void set_name(const QString &name) noexcept;
+
 	std::shared_ptr<detection_result> primitive() const noexcept;
 	int width() const noexcept;
 	color_selector selector() const noexcept;

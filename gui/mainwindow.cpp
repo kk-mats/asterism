@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(this->layer_list_widget_, &layer_list_widget::current_layer_changed, this->layer_widget_, &layer_widget::set_layer);
 	connect(this->layer_list_widget_, &layer_list_widget::current_layer_changed, this->layer_detail_widget_, &layer_detail_widget::set_layer);
 	connect(this->layer_widget_, &layer_widget::method_changed, this->layer_detail_widget_, &layer_detail_widget::change_method);
+	connect(this->layer_detail_widget_, &layer_detail_widget::result_name_input, this->layer_list_widget_, &layer_list_widget::change_result_name);
+	connect(this->layer_list_widget_, &layer_list_widget::result_name_changed, this->layer_detail_widget_, &layer_detail_widget::change_result_name);
+	connect(this->layer_list_widget_, &layer_list_widget::result_name_changed, this->layer_widget_, &layer_widget::result_name_changed);
 
 	this->create_actions();
 	this->create_menus();
@@ -43,7 +46,7 @@ void MainWindow::open_project() noexcept
 
 void MainWindow::open_file() noexcept
 {
-	if(auto filepath=QFileDialog::getOpenFileName(this, tr("Open File"), "X:\\projects\\asterism", tr("NiCAD (*.xml);; CCFinderSW (*.json)")); !filepath.isEmpty())
+	if(const auto filepath=QFileDialog::getOpenFileName(this, tr("Open File"), "X:\\projects\\asterism", tr("NiCAD (*.xml);; CCFinderSW (*.json)")); !filepath.isEmpty())
 	{
 		std::shared_ptr<detection_result> result;
 		if(filepath.endsWith(".xml"))
@@ -66,9 +69,28 @@ void MainWindow::open_file() noexcept
 
 void MainWindow::fuse_results() noexcept
 {
-	if(auto filepath=QFileDialog::getSaveFileName(this, tr("Export Fusion Result"), "X:\\projects\\asterism", tr(".csv")); !filepath.isEmpty())
+	if(const auto filepath=QFileDialog::getSaveFileName(this, tr("Export Fusion Result"), "X:\\projects\\asterism", tr(".csv")); !filepath.isEmpty())
 	{
 		clone_io::write_csv(filepath, this->results_.fuse(), this->results_.target_path());
+	}
+}
+
+void MainWindow::export_current_scatter_plot() noexcept
+{
+	if(!this->layer_list_widget_->currentIndex().isValid())
+	{
+		return;
+	}
+
+	if(const auto filepath=QFileDialog::getSaveFileName(this, tr("Export Current Scatter Plot"), "X:\\projects\\asterism", tr("PNG (*.png);; Bitmap(*bmp)")); !filepath.isEmpty())
+	{
+		auto b=this->layer_widget_->export_current_scatter_plot().toImage();
+		
+		if(!b.isNull())
+		{
+			auto f=b.save(filepath);
+			f=!f;
+		}
 	}
 }
 
@@ -97,14 +119,22 @@ void MainWindow::create_actions() noexcept
 	this->open_file_act_->setStatusTip(tr("Open file"));
 	connect(this->open_file_act_, &QAction::triggered, this, &MainWindow::open_file);
 
-	this->fuse_results_act_=new QAction(tr("&Fuse Results"), this);
-	connect(this->fuse_results_act_, &QAction::triggered, this, &MainWindow::fuse_results);
+	//this->fuse_results_act_=new QAction(tr("&Fuse Results"), this);
+	//connect(this->fuse_results_act_, &QAction::triggered, this, &MainWindow::fuse_results);
+
+	this->export_current_scatter_plot_act_=new QAction(tr("Export Current Scatter Plot"), this);
+	this->export_current_scatter_plot_act_->setStatusTip(tr("Export current scatter plot as an image"));
+	connect(this->export_current_scatter_plot_act_, &QAction::triggered, this, &MainWindow::export_current_scatter_plot);
 
 	this->quit_act_=new QAction(tr("&Quit"), this);
 	this->quit_act_->setShortcuts(QKeySequence::Quit);
 	this->quit_act_->setStatusTip(tr("Quit"));
 	connect(this->quit_act_, &QAction::triggered, this, &QApplication::quit);
 
+	this->invoke_external_tool_act_=new QAction(tr("&Invoke External Tools"), this);
+	this->invoke_external_tool_act_->setStatusTip(tr("External Tools Preferences"));
+	this->invoke_external_tool_act_->setStatusTip(tr("Invoke External Tool"));
+	//connect(this->invoke_external_tool_act_, &QAction::triggered, this, &);
 }
 
 void MainWindow::create_menus() noexcept
@@ -114,9 +144,13 @@ void MainWindow::create_menus() noexcept
 	this->file_menu_->addAction(this->open_file_act_);
 	this->file_menu_->addSeparator();
 	this->export_menu_=this->file_menu_->addMenu(tr("Export"));
-	this->export_menu_->addAction(this->fuse_results_act_);
+	//this->export_menu_->addAction(this->fuse_results_act_);
+	this->export_menu_->addAction(this->export_current_scatter_plot_act_);
 	this->file_menu_->addSeparator();
 	this->file_menu_->addAction(this->quit_act_);
+
+	this->tools_=this->menuBar()->addMenu(tr("Tools"));
+	this->tools_->addAction(this->invoke_external_tool_act_);
 }
 
 void MainWindow::update() noexcept

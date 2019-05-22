@@ -24,13 +24,22 @@ public:
 	bool removeRows(int row, int count, const QModelIndex &parent=QModelIndex()) override;
 	int rowCount(const QModelIndex &parent=QModelIndex()) const override;
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const override;
+	bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole) noexcept;
+	Qt::ItemFlags flags(const QModelIndex &index) const noexcept override;
+
+	bool change_result_name(const QString &name) noexcept;
 
 	int current_index_=-1;
 	shared_list<heatmap_layer> layers_;
 
 public slots:
 	bool insertRows(const int row, const int count, const QModelIndex &parent=QModelIndex()) noexcept override;
-	bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole) noexcept override;
+
+signals:
+	void result_name_changed(const QString &name);
+
+private:
+	bool has_conflict(const QString &name) const noexcept;
 };
 
 
@@ -52,8 +61,6 @@ public:
 
 public slots:
 	void select_layer_ptr(const QModelIndex &index) noexcept;
-
-private slots:
 	void show_context_menu(const QPoint &pos) noexcept;
 	void click_rename() noexcept;
 	void click_remove() noexcept;
@@ -62,6 +69,7 @@ private slots:
 signals:
 	void current_layer_changed(const std::shared_ptr<heatmap_layer> &layer);
 	void remove(const std::shared_ptr<detection_result> &result);
+	void result_name_changed(const QString &name);
 
 private:
 	layer_list_model *model_=new layer_list_model(this);

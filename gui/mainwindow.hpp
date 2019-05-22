@@ -33,6 +33,7 @@ private slots:
 	void open_project() noexcept;
 	void open_file() noexcept;
 	void fuse_results() noexcept;
+	void export_current_scatter_plot() noexcept;
 
 	void remove(const std::shared_ptr<detection_result> &result) noexcept;
 
@@ -51,9 +52,17 @@ private:
 	QMenu *file_menu_;
 	QAction *open_project_act_;
 	QAction *open_file_act_;
+	
+	// File.Export
 	QMenu *export_menu_;
 	QAction *fuse_results_act_;
 	QAction *quit_act_;
+	QAction *export_current_scatter_plot_act_;
+
+
+	// Tools
+	QMenu *tools_;
+	QAction *invoke_external_tool_act_;
 	   
 	void initialize_docks() noexcept;
 

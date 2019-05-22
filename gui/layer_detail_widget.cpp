@@ -45,9 +45,7 @@ bool layer_detail_model::setData(const QModelIndex &index, const QVariant &value
 	{
 		return false;
 	}
-	this->details_[0].second=value.toString();
-	emit dataChanged(index, index);
-	emit result_name_changed(value.toString());
+	emit result_name_input(value.toString());
 	return true;
 }
 
@@ -75,7 +73,7 @@ layer_detail_widget::layer_detail_widget(QWidget *parent) noexcept
 	this->horizontalHeader()->hide();
 	this->horizontalHeader()->setStretchLastSection(true);
 
-	connect(this->model_, &layer_detail_model::result_name_changed, this, &layer_detail_widget::result_name_changed);
+	connect(this->model_, &layer_detail_model::result_name_input, this, &layer_detail_widget::result_name_input);
 }
 
 void layer_detail_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept

@@ -47,6 +47,7 @@ layer_widget::layer_widget(const detection_results *results, QWidget *parent) no
 	connect(this->scatter_plot_widget_, qOverload<const QString&, const QString&, int>(&scatter_plot_widget::current_grid_changed), this->current_grid_detail_widget_, &current_grid_detail_widget::change_current_grid);
 	connect(this->scatter_plot_widget_, qOverload<const std::shared_ptr<file>&, const std::shared_ptr<file>&, const std::shared_ptr<detection_result>&>(&scatter_plot_widget::current_grid_changed), (matched_list_model *)this->matched_list_widget_->model(), &matched_list_model::change_current_grid);
 	connect(this->grid_size_selector_, qOverload<int>(&QSpinBox::valueChanged), this->scatter_plot_widget_, &scatter_plot_widget::change_grid_size);
+	connect(this, &layer_widget::result_name_changed, this->matched_list_widget_, &matched_list_widget::change_result_name);
 }
 
 
@@ -67,6 +68,11 @@ void layer_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexce
 void layer_widget::update_layer() noexcept
 {
 	this->scatter_plot_widget_->update_layer();
+}
+
+QPixmap layer_widget::export_current_scatter_plot() noexcept
+{
+	return this->scatter_plot_widget_->export_current_scatter_plot();
 }
 
 void layer_widget::change_method(const int method_index) noexcept

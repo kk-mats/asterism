@@ -39,7 +39,6 @@ public:
 		void emplace_children(const QVector<std::pair<QVariant, QVariant>> &children) noexcept;
 
 	private:
-
 		QVector<QVariant> self_;
 		item *parent_=nullptr;
 		QVector<item *> children_;
@@ -68,6 +67,7 @@ public:
 	QModelIndex index(int row, int column, const QModelIndex &parent=QModelIndex()) const noexcept override;
 	QModelIndex parent(const QModelIndex &index) const noexcept override;
 
+	void update() noexcept;
 
 public slots:
 	void change_current_grid(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive) noexcept;
@@ -85,6 +85,9 @@ class matched_list_widget final
 public:
 	matched_list_widget(QWidget *parent=nullptr);
 	~matched_list_widget();
+
+public slots:
+	void change_result_name() noexcept;
 
 private:
 	matched_list_model *model_=new matched_list_model(this);

@@ -191,6 +191,11 @@ QString heatmap_layer::name() const noexcept
 	return this->primitive_->environment().name();
 }
 
+void heatmap_layer::set_name(const QString &name) noexcept
+{
+	this->primitive_->environment().set_name(name);
+}
+
 std::shared_ptr<detection_result> heatmap_layer::primitive() const noexcept
 {
 	return this->primitive_;

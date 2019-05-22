@@ -28,7 +28,7 @@ public:
 	std::vector<std::pair<QString, QString>> details_;
 
 signals:
-	void result_name_changed(const QString &name);
+	void result_name_input(const QString &name);
 };
 
 
@@ -46,7 +46,7 @@ public slots:
 	void change_result_name(const QString &name) noexcept;
 
 signals:
-	void result_name_changed(const QString &name);
+	void result_name_input(const QString &name);
 
 private:
 	layer_detail_model *model_=new layer_detail_model(this);
