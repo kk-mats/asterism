@@ -88,6 +88,16 @@ void MainWindow::export_current_scatter_plot() noexcept
 	}
 }
 
+void MainWindow::external_tools_settings() noexcept
+{
+	new external_tools_settings_dialog;
+}
+
+void MainWindow::invoke_ccvolti() noexcept
+{
+	new invoke_ccvolti_dialog;
+}
+
 void MainWindow::remove(const std::shared_ptr<detection_result> &result) noexcept
 {
 	this->results_.remove(result);
@@ -134,6 +144,7 @@ void MainWindow::create_actions() noexcept
 
 	this->invoke_ccvolti_act_=new QAction(tr("Invoke CCVolti"));
 	this->invoke_ccvolti_act_->setStatusTip(tr("Invoke CCVolti"));
+	connect(this->invoke_ccvolti_act_, &QAction::triggered, this, &MainWindow::invoke_ccvolti);
 	
 	this->invoke_ccfindersw_act_=new QAction(tr("Invoke CCFinderSW"));
 	this->invoke_ccfindersw_act_->setStatusTip(tr("Invoke CCFinderSW"));
@@ -143,6 +154,7 @@ void MainWindow::create_actions() noexcept
 
 	this->options_act_=new QAction(tr("Options"));
 	this->options_act_->setStatusTip(tr("Tools Options"));
+	connect(this->options_act_, &QAction::triggered, this, &MainWindow::external_tools_settings);
 }
 
 void MainWindow::create_menus() noexcept

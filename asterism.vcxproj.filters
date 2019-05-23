@@ -178,6 +178,24 @@
     <ClCompile Include="release\moc_scatter_plot_widget.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_external_tools_settings_dialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_external_tools_settings_dialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\external_tools_settings_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_invoke_clone_detector_dialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_invoke_clone_detector_dialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\invoke_clone_detector_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\bk.hpp">
@@ -276,6 +294,12 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="gui\scatter_plot_widget.hpp">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\external_tools_settings_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="gui\invoke_clone_detector_dialog.hpp">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

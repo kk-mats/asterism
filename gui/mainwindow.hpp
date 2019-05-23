@@ -16,6 +16,8 @@
 #include "gui/layer_widget.hpp"
 #include "gui/layer_list_widget.hpp"
 #include "gui/layer_detail_widget.hpp"
+#include "gui/external_tools_settings_dialog.hpp"
+#include "gui/invoke_clone_detector_dialog.hpp"
 
 namespace asterism
 {
@@ -34,6 +36,10 @@ private slots:
 	void open_file() noexcept;
 	void fuse_results() noexcept;
 	void export_current_scatter_plot() noexcept;
+
+	void external_tools_settings() noexcept;
+
+	void invoke_ccvolti() noexcept;
 
 	void remove(const std::shared_ptr<detection_result> &result) noexcept;
 
