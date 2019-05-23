@@ -6,17 +6,19 @@ namespace asterism
 void current_grid_delegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const noexcept
 {
 	auto op=option;
-	this->initStyleOption(&op, index);
 
 	if(index.isValid() && op.state&QStyle::State_Selected)
 	{
 		painter->save();
 
-		painter->fillRect(op.rect, QBrush(index.data().value<QColor>()));
-		painter->setPen(QPen(QBrush(Qt::black), 4));
-		painter->drawRect(op.rect);
+		const auto bg=index.data(Qt::BackgroundRole).value<QColor>();
+		
+		painter->fillRect(op.rect, QBrush(bg));
+		painter->setPen(QPen(QBrush(Qt::black), 2));
+		painter->drawRect(op.rect.adjusted(1, 1, -1, -1));
 
 		painter->restore();
+		return;
 	}
 	QStyledItemDelegate::paint(painter, option, index);
 }
@@ -37,7 +39,7 @@ int scatter_plot_model::columnCount(const QModelIndex &) const noexcept
 
 QVariant scatter_plot_model::data(const QModelIndex &index, int role) const noexcept
 {
-	if(index.isValid() && role==Qt::BackgroundColorRole)
+	if(index.isValid() && role==Qt::BackgroundRole)
 	{
 		auto r=*this->current_layer_;
 		auto c=r[grid_2d_coordinate::to_linear(index.row(), index.column())];
@@ -59,13 +61,7 @@ QVariant scatter_plot_model::headerData(int, Qt::Orientation, int role) const no
 scatter_plot_widget::scatter_plot_widget(const detection_results *results, QWidget *parent)
 	: QTableView(parent), results_(results)
 {
-	this->setItemDelegate(new current_grid_delegate(this));
-
-	/*
-	auto p=this->palette();
-	p.setColor(QPalette::Inactive, QPalette::Highlight, Qt::gray);
-	this->setPalette(p);
-	*/
+	this->setItemDelegate(new current_grid_delegate(this));	
 
 	this->setSelectionMode(QAbstractItemView::SingleSelection);
 	this->setModel(this->model_);
