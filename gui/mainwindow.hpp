@@ -62,7 +62,13 @@ private:
 
 	// Tools
 	QMenu *tools_;
-	QAction *invoke_external_tool_act_;
+	QMenu *invoke_external_tool_menu_;
+	QAction *invoke_ccfinderx_act_;
+	QAction *invoke_nicad_act_;
+	QAction *invoke_ccvolti_act_;
+	QAction *invoke_ccfindersw_act_;
+	QAction *invoke_from_a_setting_file_act_;
+	QAction *options_act_;
 	   
 	void initialize_docks() noexcept;
 

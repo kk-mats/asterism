@@ -125,10 +125,24 @@ void MainWindow::create_actions() noexcept
 	this->quit_act_->setStatusTip(tr("Quit"));
 	connect(this->quit_act_, &QAction::triggered, this, &QApplication::quit);
 
-	this->invoke_external_tool_act_=new QAction(tr("&Invoke External Tools"), this);
-	this->invoke_external_tool_act_->setStatusTip(tr("External Tools Preferences"));
-	this->invoke_external_tool_act_->setStatusTip(tr("Invoke External Tool"));
-	//connect(this->invoke_external_tool_act_, &QAction::triggered, this, &);
+	
+	this->invoke_ccfinderx_act_=new QAction(tr("Invoke CCFinderX"));
+	this->invoke_ccfinderx_act_->setStatusTip(tr("Invoke CCFidnerX"));
+
+	this->invoke_nicad_act_=new QAction(tr("Invoke NiCAD"));
+	this->invoke_nicad_act_->setStatusTip(tr("Invoke NiCAD"));
+
+	this->invoke_ccvolti_act_=new QAction(tr("Invoke CCVolti"));
+	this->invoke_ccvolti_act_->setStatusTip(tr("Invoke CCVolti"));
+	
+	this->invoke_ccfindersw_act_=new QAction(tr("Invoke CCFinderSW"));
+	this->invoke_ccfindersw_act_->setStatusTip(tr("Invoke CCFinderSW"));
+
+	this->invoke_from_a_setting_file_act_=new QAction(tr("Invoke From A Setting File"));
+	this->invoke_from_a_setting_file_act_->setStatusTip(tr("Invoke Clone Detector From A JSON-like Setting File"));
+
+	this->options_act_=new QAction(tr("Options"));
+	this->options_act_->setStatusTip(tr("Tools Options"));
 }
 
 void MainWindow::create_menus() noexcept
@@ -144,7 +158,15 @@ void MainWindow::create_menus() noexcept
 	this->file_menu_->addAction(this->quit_act_);
 
 	this->tools_=this->menuBar()->addMenu(tr("Tools"));
-	this->tools_->addAction(this->invoke_external_tool_act_);
+	this->invoke_external_tool_menu_=this->tools_->addMenu(tr("Invoke External Tool"));
+	this->invoke_external_tool_menu_->addAction(this->invoke_ccfinderx_act_);
+	this->invoke_external_tool_menu_->addAction(this->invoke_nicad_act_);
+	this->invoke_external_tool_menu_->addAction(this->invoke_ccvolti_act_);
+	this->invoke_external_tool_menu_->addAction(this->invoke_ccfindersw_act_);
+	this->invoke_external_tool_menu_->addSeparator();
+	this->invoke_external_tool_menu_->addAction(this->invoke_from_a_setting_file_act_);
+
+	this->tools_->addAction(this->options_act_);
 }
 
 void MainWindow::update() noexcept
