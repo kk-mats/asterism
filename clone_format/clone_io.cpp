@@ -16,9 +16,9 @@ std::optional<detection_results> clone_io::read_jcln(const QString &file) noexce
 	return jcln::read(file);
 }
 
-std::shared_ptr<detection_result> clone_io::read_json(const QString &file, detection_results &results) noexcept
+std::shared_ptr<detection_result> clone_io::read_ccfindersw(const QString &file, detection_results &results) noexcept
 {
-	return json::read(file, results);
+	return ccfindersw::read(file, results);
 }
 
 std::shared_ptr<detection_result> clone_io::read_nicad(const QString &file, detection_results &results) noexcept

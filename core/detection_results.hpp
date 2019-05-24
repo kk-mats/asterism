@@ -13,7 +13,6 @@
 #include "core/bk.hpp"
 #include "model/detection_result.hpp"
 #include "layer/heatmap_layer.hpp"
-#include "gui/matched_clone_pair_list_widget.hpp"
 
 namespace asterism
 {
@@ -30,6 +29,7 @@ public:
 	bool remove(const std::shared_ptr<detection_result> &ptr) noexcept;
 	const shared_list<detection_result>& results() const noexcept;
 	const shared_vector<file>& files() const noexcept;
+	std::shared_ptr<matching_table> matching_pair_table() const noexcept;
 
 	detection_result fuse() noexcept;
 

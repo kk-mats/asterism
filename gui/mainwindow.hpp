@@ -13,11 +13,9 @@
 #include "clone_format/clone_io.hpp"
 #include "core/detection_results.hpp"
 
-#include "gui/layer_widget.hpp"
-#include "gui/layer_list_widget.hpp"
-#include "gui/layer_detail_widget.hpp"
-#include "gui/external_tools_settings_dialog.hpp"
-#include "gui/invoke_clone_detector_dialog.hpp"
+#include "central.hpp"
+#include "docks.hpp"
+#include "tools.hpp"
 
 namespace asterism
 {

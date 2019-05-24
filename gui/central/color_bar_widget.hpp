@@ -1,4 +1,5 @@
-#pragma once
+#ifndef COLOR_BAR_WIDGET_HPP
+#define COLOR_BAR_WIDGET_HPP
 
 #include <QLabel>
 #include <QPaintEvent>
@@ -7,7 +8,7 @@
 #include <QLinearGradient>
 #include <QHBoxLayout>
 
-#include "color_selector.hpp"
+#include "layer/color_selector.hpp"
 
 namespace asterism
 {
@@ -47,3 +48,5 @@ private:
 };
 
 }
+
+#endif // COLOR_BAR_WIDGET_HPP

@@ -7,7 +7,6 @@ detection_results::detection_results(const QString &target_path) noexcept
 	: target_path_(target_path)
 {
 	heatmap_layer::mismatch_rate::bind(this->matching_table_);
-	matched_list_model::bind(this->matching_table_);
 }
 
 std::shared_ptr<file> detection_results::emplace(QString &&canonical_file_path) noexcept
@@ -68,6 +67,11 @@ const shared_list<detection_result>& detection_results::results() const noexcept
 const shared_vector<file>& detection_results::files() const noexcept
 {
 	return this->files_;
+}
+
+std::shared_ptr<matching_table> detection_results::matching_pair_table() const noexcept
+{
+	return this->matching_table_;
 }
 
 detection_result detection_results::fuse() noexcept

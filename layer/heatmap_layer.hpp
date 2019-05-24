@@ -5,9 +5,8 @@
 #include <variant>
 
 #include "clone_pair_grid_layer.hpp"
-#include "gui/color_selector.hpp"
+#include "color_selector.hpp"
 #include "core/matching_table.hpp"
-#include "model/detection_result.hpp"
 
 namespace asterism
 {

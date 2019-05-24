@@ -1,5 +1,5 @@
-#ifndef JSON_HPP
-#define JSON_HPP
+#ifndef CCFINDERSW_HPP
+#define CCFINDERSW_HPP
 
 #include <QJsonDocument>
 
@@ -10,7 +10,7 @@
 namespace asterism
 {
 
-class json final
+class ccfindersw final
 	: public format_tags
 {
 public:
@@ -34,4 +34,4 @@ private:
 
 }
 
-#endif // JSON_HPP
+#endif // CCFINDERSW_HPP

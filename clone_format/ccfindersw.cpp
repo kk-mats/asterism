@@ -1,9 +1,9 @@
-#include "json.hpp"
+#include "ccfindersw.hpp"
 
 namespace asterism
 {
 
-std::shared_ptr<detection_result> json::read(const QString &path, detection_results &results) noexcept
+std::shared_ptr<detection_result> ccfindersw::read(const QString &path, detection_results &results) noexcept
 {
 	QFile file(path);
 
@@ -24,7 +24,7 @@ std::shared_ptr<detection_result> json::read(const QString &path, detection_resu
 	return reader().read(path, jj.object(), results);
 }
 
-std::shared_ptr<detection_result> json::reader::read(const QString &path, const QJsonObject &json, detection_results &results) noexcept
+std::shared_ptr<detection_result> ccfindersw::reader::read(const QString &path, const QJsonObject &json, detection_results &results) noexcept
 {
 	if(!json.contains(ENVIRONMENT) || !json.contains(FILE_TABLE) || !json.contains(CLONE_PAIRS))
 	{
@@ -109,7 +109,7 @@ std::shared_ptr<detection_result> json::reader::read(const QString &path, const 
 	return results.empalce(std::move(re), std::move(clone_pairs));
 }
 
-std::optional<fragment> json::reader::read_fragment(const QJsonObject &json) noexcept
+std::optional<fragment> ccfindersw::reader::read_fragment(const QJsonObject &json) noexcept
 {
 	if(!json.contains(FILE_ID) || !json.contains(BEGIN) || !json.contains(END))
 	{
@@ -133,7 +133,7 @@ std::optional<fragment> json::reader::read_fragment(const QJsonObject &json) noe
 	return fragment(this->id_file_ptr_map_[file_id], json[BEGIN].toInt(), json[END].toInt());
 }
 
-bool json::reader::read_clone_pair(const QJsonObject &json, shared_set<clone_pair> &clone_pairs) noexcept
+bool ccfindersw::reader::read_clone_pair(const QJsonObject &json, shared_set<clone_pair> &clone_pairs) noexcept
 {
 	if(!json.contains(SIMILARITY) || !json.contains(FRAGMENT1) || !json.contains(FRAGMENT2))
 	{

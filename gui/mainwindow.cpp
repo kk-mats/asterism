@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(this->layer_list_widget_, &layer_list_widget::result_name_changed, this->layer_detail_widget_, &layer_detail_widget::change_result_name);
 	connect(this->layer_list_widget_, &layer_list_widget::result_name_changed, this->layer_widget_, &layer_widget::result_name_changed);
 
+	matched_list_model::bind(this->results_.matching_pair_table());
+
 	this->create_actions();
 	this->create_menus();
 	this->setWindowTitle("Asterism");
@@ -55,7 +57,7 @@ void MainWindow::open_file() noexcept
 		}
 		else if(filepath.endsWith(".json"))
 		{
-			result=clone_io::read_json(filepath, this->results_);
+			result=clone_io::read_ccfindersw(filepath, this->results_);
 		}
 
 		if(result)

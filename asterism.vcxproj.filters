@@ -40,6 +40,9 @@
     <ClCompile Include="core\bk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="clone_format\ccfindersw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="clone_format\clone_io.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -49,22 +52,25 @@
     <ClCompile Include="layer\clone_pair_grid_layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\color_bar_widget.cpp">
+    <ClCompile Include="gui\central\color_bar_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\color_selector.cpp">
+    <ClCompile Include="layer\color_selector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="clone_format\csv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\current_grid_detail_widget.cpp">
+    <ClCompile Include="gui\central\current_grid_detail_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="model\detection_result.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\detection_results.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\external_tools_settings_dialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="model\file.cpp">
@@ -79,19 +85,19 @@
     <ClCompile Include="layer\heatmap_layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gui\tools\invoke_clone_detector_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="clone_format\jcln.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="clone_format\json.cpp">
+    <ClCompile Include="gui\docks\layer_detail_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\layer_detail_widget.cpp">
+    <ClCompile Include="gui\docks\layer_list_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\layer_list_widget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\layer_widget.cpp">
+    <ClCompile Include="gui\central\layer_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\logger.cpp">
@@ -103,10 +109,7 @@
     <ClCompile Include="gui\mainwindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\matched_clone_pair_list_widget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\matching_rate_heatmap_generation_dialog.cpp">
+    <ClCompile Include="gui\central\matched_clone_pair_list_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\matching_table.cpp">
@@ -118,87 +121,21 @@
     <ClCompile Include="model\result_environment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\scatter_plot_widget.cpp">
+    <ClCompile Include="gui\central\scatter_plot_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="debug\moc_color_bar_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="release\moc_color_bar_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="debug\moc_current_grid_detail_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="release\moc_current_grid_detail_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="debug\moc_layer_detail_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="release\moc_layer_detail_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="debug\moc_layer_list_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="release\moc_layer_list_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="debug\moc_layer_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="release\moc_layer_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="debug\moc_mainwindow.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="release\moc_mainwindow.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="debug\moc_matched_clone_pair_list_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="release\moc_matched_clone_pair_list_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="debug\moc_matching_rate_heatmap_generation_dialog.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="release\moc_matching_rate_heatmap_generation_dialog.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="debug\moc_scatter_plot_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="release\moc_scatter_plot_widget.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_external_tools_settings_dialog.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_external_tools_settings_dialog.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\external_tools_settings_dialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug\moc_invoke_clone_detector_dialog.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Release\moc_invoke_clone_detector_dialog.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\invoke_clone_detector_dialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\bk.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clone_format\ccfindersw.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\central.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="clone_format\clone_io.hpp">
@@ -210,18 +147,30 @@
     <ClInclude Include="layer\clone_pair_grid_layer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gui\color_selector.hpp">
+    <QtMoc Include="gui\central\color_bar_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="layer\color_selector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="clone_format\csv.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <QtMoc Include="gui\central\current_grid_detail_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <ClInclude Include="model\detection_result.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\detection_results.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gui\docks.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="gui\tools\external_tools_settings_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <ClInclude Include="model\file.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -237,15 +186,30 @@
     <ClInclude Include="layer\heatmap_layer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <QtMoc Include="gui\tools\invoke_clone_detector_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <ClInclude Include="clone_format\jcln.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="clone_format\json.hpp">
+    <QtMoc Include="gui\docks\layer_detail_widget.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
+    </QtMoc>
+    <QtMoc Include="gui\docks\layer_list_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\central\layer_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <ClInclude Include="core\logger.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <QtMoc Include="gui\mainwindow.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\central\matched_clone_pair_list_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <ClInclude Include="core\matching_table.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -258,6 +222,12 @@
     <ClInclude Include="model\result_environment.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <QtMoc Include="gui\central\scatter_plot_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="gui\tools.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="core\utility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -268,39 +238,6 @@
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="gui\color_bar_widget.hpp">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="gui\current_grid_detail_widget.hpp">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="gui\layer_detail_widget.hpp">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="gui\layer_list_widget.hpp">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="gui\layer_widget.hpp">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="gui\mainwindow.hpp">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="gui\matched_clone_pair_list_widget.hpp">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="gui\matching_rate_heatmap_generation_dialog.hpp">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="gui\scatter_plot_widget.hpp">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="gui\external_tools_settings_dialog.hpp">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="gui\invoke_clone_detector_dialog.hpp">
-      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
