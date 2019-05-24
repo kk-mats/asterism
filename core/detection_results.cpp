@@ -29,6 +29,7 @@ std::shared_ptr<detection_result> detection_results::empalce(result_environment 
 		this->results_.append(std::make_shared<detection_result>(std::move(environment), std::move(clone_pairs)));
 		itr=(--this->results_.end());
 	}
+
 	this->matching_table_->append(*itr);
 	return *itr;
 }

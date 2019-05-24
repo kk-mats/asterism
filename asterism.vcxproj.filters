@@ -85,9 +85,6 @@
     <ClCompile Include="layer\heatmap_layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\tools\invoke_clone_detector_dialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="clone_format\jcln.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -125,6 +122,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\invoke_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\invoke_ccfindersw_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\invoke_ccfinderx_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\invoke_ccvolti_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\invoke_nicad_dialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -186,9 +198,6 @@
     <ClInclude Include="layer\heatmap_layer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <QtMoc Include="gui\tools\invoke_clone_detector_dialog.hpp">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <ClInclude Include="clone_format\jcln.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -231,6 +240,18 @@
     <ClInclude Include="core\utility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gui\tools\invoke_ccfindersw_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\tools\invoke_ccfinderx_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\tools\invoke_ccvolti_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\tools\invoke_nicad_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -256,5 +277,10 @@
     <None Include="test\rs.jcln">
       <Filter>Distribution Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="gui\tools\invoke_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

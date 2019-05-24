@@ -36,8 +36,10 @@ private slots:
 	void export_current_scatter_plot() noexcept;
 
 	void external_tools_settings() noexcept;
-
+	void invoke_ccfinderx() noexcept;
 	void invoke_ccvolti() noexcept;
+	void invoke_ccfindersw() noexcept;
+	void invoke_nicad() noexcept;
 
 	void remove(const std::shared_ptr<detection_result> &result) noexcept;
 
@@ -51,7 +53,7 @@ private:
 	QDockWidget *layer_list_dock_=new QDockWidget(QStringLiteral("Detection Results"), this);
 
 	layer_detail_widget *layer_detail_widget_=new layer_detail_widget(this);
-	QDockWidget *layer_detail_dock_=new QDockWidget(QStringLiteral("Detection Result Details"), this);
+	QDockWidget *layer_detail_dock_=new QDockWidget(QStringLiteral("Details"), this);
 
 	QMenu *file_menu_;
 	QAction *open_project_act_;
@@ -80,6 +82,8 @@ private:
 	void create_menus() noexcept;
 
 	void update() noexcept;
+
+	bool request_target_path() noexcept;
 };
 
 }

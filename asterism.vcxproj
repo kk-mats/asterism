@@ -14,12 +14,12 @@
     <ProjectGuid>{5D472800-803E-3F75-9786-554109749A20}</ProjectGuid>
     <RootNamespace>asterism</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.18362.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <OutputDirectory>release\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
@@ -28,7 +28,7 @@
     <PrimaryOutput>asterism</PrimaryOutput>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <OutputDirectory>debug\</OutputDirectory>
     <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
     <CharacterSet>NotSet</CharacterSet>
@@ -179,6 +179,10 @@
     <ClCompile Include="core\bk.cpp" />
     <ClCompile Include="clone_format\ccfindersw.cpp" />
     <ClCompile Include="clone_format\clone_io.cpp" />
+    <ClCompile Include="gui\tools\invoke_ccfindersw_dialog.cpp" />
+    <ClCompile Include="gui\tools\invoke_ccfinderx_dialog.cpp" />
+    <ClCompile Include="gui\tools\invoke_ccvolti_dialog.cpp" />
+    <ClCompile Include="gui\tools\invoke_nicad_dialog.cpp" />
     <ClCompile Include="model\clone_pair.cpp" />
     <ClCompile Include="layer\clone_pair_grid_layer.cpp" />
     <ClCompile Include="gui\central\color_bar_widget.cpp" />
@@ -192,7 +196,7 @@
     <ClCompile Include="layer\file_separated_grid_layer.cpp" />
     <ClCompile Include="model\fragment.cpp" />
     <ClCompile Include="layer\heatmap_layer.cpp" />
-    <ClCompile Include="gui\tools\invoke_clone_detector_dialog.cpp" />
+    <ClCompile Include="gui\tools\invoke_dialog.cpp" />
     <ClCompile Include="clone_format\jcln.cpp" />
     <ClCompile Include="gui\docks\layer_detail_widget.cpp" />
     <ClCompile Include="gui\docks\layer_list_widget.cpp" />
@@ -212,6 +216,10 @@
     <ClInclude Include="clone_format\ccfindersw.hpp" />
     <ClInclude Include="gui\central.hpp" />
     <ClInclude Include="clone_format\clone_io.hpp" />
+    <ClInclude Include="gui\tools\invoke_ccfindersw_dialog.hpp" />
+    <ClInclude Include="gui\tools\invoke_ccfinderx_dialog.hpp" />
+    <ClInclude Include="gui\tools\invoke_ccvolti_dialog.hpp" />
+    <ClInclude Include="gui\tools\invoke_nicad_dialog.hpp" />
     <ClInclude Include="model\clone_pair.hpp" />
     <ClInclude Include="layer\clone_pair_grid_layer.hpp" />
     <QtMoc Include="gui\central\color_bar_widget.hpp">
@@ -230,7 +238,7 @@
     <ClInclude Include="clone_format\format_tags.hpp" />
     <ClInclude Include="model\fragment.hpp" />
     <ClInclude Include="layer\heatmap_layer.hpp" />
-    <QtMoc Include="gui\tools\invoke_clone_detector_dialog.hpp">
+    <QtMoc Include="gui\tools\invoke_dialog.hpp">
     </QtMoc>
     <ClInclude Include="clone_format\jcln.hpp" />
     <QtMoc Include="gui\docks\layer_detail_widget.hpp">

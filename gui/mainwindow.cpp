@@ -33,7 +33,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::open_project() noexcept
 {
-	if(auto filepath=QFileDialog::getOpenFileName(this, tr("Open Project"), "X:\\projects\\asterism", tr("Asterism Project (*.jcln)")); !filepath.isEmpty())
+	if(auto filepath=QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("Asterism Project (*.jcln)")); !filepath.isEmpty())
 	{
 		if(auto results=clone_io::read_jcln(filepath); results)
 		{
@@ -48,14 +48,14 @@ void MainWindow::open_project() noexcept
 
 void MainWindow::open_file() noexcept
 {
-	if(const auto filepath=QFileDialog::getOpenFileName(this, tr("Open File"), "X:\\projects\\asterism", tr("NiCAD (*.xml);; CCFinderSW (*.json)")); !filepath.isEmpty())
+	if(const auto filepath=QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("NiCAD (*.xml);; CCFinderSW (*.json)")); !filepath.isEmpty())
 	{
 		std::shared_ptr<detection_result> result;
-		if(filepath.endsWith(".xml"))
+		if(const auto extension=QFileInfo(filepath).suffix(); extension=="xml")
 		{
 			result=clone_io::read_nicad(filepath, this->results_);
 		}
-		else if(filepath.endsWith(".json"))
+		else if(extension==".json")
 		{
 			result=clone_io::read_ccfindersw(filepath, this->results_);
 		}
@@ -71,7 +71,7 @@ void MainWindow::open_file() noexcept
 
 void MainWindow::fuse_results() noexcept
 {
-	if(const auto filepath=QFileDialog::getSaveFileName(this, tr("Export Fusion Result"), "X:\\projects\\asterism", tr(".csv")); !filepath.isEmpty())
+	if(const auto filepath=QFileDialog::getSaveFileName(this, tr("Export Fusion Result"), "", tr(".csv")); !filepath.isEmpty())
 	{
 		clone_io::write_csv(filepath, this->results_.fuse(), this->results_.target_path());
 	}
@@ -84,7 +84,7 @@ void MainWindow::export_current_scatter_plot() noexcept
 		return;
 	}
 
-	if(const auto filepath=QFileDialog::getSaveFileName(this, tr("Export Current Scatter Plot"), "X:\\projects\\asterism", tr("PNG (*.png);; Bitmap(*bmp)")); !filepath.isEmpty())
+	if(const auto filepath=QFileDialog::getSaveFileName(this, tr("Export Current Scatter Plot"), "", tr("PNG (*.png);; Bitmap(*bmp)")); !filepath.isEmpty())
 	{
 		auto b=this->layer_widget_->export_current_scatter_plot().save(filepath);
 	}
@@ -95,9 +95,24 @@ void MainWindow::external_tools_settings() noexcept
 	new external_tools_settings_dialog;
 }
 
+void MainWindow::invoke_ccfinderx() noexcept
+{
+	new invoke_ccfinderx_dialog(this->results_.target_path());
+}
+
 void MainWindow::invoke_ccvolti() noexcept
 {
-	new invoke_ccvolti_dialog;
+	new invoke_ccvolti_dialog(this->results_.target_path());
+}
+
+void MainWindow::invoke_ccfindersw() noexcept
+{
+	new invoke_ccfindersw_dialog(this->results_.target_path());
+}
+
+void MainWindow::invoke_ccvolti() noexcept
+{
+	new invoke_nicad_dialog(this->results_.target_path());
 }
 
 void MainWindow::remove(const std::shared_ptr<detection_result> &result) noexcept
@@ -188,6 +203,22 @@ void MainWindow::update() noexcept
 	this->results_.update_layers();
 	this->layer_list_widget_->update_layers();
 	this->layer_widget_->update_layer();
+}
+
+// returns true when this has the target project path
+bool MainWindow::request_target_path() noexcept
+{
+	if(!this->results_.target_path().isEmpty())
+	{
+		return true;
+	}
+
+	if(const auto path=QFileDialog::getExistingDirectory(this, tr("Select target project")); !path.isEmpty())
+	{
+		this->results_.set_target_path(path);
+		return true;
+	}
+	return false;
 }
 
 }
