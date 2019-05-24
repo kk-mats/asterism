@@ -42,8 +42,7 @@ HEADERS += \
     clone_format/clone_io.hpp \
     clone_format/csv.hpp \
     clone_format/format_tags.hpp \
-    clone_format/jcln.hpp \
-    clone_format/json.hpp \
+	clone_format/jcln.hpp \
     clone_format/nicad.hpp \
     core/bk.hpp \
     core/detection_results.hpp \
@@ -62,7 +61,12 @@ HEADERS += \
     gui/mainwindow.hpp \
     gui/tools.hpp \
     gui/tools/external_tools_settings_dialog.hpp \
-    gui/tools/invoke_clone_detector_dialog.hpp \
+    gui/tools/invoker.hpp \
+    gui/tools/invoke_dialog.hpp \
+    gui/tools/invoke_ccfinderx_dialog.hpp \
+    gui/tools/invoke_ccvolti_dialog.hpp \
+    gui/tools/invoke_ccfindersw_dialog.hpp \
+    gui/tools/invoke_nicad_dialog.hpp \
     layer/clone_pair_grid_layer.hpp \
     layer/color_selector.hpp \
     layer/file_separated_grid_layer.hpp \
@@ -94,7 +98,12 @@ SOURCES += \
     gui/docks/layer_list_widget.cpp \
     gui/mainwindow.cpp \
     gui/tools/external_tools_settings_dialog.cpp \
-    gui/tools/invoke_clone_detector_dialog.cpp \
+    gui/tools/invoker.cpp \
+    gui/tools/invoke_dialog.cpp \
+    gui/tools/invoke_ccfinderx_dialog.cpp \
+    gui/tools/invoke_ccvolti_dialog.cpp \
+    gui/tools/invoke_ccfindersw_dialog.cpp \
+    gui/tools/invoke_nicad_dialog.cpp \
     layer/clone_pair_grid_layer.cpp \
     layer/color_selector.cpp \
     layer/file_separated_grid_layer.cpp \

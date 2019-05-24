@@ -3,26 +3,18 @@
 namespace asterism
 {
 
-ccvolti_invoker::ccvolti_invoker(const QString &dirname, const QString &lang, const QString &output, const double sim, const int size, const int sizeb, const int t) noexcept
+invoke_ccvolti_dialog::invoke_ccvolti_dialog(const QString &target, QWidget *parent) noexcept
+	: invoke_dialog(target, parent)
 {
-	const auto oc=output+".csv";
-	const auto ocs=output+".txt";
-	this->args_<<"-d"<<dirname<<"-l"<<lang<<"-oc"<<oc<<"-ocs"<<ocs<<"--sim"<<QString::number(sim)<<"--size"<<QString::number(size)<<"--sizeb"<<QString::number(sizeb)<<"-t"<<QString::number(t);
+	this->setWindowTitle(tr("CCVolti"));
+	this->begin_setup_parameters_layout();
+	this->end_setup_parameters_layout();
 }
 
-void ccvolti_invoker::invoke(const QString &exe_path) noexcept
+void invoke_ccvolti_dialog::begin_setup_parameters_layout() noexcept
 {
-	QProcess ccvolti;
-	this->args_.push_front(exe_path);
-	this->args_.push_front("-jar");
-	ccvolti.setArguments(this->args_);
-	ccvolti.start("java");
-}
-
-
-void invoke_ccvolti_dialog::setup_parameters_layout() noexcept
-{
-	this->language_->set_languages({{"Java", "java"}, {"C", "c"}, {"C#", "csharp"}});
+	this->language_=new key_arg_box(this);
+	this->language_->set_values({{"Java", "java"}, {"C", "c"}, {"C#", "csharp"}});
 	this->language_->setCurrentIndex(0);
 	this->size_->setMinimum(1);
 	this->size_->setValue(50);

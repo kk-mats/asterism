@@ -85,6 +85,24 @@
     <ClCompile Include="layer\heatmap_layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gui\tools\invoke_ccfindersw_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\invoke_ccfinderx_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\invoke_ccvolti_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\invoke_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\invoke_nicad_dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\invoker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="clone_format\jcln.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -122,21 +140,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\tools\invoke_dialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\tools\invoke_ccfindersw_dialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\tools\invoke_ccfinderx_dialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\tools\invoke_ccvolti_dialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\tools\invoke_nicad_dialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -198,6 +201,24 @@
     <ClInclude Include="layer\heatmap_layer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <QtMoc Include="gui\tools\invoke_ccfindersw_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\tools\invoke_ccfinderx_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\tools\invoke_ccvolti_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\tools\invoke_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\tools\invoke_nicad_dialog.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClInclude Include="gui\tools\invoker.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="clone_format\jcln.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -240,26 +261,42 @@
     <ClInclude Include="core\utility.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gui\tools\invoke_ccfindersw_dialog.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\tools\invoke_ccfinderx_dialog.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\tools\invoke_ccvolti_dialog.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\tools\invoke_nicad_dialog.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="release\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
+    
+    
   </ItemGroup>
   <ItemGroup>
     <None Include="test\f0.txt">
@@ -277,10 +314,5 @@
     <None Include="test\rs.jcln">
       <Filter>Distribution Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="gui\tools\invoke_dialog.hpp">
-      <Filter>Header Files</Filter>
-    </QtMoc>
   </ItemGroup>
 </Project>

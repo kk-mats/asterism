@@ -97,22 +97,22 @@ void MainWindow::external_tools_settings() noexcept
 
 void MainWindow::invoke_ccfinderx() noexcept
 {
-	new invoke_ccfinderx_dialog(this->results_.target_path());
+	(new invoke_ccfinderx_dialog(this->results_.target_path(), this))->exec();
 }
 
 void MainWindow::invoke_ccvolti() noexcept
 {
-	new invoke_ccvolti_dialog(this->results_.target_path());
+	(new invoke_ccvolti_dialog(this->results_.target_path(), this))->exec();
 }
 
 void MainWindow::invoke_ccfindersw() noexcept
 {
-	new invoke_ccfindersw_dialog(this->results_.target_path());
+	(new invoke_ccfindersw_dialog(this->results_.target_path(), this))->exec();
 }
 
-void MainWindow::invoke_ccvolti() noexcept
+void MainWindow::invoke_nicad() noexcept
 {
-	new invoke_nicad_dialog(this->results_.target_path());
+	(new invoke_nicad_dialog(this->results_.target_path(), this))->exec();
 }
 
 void MainWindow::remove(const std::shared_ptr<detection_result> &result) noexcept
@@ -155,9 +155,11 @@ void MainWindow::create_actions() noexcept
 	
 	this->invoke_ccfinderx_act_=new QAction(tr("Invoke CCFinderX"));
 	this->invoke_ccfinderx_act_->setStatusTip(tr("Invoke CCFidnerX"));
+	connect(this->invoke_ccfinderx_act_, &QAction::triggered, this, &MainWindow::invoke_ccfinderx);
 
 	this->invoke_nicad_act_=new QAction(tr("Invoke NiCAD"));
 	this->invoke_nicad_act_->setStatusTip(tr("Invoke NiCAD"));
+	connect(this->invoke_nicad_act_, &QAction::triggered, this, &MainWindow::invoke_nicad);
 
 	this->invoke_ccvolti_act_=new QAction(tr("Invoke CCVolti"));
 	this->invoke_ccvolti_act_->setStatusTip(tr("Invoke CCVolti"));
@@ -165,6 +167,7 @@ void MainWindow::create_actions() noexcept
 	
 	this->invoke_ccfindersw_act_=new QAction(tr("Invoke CCFinderSW"));
 	this->invoke_ccfindersw_act_->setStatusTip(tr("Invoke CCFinderSW"));
+	connect(this->invoke_ccfindersw_act_, &QAction::triggered, this, &MainWindow::invoke_ccfindersw);
 
 	this->invoke_from_a_setting_file_act_=new QAction(tr("Invoke From A Setting File"));
 	this->invoke_from_a_setting_file_act_->setStatusTip(tr("Invoke Clone Detector From A JSON-like Setting File"));

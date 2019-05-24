@@ -13,41 +13,38 @@
 namespace asterism
 {
 
-class ccfindersw_invoker final
-{
-
-};
-
 class invoke_ccfindersw_dialog final
 	: public invoke_dialog
 {
 	Q_OBJECT
 
 public:
-	using invoke_dialog::invoke_dialog;
-	using invoke_dialog::~invoke_dialog;
+	invoke_ccfindersw_dialog(const QString &target, QWidget *parent) noexcept;
 
 private:
 	QLineEdit *language_edit_=new QLineEdit(this);
 	QSpinBox *len_=new QSpinBox(this);
 	QComboBox *detection_range_=new QComboBox(this);
+	QRadioButton *b_=new QRadioButton(tr("Split codes by whitespaces"), this);
+	QRadioButton *antlr_=new QRadioButton(tr("Split codes by ANTLR"), this);
 	QButtonGroup *b_antlr_=new QButtonGroup(this);
-	language_box *charset_=new language_box(this);
-	QCheckBox *nolx_=new QCheckBox(this);
+	QGroupBox *splitting_method_=new QGroupBox(tr("Splitting method"), this);
+	key_arg_box *charset_=new key_arg_box(this);
+	QCheckBox *nolx_=new QCheckBox(tr("Use lexical analysis cache"), this);
 
 	QGroupBox *output_options_=new QGroupBox(tr("Output options"), this);
 	QCheckBox *ccf_=new QCheckBox(tr("Output in CCFinder format"),this);
 	QCheckBox *ccfx_=new QCheckBox(tr("Output in CCFinderX format"), this);
 	QCheckBox *ccfsw_=new QCheckBox(tr("Output in CCFinderSW format"), this);
-	language_box *ccfsw_arg_=new language_box(this);
+	key_arg_box *ccfsw_arg_=new key_arg_box(this);
 	QCheckBox *json_=new QCheckBox(tr("Output in JSON format"), this);
-	language_box *json_indent_=new language_box(this);
+	key_arg_box *json_indent_=new key_arg_box(this);
 
 	QGroupBox *metrics_filtering_=new QGroupBox(tr("Metrics filtering"), this);
 	QSpinBox *tks_=new QSpinBox(this);
 	QDoubleSpinBox *rnr_=new QDoubleSpinBox(this);
 
-	void setup_parameters_layout() noexcept override;
+	void begin_setup_parameters_layout() noexcept override;
 	invoker_t create_invoker() const noexcept override;
 };
 

@@ -88,7 +88,7 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Core.lib;$(QTDIR)\lib\qtmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -120,7 +120,7 @@
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <InputFile>%(FullPath)</InputFile>
       <DynamicSource>output</DynamicSource>
-      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;$(QTDIR)\include;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\ATLMFC\include;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt</IncludePath>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;$(QTDIR)\include;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.21.27702\ATLMFC\include;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.21.27702\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt</IncludePath>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -141,7 +141,7 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Cored.lib;$(QTDIR)\lib\qtmaind.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -172,17 +172,13 @@
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <InputFile>%(FullPath)</InputFile>
       <DynamicSource>output</DynamicSource>
-      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;$(QTDIR)\include;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\ATLMFC\include;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt</IncludePath>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;$(QTDIR)\include;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.21.27702\ATLMFC\include;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.21.27702\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt</IncludePath>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="core\bk.cpp" />
     <ClCompile Include="clone_format\ccfindersw.cpp" />
     <ClCompile Include="clone_format\clone_io.cpp" />
-    <ClCompile Include="gui\tools\invoke_ccfindersw_dialog.cpp" />
-    <ClCompile Include="gui\tools\invoke_ccfinderx_dialog.cpp" />
-    <ClCompile Include="gui\tools\invoke_ccvolti_dialog.cpp" />
-    <ClCompile Include="gui\tools\invoke_nicad_dialog.cpp" />
     <ClCompile Include="model\clone_pair.cpp" />
     <ClCompile Include="layer\clone_pair_grid_layer.cpp" />
     <ClCompile Include="gui\central\color_bar_widget.cpp" />
@@ -196,7 +192,12 @@
     <ClCompile Include="layer\file_separated_grid_layer.cpp" />
     <ClCompile Include="model\fragment.cpp" />
     <ClCompile Include="layer\heatmap_layer.cpp" />
+    <ClCompile Include="gui\tools\invoke_ccfindersw_dialog.cpp" />
+    <ClCompile Include="gui\tools\invoke_ccfinderx_dialog.cpp" />
+    <ClCompile Include="gui\tools\invoke_ccvolti_dialog.cpp" />
     <ClCompile Include="gui\tools\invoke_dialog.cpp" />
+    <ClCompile Include="gui\tools\invoke_nicad_dialog.cpp" />
+    <ClCompile Include="gui\tools\invoker.cpp" />
     <ClCompile Include="clone_format\jcln.cpp" />
     <ClCompile Include="gui\docks\layer_detail_widget.cpp" />
     <ClCompile Include="gui\docks\layer_list_widget.cpp" />
@@ -216,10 +217,6 @@
     <ClInclude Include="clone_format\ccfindersw.hpp" />
     <ClInclude Include="gui\central.hpp" />
     <ClInclude Include="clone_format\clone_io.hpp" />
-    <ClInclude Include="gui\tools\invoke_ccfindersw_dialog.hpp" />
-    <ClInclude Include="gui\tools\invoke_ccfinderx_dialog.hpp" />
-    <ClInclude Include="gui\tools\invoke_ccvolti_dialog.hpp" />
-    <ClInclude Include="gui\tools\invoke_nicad_dialog.hpp" />
     <ClInclude Include="model\clone_pair.hpp" />
     <ClInclude Include="layer\clone_pair_grid_layer.hpp" />
     <QtMoc Include="gui\central\color_bar_widget.hpp">
@@ -238,8 +235,17 @@
     <ClInclude Include="clone_format\format_tags.hpp" />
     <ClInclude Include="model\fragment.hpp" />
     <ClInclude Include="layer\heatmap_layer.hpp" />
+    <QtMoc Include="gui\tools\invoke_ccfindersw_dialog.hpp">
+    </QtMoc>
+    <QtMoc Include="gui\tools\invoke_ccfinderx_dialog.hpp">
+    </QtMoc>
+    <QtMoc Include="gui\tools\invoke_ccvolti_dialog.hpp">
+    </QtMoc>
     <QtMoc Include="gui\tools\invoke_dialog.hpp">
     </QtMoc>
+    <QtMoc Include="gui\tools\invoke_nicad_dialog.hpp">
+    </QtMoc>
+    <ClInclude Include="gui\tools\invoker.hpp" />
     <ClInclude Include="clone_format\jcln.hpp" />
     <QtMoc Include="gui\docks\layer_detail_widget.hpp">
     </QtMoc>

@@ -2,22 +2,19 @@
 
 namespace asterism
 {
-ccfinderx_invoker::ccfinderx_invoker(const QString &dirname, const QString &output, const QString &lang, const int b, const int t, const bool f, const bool w, const int threads) noexcept
+
+invoke_ccfinderx_dialog::invoke_ccfinderx_dialog(const QString &target, QWidget *parent) noexcept
+	: invoke_dialog(target, parent)
 {
-	QString ws=f ? "f+" : "f-";
-	ws+=w ? "w+" : "w-";
-	args_<<"d"<<lang<<"-o"<<output<<"-b"<<QString::number(b)<<"-t"<<QString::number(t)<<"-w"<<ws<<"-d"<<dirname<<"--threads"<<QString::number(threads);
+	this->setWindowTitle(tr("CCFidnerX"));
+	this->begin_setup_parameters_layout();
+	this->end_setup_parameters_layout();
 }
 
-void ccfinderx_invoker::invoke(const QString &exe_path) noexcept
+void invoke_ccfinderx_dialog::begin_setup_parameters_layout() noexcept
 {
-
-}
-
-
-void invoke_ccfinderx_dialog::setup_parameters_layout() noexcept
-{
-	this->language_->set_languages({
+	this->language_=new key_arg_box(this);
+	this->language_->set_values({
 		{"Cobol", "cobol"}, {"C/C++", "cpp"}, {"C#", "csharp"},
 		{"Java", "java"}, {"Visual Basic", "visualbasic"}, {"Plain Text", "plaintext"}
 	});

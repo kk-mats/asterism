@@ -2,30 +2,61 @@
 
 namespace asterism
 {
-threads_slider::threads_slider(const int min, const int init, QWidget *parent) noexcept
-	: QSlider(parent)
+threads_selector::threads_selector(const int min, const int init, QWidget *parent) noexcept
+	: QWidget(parent)
 {
 	const int n=std::thread::hardware_concurrency();
 	const auto [n_min, n_max]=std::minmax(min, n>0 ? n : 1);
-	this->setMinimum(n_min);
-	this->setMaximum(n_max);
-	this->setValue(std::clamp(n_min, init, n_max));
+	this->slider_->setMinimum(n_min);
+	this->spinbox_->setMinimum(n_min);
+	this->slider_->setMaximum(n_max);
+	this->spinbox_->setMaximum(n_max);
+	this->slider_->setValue(std::clamp(n_min, init, n_max));
+	this->spinbox_->setValue(std::clamp(n_min, init, n_max));
+
+	auto *layout=new QHBoxLayout(this);
+	layout->addWidget(this->slider_);
+	layout->addWidget(this->spinbox_);
+	this->setLayout(layout);
+
+	connect(this->slider_, &QSlider::valueChanged, this, &threads_selector::slider_value_changed);
+	connect(this->spinbox_, qOverload<int>(&QSpinBox::valueChanged), this, &threads_selector::spinbox_value_changed);
 }
 
+void threads_selector::slider_value_changed(const int i) noexcept
+{
+	if(this->spinbox_->value()!=i)
+	{
+		this->spinbox_->setValue(i);
+	}
+}
 
-language_box::language_box(QWidget *parent) noexcept
+void threads_selector::spinbox_value_changed(const int i) noexcept
+{
+	if(this->slider_->value()!=i)
+	{
+		this->slider_->setValue(i);
+	}
+}
+
+int threads_selector::value() const noexcept
+{
+	return this->slider_->value();
+}
+
+key_arg_box::key_arg_box(QWidget *parent) noexcept
 	: QComboBox(parent)
 {}
 
-void language_box::set_languages(const std::vector<std::pair<QString, QString>> &param_arg) noexcept
+void key_arg_box::set_values(const std::vector<std::pair<QString, QString>> &values) noexcept
 {
-	for(const auto &p:param_arg)
+	for(const auto &p:values)
 	{
 		this->addItem(p.first+" ("+p.second+")", p.second);
 	}
 }
 
-QString language_box::current_arg() const noexcept
+QString key_arg_box::current_arg() const noexcept
 {
 	return this->currentData(Qt::UserRole).toString();
 }
@@ -45,18 +76,15 @@ invoke_dialog::invoke_dialog(const QString &target, QWidget *parent) noexcept
 	this->directory_layout_->addWidget(this->output_path_edit_, 1, 1);
 	this->directory_layout_->addWidget(this->output_browse_button_, 1, 2);
 
-	this->setup_parameters_layout();
-	this->layout_->addLayout(this->directory_layout_);
-	this->layout_->addLayout(this->parameters_layout_);
-	this->layout->addWidget(this->button_box_);
-
 	connect(this->target_browse_button_, &QPushButton::clicked, this, &invoke_dialog::get_target_path);
 	connect(this->output_browse_button_, &QPushButton::clicked, this, &invoke_dialog::get_output_filename);
 	connect(this->button_box_, &QDialogButtonBox::rejected, this, &QDialog::reject);
 	connect(this->button_box_, &QDialogButtonBox::accepted, this, &invoke_dialog::dispatch_invoker);
 	connect(this->button_box_, &QDialogButtonBox::accepted, this, &QDialog::accept);
+}
 
-	this->exec();
+invoke_dialog::~invoke_dialog() noexcept
+{
 }
 
 void invoke_dialog::get_target_path() noexcept
@@ -79,5 +107,14 @@ void invoke_dialog::dispatch_invoker() noexcept
 {
 	emit invoker_dispatched(this->create_invoker());
 }
+
+void invoke_dialog::end_setup_parameters_layout() noexcept
+{
+	this->layout_->addLayout(this->directory_layout_);
+	this->layout_->addLayout(this->parameters_layout_);
+	this->layout_->addWidget(this->button_box_);
+	this->setLayout(this->layout_);
+}
+
 
 }
