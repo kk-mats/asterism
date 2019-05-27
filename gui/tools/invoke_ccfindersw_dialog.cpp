@@ -15,9 +15,9 @@ void invoke_ccfindersw_dialog::begin_setup_parameters_layout() noexcept
 {
 	this->len_->setMinimum(1);
 	this->len_->setValue(50);
-	this->detection_range_->addItem(tr("[0] All Clones"));
-	this->detection_range_->addItem(tr("[1] Intra-file Clones"));
-	this->detection_range_->addItem(tr("[2] Inter-file Clones"));
+	this->detection_range_->addItem(tr("All Clones [0]"));
+	this->detection_range_->addItem(tr("Intra-file Clones [1]"));
+	this->detection_range_->addItem(tr("Inter-file Clones [2]"));
 	this->b_antlr_->addButton(this->b_);
 	this->b_antlr_->addButton(this->antlr_);
 	this->b_antlr_->setExclusive(true);
@@ -26,7 +26,7 @@ void invoke_ccfindersw_dialog::begin_setup_parameters_layout() noexcept
 	auto *dl=new QFormLayout;
 	dl->addRow(tr("Language (-l):"), this->language_edit_);
 	dl->addRow(tr("Clone length (-t):"), this->len_);
-	dl->addRow(tr("Detetion range (-w):"), this->detection_range_);
+	dl->addRow(tr("Detection range (-w):"), this->detection_range_);
 	dl->addRow(tr("Encode (-charset):"), this->charset_);
 	auto *b_antlr=new QVBoxLayout;
 	b_antlr->addWidget(this->b_);
@@ -36,7 +36,7 @@ void invoke_ccfindersw_dialog::begin_setup_parameters_layout() noexcept
 	dl->addRow(this->nolx_);
 	
 	this->ccfsw_arg_->set_values({{tr("Clone Pair"), "pair"}, {tr("Clone Set"), "set"}});
-	this->json_indent_->set_values({{tr("with indents"), "+"}, {tr("wittout indents"), "-"}});
+	this->json_indent_->set_values({{tr("with indents"), "+"}, {tr("without indents"), "-"}});
 	auto *ool=new QVBoxLayout;
 	ool->addWidget(this->ccf_);
 	ool->addWidget(this->ccfx_);

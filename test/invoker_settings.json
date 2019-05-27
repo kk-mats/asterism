@@ -1,0 +1,36 @@
+{
+	"name" : "invoker_settings_name",
+
+	"environment":[
+		{
+			"clone_detector":"clone_detector_name",
+			"target":"",
+			"naming":"%{CDN}_%{parameter_name}_%ValueOf{parameter_name}_%{PN}",
+			"parameters" :{
+				"fixed_parameter_name":"fixed_parameter_value",
+				"variable_parameter_name":{
+					"similarity":{
+						"iteration":{
+							"begin":0,
+							"end": 0,
+							"step": 0
+						}
+					},
+					"method":{
+						"iteration":[
+							"v1", "v2", "v3"
+						]
+					}
+				}
+			}
+		},
+		{
+
+		}
+	]
+}
+
+
+
+
+}

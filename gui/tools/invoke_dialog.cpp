@@ -52,7 +52,7 @@ void key_arg_box::set_values(const std::vector<std::pair<QString, QString>> &val
 {
 	for(const auto &p:values)
 	{
-		this->addItem(p.first+" ("+p.second+")", p.second);
+		this->addItem(p.first+" ["+p.second+"]", p.second);
 	}
 }
 
