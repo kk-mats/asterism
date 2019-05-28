@@ -92,7 +92,7 @@ void MainWindow::export_current_scatter_plot() noexcept
 
 void MainWindow::external_tools_settings() noexcept
 {
-	new external_tools_settings_dialog;
+	(new external_tools_settings_dialog(this))->exec();
 }
 
 void MainWindow::invoke_ccfinderx() noexcept

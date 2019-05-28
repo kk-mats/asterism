@@ -46,7 +46,7 @@ const clone_detector clone_detector::undefined("undefined");
 const clone_detector clone_detector::ccvolti("CCVolti");
 const clone_detector clone_detector::ccfinderx("CCFinderX");
 const clone_detector clone_detector::ccfindersw("CCFinderSW");
-const clone_detector clone_detector::nicad("NiCAD");
+const clone_detector clone_detector::nicad("NiCad");
 const clone_detector clone_detector::ar_fuser("Asterism Result Fuser");
 
 
