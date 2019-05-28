@@ -110,8 +110,9 @@ void invoke_dialog::dispatch_invoker() noexcept
 
 void invoke_dialog::end_setup_parameters_layout() noexcept
 {
-	this->layout_->addLayout(this->directory_layout_);
 	this->layout_->addLayout(this->parameters_layout_);
+	this->layout_->addSpacing(1);
+	this->layout_->addLayout(this->directory_layout_);
 	this->layout_->addWidget(this->button_box_);
 	this->setLayout(this->layout_);
 }
