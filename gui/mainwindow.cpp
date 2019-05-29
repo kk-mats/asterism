@@ -38,6 +38,7 @@ void MainWindow::open_project() noexcept
 		if(auto results=clone_io::read_jcln(filepath); results)
 		{
 			this->results_=std::move(results.value());
+			matched_list_model::bind(this->results_.matching_pair_table());
 			this->update();
 			this->layer_list_widget_->set_clone_size_heatmap_layers(this->results_.results());
 	
