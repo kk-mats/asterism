@@ -91,6 +91,11 @@ float contained(const fragment &f1, const fragment &f2) noexcept
 	return f1.is_overlapped(f2) ? float(f1&f2)/(f1.end_-f1.begin_) : 0;
 }
 
+bool covers(const fragment &f1, const fragment &f2, const float t) noexcept
+{
+	return double((f1&f2)+1)/f2.length()>=t;
+}
+
 QDebug operator <<(QDebug logger, const fragment &fragment) noexcept
 {
 	logger<<"id="<<std::intptr_t(fragment.file_ptr().get())<<"["<<fragment.begin_<<", "<<fragment.end_<<"]";

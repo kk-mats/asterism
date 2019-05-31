@@ -207,22 +207,31 @@ matching_table::key matching_table::unit::unit_key() const noexcept
 
 bool matching_table::unit::better(const float ok_v, const float good_v, const float ok_max, const float good_max, const float t) noexcept
 {
-	return (good_v>=t && good_v>=good_max) || (qFuzzyCompare(good_v, good_max) && ok_v>ok_max) || (ok_v>=t && ok_max<t);
+	return ok_v>=t && ok_v>ok_max;
+	//return (good_v>=t && good_v>=good_max) || (qFuzzyCompare(good_v, good_max) && ok_v>ok_max) || (ok_v>=t && ok_max<t);
 }
+
 
 std::unordered_map<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>> matching_table::unit::map_unidirectionally(const shared_vector<clone_pair> &g1, const shared_vector<clone_pair> &g2) noexcept
 {
 	std::unordered_map<std::shared_ptr<clone_pair>, std::shared_ptr<clone_pair>> matched;
 
+	
 	for(const auto &r:g1)
 	{
 		for(const auto &c:g2)
 		{
-			auto [ok_max, good_max]=matched.find(r)!=matched.end() ? qMakePair(ok(c, matched[r]), good(c, matched[r])) : qMakePair(threshold_, threshold_);
+			/*
+			if(covers(c->fragment1(), r->fragment1(), threshold_) && covers(c->fragment2(), r->fragment2(), threshold_))
+			{
+				matched[c]=r;
+			}
+			*/
+			
+			auto ok_max=matched.find(r)!=matched.end() ? ok(c, matched[r]) : threshold_;
 			auto ok_v=ok(c, r);
-			auto good_v=good(c, r);
 
-			if(better(ok_v, good_v, ok_max, good_max, threshold_))
+			if(ok_v>=ok_max)
 			{
 				matched[c]=r;
 			}
@@ -266,8 +275,6 @@ void matching_table::update() noexcept
 			this->values_.emplace_back(k, u);
 		}
 	}
-
-	return;
 }
 
 void matching_table::append(const std::shared_ptr<detection_result> &result) noexcept
@@ -282,7 +289,13 @@ void matching_table::append(const std::shared_ptr<detection_result> &result) noe
 
 void matching_table::append(const shared_vector<detection_result> &results) noexcept
 {
-	this->results_.append(results);
+	for(const auto &r:results)
+	{
+		if(this->results_.indexOf(r)<0)
+		{
+			this->results_.append(r);
+		}
+	}
 	std::sort(this->results_.begin(), this->results_.end());
 }
 

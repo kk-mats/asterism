@@ -31,6 +31,7 @@ public:
 
 	friend float overlap(const fragment &f1, const fragment &f2) noexcept;
 	friend float contained(const fragment &f1, const fragment &f2) noexcept;
+	bool covers(const fragment &f1, const fragment &f2, const float t) noexcept;
 
 private:
 	std::shared_ptr<file> file_;
@@ -39,6 +40,7 @@ private:
 
 float overlap(const fragment &f1, const fragment &f2) noexcept;
 float contained(const fragment &f1, const fragment &f2) noexcept;
+bool covers(const fragment &f1, const fragment &f2, const float t) noexcept;
 
 QDebug operator <<(QDebug logger, const fragment &fragment) noexcept;
 }
