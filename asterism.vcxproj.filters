@@ -141,6 +141,9 @@
     <ClCompile Include="core\global_settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gui\docks\grid_properties_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\bk.hpp">
@@ -261,6 +264,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\global_settings.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\docks\grid_properties_widget.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -73,7 +73,7 @@ public slots:
 	void change_current_grid(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive) noexcept;
 
 private:
-	item *root_=new item(QStringLiteral(""), "Description", nullptr);;
+	item *root_=new item(QStringLiteral(""), "Description", nullptr);
 	static inline std::shared_ptr<matching_table> matching_table_=nullptr;
 };
 

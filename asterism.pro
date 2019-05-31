@@ -56,6 +56,7 @@ HEADERS += \
     gui/central/matched_clone_pair_list_widget.hpp \
     gui/central/scatter_plot_widget.hpp \
     gui/docks.hpp \
+	gui/docks/grid_properties_widget.hpp\
     gui/docks/layer_detail_widget.hpp \
     gui/docks/layer_list_widget.hpp \
     gui/mainwindow.hpp \
@@ -94,6 +95,7 @@ SOURCES += \
     gui/central/layer_widget.cpp \
     gui/central/matched_clone_pair_list_widget.cpp \
     gui/central/scatter_plot_widget.cpp \
+	gui/docks/grid_properties_widget.cpp\
     gui/docks/layer_detail_widget.cpp \
     gui/docks/layer_list_widget.cpp \
     gui/mainwindow.cpp \
