@@ -113,12 +113,10 @@ QImage scatter_plot_widget::export_current_scatter_plot() noexcept
 
 void scatter_plot_widget::select_grid(const QModelIndex &index) noexcept
 {
-	if(index.isValid() && this->model_->previous_!=index && this->model_->previous_.row()!=index.column() && this->model_->previous_.column()!=index.row())
+	if(index.isValid() && this->model_->previous_!=index && (this->model_->previous_.row()!=index.column() || this->model_->previous_.column()!=index.row()))
 	{
-		this->model_->previous_=this->currentIndex();
-		this->setCurrentIndex(index);
+		this->model_->previous_=index;
 		auto [x, y]=std::minmax(this->results_->file_at(index.row()), this->results_->file_at(index.column()));
-		emit current_grid_changed(x->canonical_file_path(), y->canonical_file_path());
 		emit current_grid_changed(x, y, this->model_->current_layer_->primitive());
 	}
 }
