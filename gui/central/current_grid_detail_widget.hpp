@@ -5,7 +5,7 @@
 #include <QLineEdit>
 #include <QFormLayout>
 
-#include "model/file.hpp"
+#include "model/detection_result.hpp"
 
 namespace asterism
 {
@@ -19,7 +19,7 @@ public:
 	explicit current_grid_detail_widget(QWidget *parent=nullptr) noexcept;
 	
 public slots:
-	void change_current_grid(const QString &file1, const QString &file2) noexcept;
+	void change_current_grid(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive) noexcept;
 
 private:
 	QLineEdit *filepath1_=new QLineEdit(this);
