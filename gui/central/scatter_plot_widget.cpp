@@ -58,6 +58,34 @@ QVariant scatter_plot_model::headerData(int, Qt::Orientation, int role) const no
 	return QVariant();
 }
 
+void scatter_plot_model::set_layer(const std::shared_ptr<heatmap_layer> &layer, const QModelIndex &previous) noexcept
+{
+	this->beginResetModel();
+	this->current_layer_=layer;
+	this->previous_=previous;
+	this->endResetModel();
+}
+
+void scatter_plot_model::change_method(const int method_index) noexcept
+{
+	this->beginResetModel();
+	if(method_index==0)
+	{
+		this->current_layer_->change_method(heatmap_layer::method::clone_pair_size());
+	}
+	else
+	{
+		this->current_layer_->change_method(heatmap_layer::method::mismatch_rate());
+	}
+	this->endResetModel();
+}
+
+void scatter_plot_model::update_layer()
+{
+	this->beginResetModel();
+	this->endResetModel();
+}
+
 scatter_plot_widget::scatter_plot_widget(const detection_results *results, QWidget *parent)
 	: QTableView(parent), results_(results)
 {
@@ -76,11 +104,9 @@ scatter_plot_widget::scatter_plot_widget(const detection_results *results, QWidg
 
 void scatter_plot_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer) noexcept
 {
-	this->model_->previous_=this->currentIndex();
-	this->model_->beginResetModel();
-	this->model_->current_layer_=layer;
-	this->model_->endResetModel();
-	this->setCurrentIndex(this->model_->previous_);
+	const auto previous=this->currentIndex();
+	this->model_->set_layer(layer, previous);
+	this->setCurrentIndex(previous);
 	if(!this->currentIndex().isValid())
 	{
 		return;
@@ -92,8 +118,7 @@ void scatter_plot_widget::set_layer(const std::shared_ptr<heatmap_layer> &layer)
 
 void scatter_plot_widget::update_layer() noexcept
 {
-	this->model_->beginResetModel();
-	this->model_->endResetModel();
+	this->model_->update_layer();
 }
 
 QImage scatter_plot_widget::export_current_scatter_plot() noexcept
@@ -129,16 +154,7 @@ void scatter_plot_widget::change_grid_size(const int size) noexcept
 void scatter_plot_widget::change_method(const int method_index) noexcept
 {
 	const auto current_index=this->currentIndex();
-	this->model_->beginResetModel();
-	if(method_index==0)
-	{
-		this->model_->current_layer_->change_method(heatmap_layer::method::clone_pair_size());
-	}
-	else
-	{
-		this->model_->current_layer_->change_method(heatmap_layer::method::mismatch_rate());
-	}
-	this->model_->endResetModel();
+	this->model_->change_method(method_index);
 	this->model_->previous_=this->currentIndex();
 	this->select_grid(current_index);
 }

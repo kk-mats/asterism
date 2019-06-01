@@ -32,8 +32,6 @@ class scatter_plot_model final
 {
 	Q_OBJECT
 
-	friend class scatter_plot_widget;
-
 public:
 	explicit scatter_plot_model(QObject *parent=nullptr) noexcept;
 
@@ -42,6 +40,10 @@ public:
 	int columnCount(const QModelIndex &) const noexcept override;
 	QVariant data(const QModelIndex &index, int role=Qt::BackgroundColorRole) const noexcept override;
 	QVariant headerData(int, Qt::Orientation, int role=Qt::DisplayRole) const noexcept override;
+
+	void set_layer(const std::shared_ptr<heatmap_layer> &layer, const QModelIndex &previous) noexcept;
+	void change_method(const int method_index) noexcept;
+	void update_layer();
 
 	QModelIndex previous_=QModelIndex();
 	std::shared_ptr<heatmap_layer> current_layer_=nullptr;
