@@ -14,12 +14,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 	connect(this->layer_list_widget_, &layer_list_widget::current_layer_changed, this->layer_widget_, &layer_widget::set_layer);
 	connect(this->layer_list_widget_, &layer_list_widget::current_layer_changed, this->layer_detail_widget_, &layer_detail_widget::set_layer);
-	connect(this->layer_widget_, &layer_widget::method_changed, this->layer_detail_widget_, &layer_detail_widget::change_method);
 	connect(this->layer_detail_widget_, &layer_detail_widget::result_name_input, this->layer_list_widget_, &layer_list_widget::change_result_name);
 	connect(this->layer_list_widget_, &layer_list_widget::result_name_changed, this->layer_detail_widget_, &layer_detail_widget::change_result_name);
 	connect(this->layer_list_widget_, &layer_list_widget::result_name_changed, this->layer_widget_, &layer_widget::result_name_changed);
-
+	connect(this->layer_widget_, &layer_widget::current_grid_changed, this->grid_properties_widget_, &grid_properties_widget::change_current_grid);
+	connect(this->layer_widget_, &layer_widget::method_changed, this->layer_detail_widget_, &layer_detail_widget::change_method);
+	
 	matched_list_model::bind(this->results_.matching_pair_table());
+	grid_properties_model::bind(this->results_.matching_pair_table());
 
 	this->create_actions();
 	this->create_menus();
@@ -39,6 +41,7 @@ void MainWindow::open_project() noexcept
 		{
 			this->results_=std::move(results.value());
 			matched_list_model::bind(this->results_.matching_pair_table());
+			grid_properties_model::bind(this->results_.matching_pair_table());
 			this->update();
 			this->layer_list_widget_->set_clone_size_heatmap_layers(this->results_.results());
 	
@@ -127,6 +130,8 @@ void MainWindow::initialize_docks() noexcept
 	this->addDockWidget(Qt::LeftDockWidgetArea, this->layer_list_dock_, Qt::Vertical);
 	this->layer_detail_dock_->setWidget(this->layer_detail_widget_);
 	this->addDockWidget(Qt::LeftDockWidgetArea, this->layer_detail_dock_, Qt::Vertical);
+	this->grid_properties_dock_->setWidget(this->grid_properties_widget_);
+	this->addDockWidget(Qt::BottomDockWidgetArea, this->grid_properties_dock_, Qt::Horizontal);
 }
 
 void MainWindow::create_actions() noexcept

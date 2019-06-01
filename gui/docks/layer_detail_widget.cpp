@@ -49,8 +49,17 @@ bool layer_detail_model::setData(const QModelIndex &index, const QVariant &value
 	return true;
 }
 
-QVariant layer_detail_model::headerData(int, Qt::Orientation, int) const noexcept
+QVariant layer_detail_model::headerData(int section, Qt::Orientation orientation, int role) const noexcept
 {
+	if(orientation==Qt::Horizontal && role==Qt::DisplayRole)
+	{
+		switch(section)
+		{
+			case 0: return tr("Key");
+			case 1: return tr("Value");
+		}
+	}
+
 	return QVariant();
 }
 
@@ -70,8 +79,7 @@ layer_detail_widget::layer_detail_widget(QWidget *parent) noexcept
 {
 	this->setModel(this->model_);
 	this->verticalHeader()->hide();
-	this->horizontalHeader()->hide();
-	this->horizontalHeader()->setStretchLastSection(true);
+	this->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
 	connect(this->model_, &layer_detail_model::result_name_input, this, &layer_detail_widget::result_name_input);
 }

@@ -50,10 +50,13 @@ private:
 	layer_widget *layer_widget_;
 
 	layer_list_widget *layer_list_widget_=new layer_list_widget(this);
-	QDockWidget *layer_list_dock_=new QDockWidget(QStringLiteral("Detection Results"), this);
+	QDockWidget *layer_list_dock_=new QDockWidget(tr("Detection Results"), this);
 
 	layer_detail_widget *layer_detail_widget_=new layer_detail_widget(this);
-	QDockWidget *layer_detail_dock_=new QDockWidget(QStringLiteral("Details"), this);
+	QDockWidget *layer_detail_dock_=new QDockWidget(tr("Details"), this);
+
+	grid_properties_widget *grid_properties_widget_=new grid_properties_widget(this);
+	QDockWidget *grid_properties_dock_=new QDockWidget(tr("Grid Properties"), this);
 
 	QMenu *file_menu_;
 	QAction *open_project_act_;
