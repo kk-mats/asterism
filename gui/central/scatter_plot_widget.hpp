@@ -23,6 +23,7 @@ class current_grid_delegate final
 	Q_OBJECT
 
 public:
+	// inherits from QStyledItemDelegate
 	using QStyledItemDelegate::QStyledItemDelegate;
 	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const noexcept override;
 };
@@ -33,18 +34,19 @@ class scatter_plot_model final
 	Q_OBJECT
 
 public:
-	explicit scatter_plot_model(QObject *parent=nullptr) noexcept;
-
-	int grid_size_;
+	// inherits from QAbstractTableModel
+	using QAbstractTableModel::QAbstractTableModel;
 	int rowCount(const QModelIndex &) const noexcept override;
 	int columnCount(const QModelIndex &) const noexcept override;
 	QVariant data(const QModelIndex &index, int role=Qt::BackgroundColorRole) const noexcept override;
 	QVariant headerData(int, Qt::Orientation, int role=Qt::DisplayRole) const noexcept override;
 
+	
 	void set_layer(const std::shared_ptr<heatmap_layer> &layer, const QModelIndex &previous) noexcept;
 	void change_method(const int method_index) noexcept;
 	void update_layer();
 
+	int grid_size_;
 	QModelIndex previous_=QModelIndex();
 	std::shared_ptr<heatmap_layer> current_layer_=nullptr;
 };

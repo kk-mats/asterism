@@ -23,9 +23,6 @@ void current_grid_delegate::paint(QPainter *painter, const QStyleOptionViewItem 
 	QStyledItemDelegate::paint(painter, option, index);
 }
 
-scatter_plot_model::scatter_plot_model(QObject *parent) noexcept
-	: QAbstractTableModel(parent)
-{}
 
 int scatter_plot_model::rowCount(const QModelIndex &) const noexcept
 {

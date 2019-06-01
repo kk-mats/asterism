@@ -47,7 +47,8 @@ public:
 	using QAbstractTableModel::QAbstractTableModel;
 
 	static void bind(const std::shared_ptr<matching_table>& matching_table) noexcept;
-
+	
+	// inherits from QAbstractTableModel
 	int rowCount(const QModelIndex& parent=QModelIndex()) const noexcept override;
 	int columnCount(const QModelIndex& parent=QModelIndex()) const noexcept override;
 	QVariant data(const QModelIndex& index, int role=Qt::DisplayRole) const noexcept override;
