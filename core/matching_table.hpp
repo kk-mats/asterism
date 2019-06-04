@@ -109,6 +109,7 @@ public:
 	std::vector<response> matched_pair(const query &q) const noexcept;
 	int count_matching_pair(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p) const noexcept;
 	bool has_matching_pair(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p) const noexcept;
+	bool has_matching_pair_restrict(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p) const noexcept;
 
 private:
 	shared_vector<detection_result> results_;

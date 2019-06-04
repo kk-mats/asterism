@@ -126,7 +126,7 @@ bool heatmap_layer::mismatch_rate::update(const std::shared_ptr<detection_result
 		int matched=0;
 		for(const auto &p:(*primitive->clone_pair_layer())[i])
 		{
-			if(matching_table_->has_matching_pair(primitive, p))
+			if(matching_table_->has_matching_pair_restrict(primitive, p))
 			{
 				++matched;
 			}

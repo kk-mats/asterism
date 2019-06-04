@@ -340,6 +340,25 @@ bool matching_table::has_matching_pair(const std::shared_ptr<detection_result> &
 	return false;
 }
 
+bool matching_table::has_matching_pair_restrict(const std::shared_ptr<detection_result> &result, const std::shared_ptr<clone_pair> &p) const noexcept
+{
+	bool search_left;
+	int matched=1;
+	for(const auto &u:this->values_)
+	{
+		search_left=u.first.right()==result;
+		if(!search_left && u.first.left()!=result)
+		{
+			continue;
+		}
+		if(u.second.matched_pair(p, search_left).size()>0)
+		{
+			++matched;
+		}
+	}
+	return matched==this->results_.size();
+}
+
 
 uint qHash(const query &key, uint seed) noexcept
 {
