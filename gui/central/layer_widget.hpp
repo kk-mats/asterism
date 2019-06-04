@@ -34,6 +34,7 @@ public slots:
 signals:
 	void method_changed(const int method_index);
 	void result_name_changed(const QString &name);
+	void current_grid_changed(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive);
 
 private:
 	std::shared_ptr<heatmap_layer> layer_;

@@ -27,8 +27,8 @@ public:
 	friend uint qHash(const query &key, uint seed) noexcept;
 
 private:
-	std::shared_ptr<detection_result> result_;
-	std::shared_ptr<clone_pair> body_;
+	const std::shared_ptr<detection_result> result_;
+	const std::shared_ptr<clone_pair> body_;
 };
 
 uint qHash(const query &key, uint seed) noexcept;

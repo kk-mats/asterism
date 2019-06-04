@@ -266,9 +266,6 @@
     <ClInclude Include="core\global_settings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gui\docks\grid_properties_widget.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="test\f0.txt">
@@ -286,5 +283,10 @@
     <None Include="test\rs.jcln">
       <Filter>Distribution Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="gui\docks\grid_properties_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

@@ -12,15 +12,15 @@ current_grid_detail_widget::current_grid_detail_widget(QWidget *parent) noexcept
 	this->filepath2_->setReadOnly(true);
 
 	auto *layout=new QFormLayout;
-	layout->addRow(tr("Path: "), this->filepath1_);
-	layout->addRow(tr("Path: "), this->filepath2_);
+	layout->addRow(tr("F1.Path: "), this->filepath1_);
+	layout->addRow(tr("F2.Path: "), this->filepath2_);
 
 	this->setLayout(layout);
 }
 
-void current_grid_detail_widget::change_current_grid(const QString &file1, const QString &file2) noexcept
+void current_grid_detail_widget::change_current_grid(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive) noexcept
 {
-	this->filepath1_->setText(file1);
-	this->filepath2_->setText(file2);
+	this->filepath1_->setText(file1->canonical_file_path());
+	this->filepath2_->setText(file2->canonical_file_path());
 }
 }

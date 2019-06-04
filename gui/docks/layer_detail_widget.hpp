@@ -21,7 +21,7 @@ public:
 	int columnCount(const QModelIndex &parent=QModelIndex()) const noexcept override;
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const noexcept override;
 	bool setData(const QModelIndex &index, const QVariant &value, int role) noexcept;
-	QVariant headerData(int, Qt::Orientation, int) const noexcept override;
+	QVariant headerData(int section, Qt::Orientation, int role=Qt::DisplayRole) const noexcept override;
 	Qt::ItemFlags flags(const QModelIndex &index) const noexcept override;
 
 	std::shared_ptr<heatmap_layer> current_;
