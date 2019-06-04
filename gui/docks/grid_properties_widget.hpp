@@ -2,8 +2,9 @@
 #define GRID_PROPERTIES_WIDGET_HPP
 
 #include <QTableView>
-#include <QStyledItemDelegate>
+#include <QItemDelegate>
 #include <QComboBox>
+#include <QSpinBox>
 #include <QStringList>
 #include <QHeaderView>
 #include <QPainter>
@@ -15,24 +16,20 @@ namespace asterism
 {
 
 class grid_properties_delegate final
-	: public QStyledItemDelegate
+	: public QItemDelegate
 {
 	Q_OBJECT
 
 public:
-	using QStyledItemDelegate::QStyledItemDelegate;
+	using QItemDelegate::QItemDelegate;
 
 	QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const noexcept override;
 	void setEditorData(QWidget* editor, const QModelIndex& index) const noexcept override;
 	void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const noexcept override;
-	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const noexcept override;
-	void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-
-public slots:
-	void remove_editor(const int index) noexcept;
+	void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const noexcept override;
 
 signals:
-	void index_changed(const int index);
+	void index_activated(const int index);
 
 private:
 	int previous_=-1;
@@ -52,22 +49,29 @@ public:
 	int rowCount(const QModelIndex& parent=QModelIndex()) const noexcept override;
 	int columnCount(const QModelIndex& parent=QModelIndex()) const noexcept override;
 	QVariant data(const QModelIndex& index, int role=Qt::DisplayRole) const noexcept override;
+	bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole) noexcept override;
 	QVariant headerData(int section, Qt::Orientation orientation, int role=Qt::DisplayRole) const noexcept override;
+	Qt::ItemFlags flags(const QModelIndex &index) const noexcept override;
 
 	void change_current_grid(const std::shared_ptr<file>& file1, const std::shared_ptr<file>& file2, const std::shared_ptr<detection_result>& primitive) noexcept;
 
+	static bool is_base_selector(const QModelIndex &index) noexcept;
+
 public slots:
-	void change_current_index(const int index) noexcept;
+	void activate_index(const int index) noexcept;
 
 private:
 	const QStringList vertical_header={ "ID", "F1.Begin", "F1.End", "F2.Begin", "F2.End", "Similarity" };
 	QStringList horizontal_header;
-	std::shared_ptr<clone_pair> current_;
+	int current_=0;
 	std::shared_ptr<detection_result> primitive_;
 	shared_vector<clone_pair> base_;
 	std::vector<response> responses_;
 
 	static inline std::shared_ptr<matching_table> matching_table_=nullptr;
+
+	bool change_current_index(const int index) noexcept;
+	bool equals_to_base(const std::shared_ptr<clone_pair> &p, const int row) const noexcept;
 };
 
 class grid_properties_widget
@@ -83,7 +87,6 @@ public slots:
 
 private:
 	grid_properties_model* model_=new grid_properties_model(this);
-	grid_properties_delegate* grid_properties_delegate_=new grid_properties_delegate(this);
 };
 
 }
