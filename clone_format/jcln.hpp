@@ -2,6 +2,8 @@
 #define JCLN_HPP
 
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <optional>
 

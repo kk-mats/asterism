@@ -2,6 +2,8 @@
 #define CCFINDERSW_HPP
 
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include "format_tags.hpp"
 #include "core/logger.hpp"

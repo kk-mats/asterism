@@ -384,3 +384,7 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 /cloc-1.80.exe
+/lsh_result.txt
+/lsh_log.txt
+/dictionary.txt
+/dataset

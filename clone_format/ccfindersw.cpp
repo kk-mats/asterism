@@ -7,7 +7,7 @@ std::shared_ptr<detection_result> ccfindersw::read(const QString &path, detectio
 {
 	QFile file(path);
 
-	if(!file.open(QIODevice::ReadOnly | QFile::Text))
+	if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
 	{
 		qCritical()<<code_clone_loading_error::file_not_found<<path;
 		return nullptr;

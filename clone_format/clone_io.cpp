@@ -16,6 +16,11 @@ std::optional<detection_results> clone_io::read_jcln(const QString &file) noexce
 	return jcln::read(file);
 }
 
+std::shared_ptr<detection_result> clone_io::read_ccfinderx(const QString &file, detection_results &results) noexcept
+{
+	return ccfinderx::read(file, results);
+}
+
 std::shared_ptr<detection_result> clone_io::read_ccfindersw(const QString &file, detection_results &results) noexcept
 {
 	return ccfindersw::read(file, results);

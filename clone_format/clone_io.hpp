@@ -5,16 +5,18 @@
 #include "ccfindersw.hpp"
 #include "csv.hpp"
 #include "nicad.hpp"
+#include "ccfinderx.hpp"
 
 namespace asterism
 {
 
-class clone_io
+class clone_io final
 {
 public:
 	clone_io();
 
 	static std::optional<detection_results> read_jcln(const QString &file) noexcept;
+	static std::shared_ptr<detection_result> read_ccfinderx(const QString &file, detection_results &results) noexcept;
 	static std::shared_ptr<detection_result> read_ccfindersw(const QString &file, detection_results &results) noexcept;
 	static std::shared_ptr<detection_result> read_nicad(const QString &file, detection_results &results) noexcept;
 
