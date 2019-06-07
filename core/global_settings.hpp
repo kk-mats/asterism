@@ -29,6 +29,8 @@ public:
 	void set_ccvolti(const QString &path, const QString &naming_rule) noexcept;
 	void set_ccfindersw(const QString &path, const QString &naming_rule) noexcept;
 
+	QString ccvolti() noexcept;
+
 	static global_settings& instance() noexcept;
 
 	static const inline QString EXTERNAL_TOOLS="externalTools";

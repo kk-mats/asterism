@@ -34,7 +34,7 @@ void invoke_ccvolti_dialog::begin_setup_parameters_layout() noexcept
 	this->parameters_layout_=pl;
 }
 
-invoke_dialog::invoker_t invoke_ccvolti_dialog::create_invoker() const noexcept
+invoker_t invoke_ccvolti_dialog::create_invoker() const noexcept
 {
 	return ccvolti_invoker(
 		this->target_path_edit_->text(),

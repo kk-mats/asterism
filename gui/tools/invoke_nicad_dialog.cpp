@@ -24,7 +24,7 @@ void invoke_nicad_dialog::begin_setup_parameters_layout() noexcept
 	this->parameters_layout_=pl;
 }
 
-invoke_dialog::invoker_t invoke_nicad_dialog::create_invoker() const noexcept
+invoker_t invoke_nicad_dialog::create_invoker() const noexcept
 {
 	return nicad_invoker();
 }

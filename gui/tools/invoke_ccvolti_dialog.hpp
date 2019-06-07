@@ -19,6 +19,7 @@ class invoke_ccvolti_dialog final
 
 public:
 	invoke_ccvolti_dialog(const QString &target, QWidget *parent) noexcept;
+	invoker_t create_invoker() const noexcept override;
 
 private:
 	QSpinBox *size_=new QSpinBox(this);
@@ -28,7 +29,6 @@ private:
 
 	void begin_setup_parameters_layout() noexcept override;
 
-	invoker_t create_invoker() const noexcept override;
 };
 
 }

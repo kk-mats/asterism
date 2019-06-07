@@ -35,7 +35,7 @@ void invoke_ccfinderx_dialog::begin_setup_parameters_layout() noexcept
 	this->parameters_layout_=pl;
 }
 
-invoke_dialog::invoker_t invoke_ccfinderx_dialog::create_invoker() const noexcept
+invoker_t invoke_ccfinderx_dialog::create_invoker() const noexcept
 {
 	return ccfinderx_invoker(
 		this->target_path_edit_->text(),

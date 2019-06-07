@@ -1,15 +1,13 @@
 #ifndef FILE_HPP
 #define FILE_HPP
 
-#include <QDebug>
+#include <QDir>
 #include <QHash>
-#include <QJsonArray>
-#include <QJsonObject>
-#include <QJsonValue>
 
 #include <functional>
 
 #include "core/utility.hpp"
+#include "core/logger.hpp"
 #include "object_id_t.hpp"
 
 namespace asterism

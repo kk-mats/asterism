@@ -8,5 +8,6 @@
 #include "tools/invoke_ccvolti_dialog.hpp"
 #include "tools/invoke_ccfindersw_dialog.hpp"
 #include "tools/invoke_nicad_dialog.hpp"
+#include "tools/invoker_cui_display.hpp"
 
 #endif // TOOLS_HPP

@@ -20,6 +20,7 @@ class invoke_ccfindersw_dialog final
 
 public:
 	invoke_ccfindersw_dialog(const QString &target, QWidget *parent) noexcept;
+	invoker_t create_invoker() const noexcept override;
 
 private:
 	QLineEdit *language_edit_=new QLineEdit(this);
@@ -45,7 +46,6 @@ private:
 	QDoubleSpinBox *rnr_=new QDoubleSpinBox(this);
 
 	void begin_setup_parameters_layout() noexcept override;
-	invoker_t create_invoker() const noexcept override;
 };
 
 }

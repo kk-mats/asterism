@@ -55,10 +55,10 @@ class invoke_dialog
 	Q_OBJECT
 
 public:
-	using invoker_t=std::variant<ccfinderx_invoker, ccvolti_invoker, ccfindersw_invoker, nicad_invoker>;
-
 	invoke_dialog(const QString &target, QWidget *parent=nullptr) noexcept;
 	~invoke_dialog() noexcept;
+
+	virtual invoker_t create_invoker() const noexcept=0;
 
 private slots:
 	void get_target_path() noexcept;
@@ -77,7 +77,6 @@ protected:
 	key_arg_box *language_;
 	
 	virtual void begin_setup_parameters_layout() noexcept=0;
-	virtual invoker_t create_invoker() const noexcept=0;
 
 	void end_setup_parameters_layout() noexcept;
 

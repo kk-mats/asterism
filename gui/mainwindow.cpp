@@ -101,22 +101,22 @@ void MainWindow::external_tools_settings() noexcept
 
 void MainWindow::invoke_ccfinderx() noexcept
 {
-	(new invoke_ccfinderx_dialog(this->results_.target_path(), this))->exec();
+	this->show_invoke_dialog(new invoke_ccfinderx_dialog(this->results_.target_path(), this));
 }
 
 void MainWindow::invoke_ccvolti() noexcept
 {
-	(new invoke_ccvolti_dialog(this->results_.target_path(), this))->exec();
+	this->show_invoke_dialog(new invoke_ccvolti_dialog(this->results_.target_path(), this));
 }
 
 void MainWindow::invoke_ccfindersw() noexcept
 {
-	(new invoke_ccfindersw_dialog(this->results_.target_path(), this))->exec();
+	this->show_invoke_dialog(new invoke_ccfindersw_dialog(this->results_.target_path(), this));
 }
 
 void MainWindow::invoke_nicad() noexcept
 {
-	(new invoke_nicad_dialog(this->results_.target_path(), this))->exec();
+	this->show_invoke_dialog(new invoke_nicad_dialog(this->results_.target_path(), this));
 }
 
 void MainWindow::remove(const std::shared_ptr<detection_result> &result) noexcept
@@ -228,6 +228,15 @@ bool MainWindow::request_target_path() noexcept
 		return true;
 	}
 	return false;
+}
+
+void MainWindow::show_invoke_dialog(invoke_dialog *d) noexcept
+{
+	if(d->exec()==QDialog::Accepted)
+	{
+		this->invoker_display_dialog_->add_invoker(std::move(d->create_invoker()));
+		this->invoker_display_dialog_->show();
+	}
 }
 
 }

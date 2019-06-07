@@ -51,6 +51,11 @@ void global_settings::set_ccfindersw(const QString &path, const QString &naming_
 	this->set_clone_detector(clone_detector::ccfindersw.name(), path, naming_rule);
 }
 
+QString global_settings::ccvolti() noexcept
+{
+	return this->settings_.value(QString("%1/%2/%3").arg(EXTERNAL_TOOLS).arg(clone_detector::ccvolti.name()).arg(EXECUTABLE_PATH)).toString();
+}
+
 global_settings& global_settings::instance() noexcept
 {
 	if(instance_==nullptr)
