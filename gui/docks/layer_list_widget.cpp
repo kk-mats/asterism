@@ -25,9 +25,21 @@ int layer_list_model::rowCount(const QModelIndex &) const
 
 QVariant layer_list_model::data(const QModelIndex &index, int role) const
 {
-	if(index.isValid() && role==Qt::DisplayRole && this->layers_.size()>0)
+	if(index.isValid() && this->layers_.size()>0)
 	{
-		return this->layers_[index.row()]->name();
+		if(role==Qt::DisplayRole)
+		{
+			return this->layers_[index.row()]->name();
+		}
+
+		if(role==Qt::BackgroundRole)
+		{
+			if(this->current_index_!=-1 && this->layers_[this->current_index_]->method_index()==1 && index.row()!=this->current_index_)
+			{
+				return QColor(Qt::gray);
+			}
+		}
+
 	}
 	return QVariant();
 }
@@ -198,5 +210,6 @@ void layer_list_widget::change_result_name(const QString &name) noexcept
 		emit dataChanged(this->currentIndex(), this->currentIndex());
 	}
 }
+
 
 }

@@ -65,7 +65,7 @@ public slots:
 	void click_rename() noexcept;
 	void click_remove() noexcept;
 	void change_result_name(const QString &name) noexcept;
-
+	
 signals:
 	void current_layer_changed(const std::shared_ptr<heatmap_layer> &layer);
 	void remove(const std::shared_ptr<detection_result> &result);
