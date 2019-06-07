@@ -1,6 +1,7 @@
 #ifndef UTILITY_HPP
 #define UTILITY_HPP
 
+#include <QDir>
 #include <QFileInfo>
 
 
