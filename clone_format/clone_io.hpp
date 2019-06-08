@@ -2,10 +2,11 @@
 #define CLONE_IO_HPP
 
 #include "jcln.hpp"
-#include "ccfindersw.hpp"
 #include "csv.hpp"
 #include "nicad.hpp"
 #include "ccfinderx.hpp"
+#include "ccfindersw.hpp"
+#include "ccvolti.hpp"
 
 namespace asterism
 {
@@ -17,6 +18,7 @@ public:
 
 	static std::optional<detection_results> read_jcln(const QString &file) noexcept;
 	static std::shared_ptr<detection_result> read_ccfinderx(const QString &file, detection_results &results) noexcept;
+	static std::shared_ptr<detection_result> read_ccvolti(const QString &file, detection_results &results) noexcept;
 	static std::shared_ptr<detection_result> read_ccfindersw(const QString &file, detection_results &results) noexcept;
 	static std::shared_ptr<detection_result> read_nicad(const QString &file, detection_results &results) noexcept;
 

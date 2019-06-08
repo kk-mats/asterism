@@ -21,6 +21,11 @@ std::shared_ptr<detection_result> clone_io::read_ccfinderx(const QString &file, 
 	return ccfinderx::read(file, results);
 }
 
+std::shared_ptr<detection_result> clone_io::read_ccvolti(const QString &file, detection_results &results) noexcept
+{
+	return ccvolti::read(file, results);
+}
+
 std::shared_ptr<detection_result> clone_io::read_ccfindersw(const QString &file, detection_results &results) noexcept
 {
 	return ccfindersw::read(file, results);
