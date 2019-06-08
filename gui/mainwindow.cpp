@@ -52,24 +52,9 @@ void MainWindow::open_project() noexcept
 
 void MainWindow::open_file() noexcept
 {
-	if(const auto filepath=QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("NiCAD (*.xml);; CCFinderSW (*.json)")); !filepath.isEmpty())
+	if(const auto filepath=to_canonical_file_path(QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("NiCAD (*.xml);; CCVolti(*.csv);; CCFinderSW (*.json)"))); !filepath.isEmpty())
 	{
-		std::shared_ptr<detection_result> result;
-		if(const auto extension=QFileInfo(filepath).suffix(); extension=="xml")
-		{
-			result=clone_io::read_nicad(filepath, this->results_);
-		}
-		else if(extension==".json")
-		{
-			result=clone_io::read_ccfindersw(filepath, this->results_);
-		}
-
-		if(result)
-		{
-			this->update();
-			this->layer_list_widget_->emplace_clone_size_heatmap_layer(result);
-			return;
-		}
+		this->load_file(filepath);
 	}
 }
 
@@ -122,6 +107,29 @@ void MainWindow::invoke_nicad() noexcept
 void MainWindow::remove(const std::shared_ptr<detection_result> &result) noexcept
 {
 	this->results_.remove(result);
+}
+
+void MainWindow::load_file(const QString &filepath) noexcept
+{
+	std::shared_ptr<detection_result> result;
+	if(const auto extension=QFileInfo(filepath).suffix(); extension=="xml")
+	{
+		result=clone_io::read_nicad(filepath, this->results_);
+	}
+	else if(extension=="csv")
+	{
+		result=clone_io::read_ccvolti(filepath, this->results_);
+	}
+	else if(extension=="json")
+	{
+		result=clone_io::read_ccfindersw(filepath, this->results_);
+	}
+
+	if(result)
+	{
+		this->update();
+		this->layer_list_widget_->emplace_clone_size_heatmap_layer(result);
+	}
 }
 
 void MainWindow::initialize_docks() noexcept
@@ -181,6 +189,9 @@ void MainWindow::create_actions() noexcept
 	this->options_act_=new QAction(tr("Options"));
 	this->options_act_->setStatusTip(tr("Tools Options"));
 	connect(this->options_act_, &QAction::triggered, this, &MainWindow::external_tools_settings);
+
+
+	connect(this->invoker_display_dialog_, &invoker_display_widget::finished_clone_file, [this](const auto &filepath) mutable { this->load_file(filepath); });
 }
 
 void MainWindow::create_menus() noexcept

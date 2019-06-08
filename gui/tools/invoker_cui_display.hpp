@@ -20,15 +20,20 @@ class invoker_cui_display final
 	Q_OBJECT
 
 public:
-	invoker_cui_display(QProcess *process, QWidget *parent=nullptr) noexcept;
+	invoker_cui_display(invoker_t &&invoker, QWidget *parent=nullptr) noexcept;
 
 public slots:
 	void read_stdout() noexcept;
 	void read_stderr() noexcept;
 
+signals:
+	void error_occored();
+	void finished(const bool success);
+
 private:
 	QTextStream is_;
 	QProcess *process_;
+	invoker_t invoker_;
 };
 
 class invoker_list_model final
@@ -42,21 +47,26 @@ public:
 	int	rowCount(const QModelIndex &parent=QModelIndex()) const noexcept override;
 	QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const noexcept override;
 
-	void add_invoker(invoker_t &&invoker) noexcept;
+	invoker_t* add_invoker(invoker_t &&invoker) noexcept;
+	void change_status(const int i, const QString &name) noexcept;
 
 private:
-	std::vector<invoker_t> invokers_;
+	QStringList names_;
+	QVector<invoker_t> invokers_;
 };
 
 class invoker_list_widget final
-	: public QListView
+	: public QListWidget
 {
 	Q_OBJECT
 public:
 	invoker_list_widget(QWidget *parent=nullptr) noexcept;
 
-	void add_invoker(invoker_t &&invoker);
+	void add_invoker(const invoker_t &invoker) noexcept;
 	
+public slots:
+	void change_status(const int i, const QString &name);
+
 private:
 	invoker_list_model *model_=new invoker_list_model(this);
 };
@@ -69,8 +79,11 @@ class invoker_display_widget final
 public:
 	invoker_display_widget(QWidget *parent=nullptr) noexcept;
 
-
 	void add_invoker(invoker_t &&invoker) noexcept;
+
+signals:
+	void finished_clone_file(const QString &clone_file);
+	void invoker_status_changed(const int i, const QString &name);
 
 protected slots:
 	void change_current_page(const QModelIndex &index) noexcept;

@@ -58,7 +58,7 @@ private:
 	grid_properties_widget *grid_properties_widget_=new grid_properties_widget(this);
 	QDockWidget *grid_properties_dock_=new QDockWidget(tr("Grid Properties"), this);
 
-	invoker_display_widget *invoker_display_dialog_=new invoker_display_widget(this);
+	invoker_display_widget *invoker_display_dialog_=new invoker_display_widget;
 
 	QMenu *file_menu_;
 	QAction *open_project_act_;
@@ -81,15 +81,15 @@ private:
 	QAction *invoke_from_a_setting_file_act_;
 	QAction *options_act_;
 	   
-	void initialize_docks() noexcept;
+	void load_file(const QString &filepath) noexcept;
 
+	void initialize_docks() noexcept;
 	void create_actions() noexcept;
 	void create_menus() noexcept;
 
 	void update() noexcept;
 
 	bool request_target_path() noexcept;
-
 	void show_invoke_dialog(invoke_dialog *d) noexcept;
 };
 
