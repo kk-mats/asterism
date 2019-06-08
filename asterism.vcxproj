@@ -180,6 +180,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="clone_format\ccfinderx.cpp" />
+    <ClCompile Include="clone_format\ccvolti.cpp" />
     <ClCompile Include="core\bk.cpp" />
     <ClCompile Include="clone_format\ccfindersw.cpp" />
     <ClCompile Include="clone_format\clone_io.cpp" />
@@ -221,6 +222,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="clone_format\ccfinderx.hpp" />
+    <ClInclude Include="clone_format\ccvolti.hpp" />
     <ClInclude Include="core\bk.hpp" />
     <ClInclude Include="clone_format\ccfindersw.hpp" />
     <ClInclude Include="core\global_settings.hpp" />
@@ -229,7 +231,7 @@
     <QtMoc Include="gui\docks\grid_properties_widget.hpp">
     </QtMoc>
     <QtMoc Include="gui\tools\invoker_cui_display.hpp">
-	</QtMoc>
+    </QtMoc>
     <ClInclude Include="model\clone_pair.hpp" />
     <ClInclude Include="layer\clone_pair_grid_layer.hpp" />
     <QtMoc Include="gui\central\color_bar_widget.hpp">
@@ -258,7 +260,8 @@
     </QtMoc>
     <QtMoc Include="gui\tools\invoke_nicad_dialog.hpp">
     </QtMoc>
-    <ClInclude Include="gui\tools\invoker.hpp" />
+    <QtMoc  Include="gui\tools\invoker.hpp">
+	</QtMoc>
     <ClInclude Include="clone_format\jcln.hpp" />
     <QtMoc Include="gui\docks\layer_detail_widget.hpp">
     </QtMoc>

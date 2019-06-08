@@ -275,4 +275,21 @@ void grid_properties_widget::change_current_grid(const std::shared_ptr<file> &fi
 	this->model_->change_current_grid(file1, file2, primitive);
 }
 
+
+//
+//void grid_property_table_model::bind(const std::shared_ptr<matching_table>& matching_table) noexcept
+//{
+//	matching_table_=matching_table;
+//}
+//
+//int grid_property_table_model::rowCount(const QModelIndex & parent) const noexcept
+//{
+//	return this->vertical_header.size();
+//}
+//
+//int grid_property_table_model::columnCount(const QModelIndex & parent) const noexcept
+//{
+//	return std::max(1, this->horizontal_header.size());
+//}
+
 }

@@ -150,6 +150,9 @@
     <ClCompile Include="gui\tools\invoker_cui_display.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="clone_format\ccvolti.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\bk.hpp">
@@ -275,7 +278,7 @@
     <ClInclude Include="clone_format\ccfinderx.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gui\tools\invoker_cui_display.hpp">
+    <ClInclude Include="clone_format\ccvolti.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -298,6 +301,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="gui\docks\grid_properties_widget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\tools\invoker_cui_display.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
