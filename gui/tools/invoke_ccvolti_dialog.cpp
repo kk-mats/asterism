@@ -7,6 +7,7 @@ invoke_ccvolti_dialog::invoke_ccvolti_dialog(const QString &target, QWidget *par
 	: invoke_dialog(target, parent)
 {
 	this->setWindowTitle(tr("CCVolti"));
+	this->set_filter("CCVolti(*.csv)");
 	this->begin_setup_parameters_layout();
 	this->end_setup_parameters_layout();
 }

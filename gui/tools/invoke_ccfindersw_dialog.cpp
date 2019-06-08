@@ -70,4 +70,5 @@ invoker_t invoke_ccfindersw_dialog::create_invoker() const noexcept
 {
 	return ccfindersw_invoker();
 }
+
 }

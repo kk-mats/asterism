@@ -97,7 +97,7 @@ void invoke_dialog::get_target_path() noexcept
 
 void invoke_dialog::get_output_filename() noexcept
 {
-	if(const auto path=QFileDialog::getSaveFileName(this, tr("Save code clone detection result")); !path.isEmpty())
+	if(const auto path=QFileDialog::getSaveFileName(this, tr("Save code clone detection result"), QString(), this->filter_); !path.isEmpty())
 	{
 		this->output_path_edit_->setText(path);
 	}
@@ -106,6 +106,11 @@ void invoke_dialog::get_output_filename() noexcept
 void invoke_dialog::dispatch_invoker() noexcept
 {
 	emit invoker_dispatched(this->create_invoker());
+}
+
+void invoke_dialog::set_filter(const QString &filter) noexcept
+{
+	this->filter_=filter;
 }
 
 void invoke_dialog::end_setup_parameters_layout() noexcept

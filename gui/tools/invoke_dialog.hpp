@@ -76,8 +76,9 @@ protected:
 	QLineEdit *output_path_edit_=new QLineEdit(this);
 	key_arg_box *language_;
 	
-	virtual void begin_setup_parameters_layout() noexcept=0;
+	void set_filter(const QString &filter) noexcept;
 
+	virtual void begin_setup_parameters_layout() noexcept=0;
 	void end_setup_parameters_layout() noexcept;
 
 private:
@@ -88,6 +89,8 @@ private:
 	QDialogButtonBox *button_box_=new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal);
 
 	QGridLayout *directory_layout_=new QGridLayout;
+
+	QString filter_;
 };
 
 }
