@@ -4,29 +4,31 @@
 #include <QString>
 #include <QHash>
 
+#include "core/utility.hpp"
+
 namespace asterism
 {
 
 
-class clone_detector final
+class clone_detector_t final
 {
 public:
-	clone_detector(const QString &name) noexcept;
+	clone_detector_t(const QString &name) noexcept;
 
 	QString name() const noexcept;
 
 	bool operator ==(const QString &clone_detector_name) const noexcept;
 
-	static const clone_detector undefined;
-	static const clone_detector ccvolti;
-	static const clone_detector ccfinderx;
-	static const clone_detector ccfindersw;
-	static const clone_detector nicad;
-	static const clone_detector ar_fuser;
-	static const clone_detector ar_intersecter;
-	static const clone_detector ar_uniter;
+	static const clone_detector_t undefined;
+	static const clone_detector_t ccvolti;
+	static const clone_detector_t ccfinderx;
+	static const clone_detector_t ccfindersw;
+	static const clone_detector_t nicad;
+	static const clone_detector_t ar_fuser;
+	static const clone_detector_t ar_intersecter;
+	static const clone_detector_t ar_uniter;
 
-	static clone_detector from_string(const QString &clone_detector_name) noexcept;
+	static clone_detector_t from_string(const QString &clone_detector_name) noexcept;
 
 private:
 	QString name_;
@@ -43,12 +45,13 @@ public:
 	result_environment() noexcept;
 	result_environment(const result_environment &)=default;
 	result_environment(const QString &clone_detector_name, const QString &source, const QString &name) noexcept;
-	result_environment(const clone_detector &clone_detector, const QString &source) noexcept;
+	result_environment(const clone_detector_t &clone_detector, const QString &source) noexcept;
 
 	void set_name(const QString &name) noexcept;
 	void add_parameter(const QString &key, const QString &value) noexcept;
 	void set_parameters(const QHash<QString, QString> &parameters) noexcept;
 
+	const clone_detector_t& clone_detector() const noexcept;
 	QString name() const noexcept;
 	QString source() const noexcept;
 	QHash<QString, QString> parameters() const noexcept;
@@ -56,7 +59,7 @@ public:
 	bool operator ==(const result_environment &other) const noexcept;
 
 private:
-	clone_detector clone_detector_;
+	clone_detector_t clone_detector_;
 	QString name_;
 	QString source_;
 	QHash<QString, QString> parameters_;

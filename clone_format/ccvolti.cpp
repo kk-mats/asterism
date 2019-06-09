@@ -40,7 +40,7 @@ std::shared_ptr<detection_result> ccvolti::reader::read(const QString &path, det
 		}
 	}
 
-	return results.empalce(result_environment(clone_detector::ccvolti, path), std::move(clone_pair_set));
+	return results.empalce(result_environment(clone_detector_t::ccvolti, path), std::move(clone_pair_set));
 }
 
 bool ccvolti::reader::read_header() noexcept

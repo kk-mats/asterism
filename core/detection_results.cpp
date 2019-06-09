@@ -78,7 +78,7 @@ std::shared_ptr<matching_table> detection_results::matching_pair_table() const n
 detection_result detection_results::fuse() noexcept
 {
 	return detection_result(
-		std::move(result_environment(clone_detector::ar_fuser, "not implemented")),
+		std::move(result_environment(clone_detector_t::ar_fuser, "not implemented")),
 		std::move(bk_fuser::run(this->results_, *this->matching_table_))
 	);
 }

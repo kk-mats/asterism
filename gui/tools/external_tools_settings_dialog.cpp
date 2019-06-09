@@ -41,26 +41,26 @@ void clone_detector_page::set_path() noexcept
 }
 
 nicad_page::nicad_page(QWidget *parent) noexcept
-	: clone_detector_page(clone_detector::nicad.name(), parent)
+	: clone_detector_page(clone_detector_t::nicad.name(), parent)
 {
 	
 	this->setLayout(this->path_layout_);
 }
 
 ccfinderx_page::ccfinderx_page(QWidget *parent) noexcept
-	: clone_detector_page(clone_detector::ccfinderx.name(), parent)
+	: clone_detector_page(clone_detector_t::ccfinderx.name(), parent)
 {
 	this->setLayout(this->path_layout_);
 }
 
 ccvolti_page::ccvolti_page(QWidget *parent) noexcept
-	: clone_detector_page(clone_detector::ccvolti.name(), parent)
+	: clone_detector_page(clone_detector_t::ccvolti.name(), parent)
 {
 	this->setLayout(this->path_layout_);
 }
 
 ccfindersw_page::ccfindersw_page(QWidget *parent) noexcept
-	: clone_detector_page(clone_detector::ccfindersw.name(), parent)
+	: clone_detector_page(clone_detector_t::ccfindersw.name(), parent)
 {
 	this->setLayout(this->path_layout_);
 }
@@ -70,16 +70,16 @@ external_tools_settings_dialog::external_tools_settings_dialog(QWidget *parent) 
 	: QDialog(parent)
 {
 	auto *ccfinderx=new QListWidgetItem(this->tools_list_widget_);
-	ccfinderx->setText(clone_detector::ccfinderx.name());
+	ccfinderx->setText(clone_detector_t::ccfinderx.name());
 
 	auto *nicad=new QListWidgetItem(this->tools_list_widget_);
-	nicad->setText(clone_detector::nicad.name());
+	nicad->setText(clone_detector_t::nicad.name());
 
 	auto *ccvolti=new QListWidgetItem(this->tools_list_widget_);
-	ccvolti->setText(clone_detector::ccvolti.name());
+	ccvolti->setText(clone_detector_t::ccvolti.name());
 
 	auto *ccfindersw=new QListWidgetItem(this->tools_list_widget_);
-	ccfindersw->setText(clone_detector::ccfindersw.name());
+	ccfindersw->setText(clone_detector_t::ccfindersw.name());
 
 
 	this->content_widget_->addWidget(new ccfinderx_page);

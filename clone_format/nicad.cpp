@@ -65,7 +65,7 @@ std::optional<result_environment> nicad::reader::read_environment() noexcept
 		return std::nullopt;
 	}
 
-	result_environment environment(clone_detector::nicad, static_cast<QFile*>(this->is_.device())->fileName());
+	result_environment environment(clone_detector_t::nicad, static_cast<QFile*>(this->is_.device())->fileName());
 	for(const auto &attribute:attributes)
 	{
 		if(attribute.name()!=PROCESSOR)

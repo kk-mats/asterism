@@ -3,21 +3,21 @@
 namespace asterism
 {
 
-clone_detector::clone_detector(const QString &name) noexcept
+clone_detector_t::clone_detector_t(const QString &name) noexcept
 	: name_(name)
 {}
 
-QString clone_detector::name() const noexcept
+QString clone_detector_t::name() const noexcept
 {
 	return this->name_;
 }
 
-bool clone_detector::operator ==(const QString &clone_detector_name) const noexcept
+bool clone_detector_t::operator ==(const QString &clone_detector_name) const noexcept
 {
 	return this->name_==clone_detector_name;
 }
 
-clone_detector clone_detector::from_string(const QString &clone_detector_name) noexcept
+clone_detector_t clone_detector_t::from_string(const QString &clone_detector_name) noexcept
 {
 	if(ccvolti==clone_detector_name)
 	{
@@ -42,25 +42,27 @@ clone_detector clone_detector::from_string(const QString &clone_detector_name) n
 	return undefined;
 }
 
-const clone_detector clone_detector::undefined("undefined");
-const clone_detector clone_detector::ccvolti("CCVolti");
-const clone_detector clone_detector::ccfinderx("CCFinderX");
-const clone_detector clone_detector::ccfindersw("CCFinderSW");
-const clone_detector clone_detector::nicad("NiCad");
-const clone_detector clone_detector::ar_fuser("Asterism Result Fuser");
+const clone_detector_t clone_detector_t::undefined("undefined");
+const clone_detector_t clone_detector_t::ccvolti("CCVolti");
+const clone_detector_t clone_detector_t::ccfinderx("CCFinderX");
+const clone_detector_t clone_detector_t::ccfindersw("CCFinderSW");
+const clone_detector_t clone_detector_t::nicad("NiCad");
+const clone_detector_t clone_detector_t::ar_fuser("Asterism Result Fuser");
 
 
 result_environment::result_environment() noexcept
-	: clone_detector_(clone_detector::undefined)
+	: clone_detector_(clone_detector_t::undefined)
 {}
 
 result_environment::result_environment(const QString &clone_detector_name, const QString &source, const QString &name) noexcept
-	: clone_detector_(clone_detector::from_string(clone_detector_name)), source_(source), name_(name)
+	: clone_detector_(clone_detector_t::from_string(clone_detector_name)), source_(to_canonical_file_path(source)), name_(name)
 {}
 
-result_environment::result_environment(const clone_detector &clone_detector, const QString &source) noexcept
-	: clone_detector_(clone_detector), source_(source), name_(source)
-{}
+result_environment::result_environment(const clone_detector_t &clone_detector, const QString &source) noexcept
+	: clone_detector_(clone_detector), source_(to_canonical_file_path(source))
+{
+	this->name_=this->source_;
+}
 
 void result_environment::set_name(const QString &name) noexcept
 {
@@ -75,6 +77,11 @@ void result_environment::add_parameter(const QString &key, const QString &value)
 void result_environment::set_parameters(const QHash<QString, QString> &parameters) noexcept
 {
 	this->parameters_=parameters;
+}
+
+const clone_detector_t& result_environment::clone_detector() const noexcept
+{
+	return this->clone_detector_;
 }
 
 QString result_environment::name() const noexcept

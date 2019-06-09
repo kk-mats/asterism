@@ -43,7 +43,7 @@ ccfinderx_invoker::ccfinderx_invoker(const QString &dirname, const QString &outp
 
 QString ccfinderx_invoker::tool_name() const noexcept
 {
-	return clone_detector::ccfinderx.name();
+	return clone_detector_t::ccfinderx.name();
 }
 
 QString ccfinderx_invoker::clone_file() const noexcept
@@ -60,7 +60,7 @@ ccvolti_invoker::ccvolti_invoker(const QString &dirname, const QString &lang, co
 
 QString ccvolti_invoker::tool_name() const noexcept
 {
-	return clone_detector::ccvolti.name();
+	return clone_detector_t::ccvolti.name();
 }
 
 QString ccvolti_invoker::clone_file() const noexcept
@@ -71,7 +71,7 @@ QString ccvolti_invoker::clone_file() const noexcept
 
 QString ccfindersw_invoker::tool_name() const noexcept
 {
-	return clone_detector::ccfindersw.name();
+	return clone_detector_t::ccfindersw.name();
 }
 
 QString ccfindersw_invoker::clone_file() const noexcept
@@ -81,7 +81,7 @@ QString ccfindersw_invoker::clone_file() const noexcept
 
 QString nicad_invoker::tool_name() const noexcept
 {
-	return clone_detector::nicad.name();
+	return clone_detector_t::nicad.name();
 }
 
 QString nicad_invoker::clone_file() const noexcept

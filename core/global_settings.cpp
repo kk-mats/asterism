@@ -33,32 +33,32 @@ void global_settings::set(const QString &value, const QStringList &args) noexcep
 
 void global_settings::set_ccfinderx(const QString &path, const QString &naming_rule) noexcept
 {
-	this->set_clone_detector(clone_detector::ccfinderx.name(), path, naming_rule);
+	this->set_clone_detector(clone_detector_t::ccfinderx.name(), path, naming_rule);
 }
 
 void global_settings::set_nicad(const QString &path, const QString &naming_rule) noexcept
 {
-	this->set_clone_detector(clone_detector::nicad.name(), path, naming_rule);
+	this->set_clone_detector(clone_detector_t::nicad.name(), path, naming_rule);
 }
 
 void global_settings::set_ccvolti(const QString &path, const QString &naming_rule) noexcept
 {
-	this->set_clone_detector(clone_detector::ccvolti.name(), path, naming_rule);
+	this->set_clone_detector(clone_detector_t::ccvolti.name(), path, naming_rule);
 }
 
 void global_settings::set_ccfindersw(const QString &path, const QString &naming_rule) noexcept
 {
-	this->set_clone_detector(clone_detector::ccfindersw.name(), path, naming_rule);
+	this->set_clone_detector(clone_detector_t::ccfindersw.name(), path, naming_rule);
 }
 
 QString global_settings::ccfinderx() noexcept
 {
-	return this->settings_.value(QString("%1/%2/%3").arg(EXTERNAL_TOOLS).arg(clone_detector::ccfinderx.name()).arg(EXECUTABLE_PATH)).toString();
+	return this->settings_.value(QString("%1/%2/%3").arg(EXTERNAL_TOOLS).arg(clone_detector_t::ccfinderx.name()).arg(EXECUTABLE_PATH)).toString();
 }
 
 QString global_settings::ccvolti() noexcept
 {
-	return this->settings_.value(QString("%1/%2/%3").arg(EXTERNAL_TOOLS).arg(clone_detector::ccvolti.name()).arg(EXECUTABLE_PATH)).toString();
+	return this->settings_.value(QString("%1/%2/%3").arg(EXTERNAL_TOOLS).arg(clone_detector_t::ccvolti.name()).arg(EXECUTABLE_PATH)).toString();
 }
 
 global_settings& global_settings::instance() noexcept
