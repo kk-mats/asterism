@@ -111,6 +111,11 @@ void MainWindow::remove(const std::shared_ptr<detection_result> &result) noexcep
 
 void MainWindow::load_file(const QString &filepath) noexcept
 {
+	if(!QFile(filepath).exists())
+	{
+		return;
+	}
+
 	std::shared_ptr<detection_result> result;
 	if(const auto extension=QFileInfo(filepath).suffix(); extension=="xml")
 	{

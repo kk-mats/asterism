@@ -35,9 +35,10 @@ QString invoker::tool_name() const noexcept
 ccfinderx_invoker::ccfinderx_invoker(const QString &dirname, const QString &output, const QString &lang, const int b, const int t, const bool f, const bool w, const int threads) noexcept
 	: invoker()
 {
+	this->process_->setProgram(global_settings::instance().ccfinderx());
 	QString ws=f ? "f+" : "f-";
 	ws+=w ? "w+" : "w-";
-	args_<<"d"<<lang<<"-o"<<output<<"-b"<<QString::number(b)<<"-t"<<QString::number(t)<<"-w"<<ws<<"-d"<<dirname<<"--threads"<<QString::number(threads);
+	args_<<"d"<<lang<<"-o"<<output<<"-b"<<QString::number(b)<<"-t"<<QString::number(t)<<"-w"<<ws<<"-d"<<dirname<<"--threads="+QString::number(threads);
 }
 
 QString ccfinderx_invoker::tool_name() const noexcept

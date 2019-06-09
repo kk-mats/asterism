@@ -6,7 +6,7 @@ namespace asterism
 invoke_ccfinderx_dialog::invoke_ccfinderx_dialog(const QString &target, QWidget *parent) noexcept
 	: invoke_dialog(target, parent)
 {
-	this->setWindowTitle(tr("CCFidnerX"));
+	this->setWindowTitle(tr("CCFinderX"));
 	this->begin_setup_parameters_layout();
 	this->end_setup_parameters_layout();
 }
@@ -21,7 +21,7 @@ void invoke_ccfinderx_dialog::begin_setup_parameters_layout() noexcept
 	this->len_->setMinimum(1);
 	this->len_->setValue(50);
 	this->tks_->setMinimum(1);
-	this->len_->setValue(12);
+	this->tks_->setValue(12);
 	this->intra_file_clones_->setChecked(true);
 	this->inter_file_clones_->setChecked(true);
 
