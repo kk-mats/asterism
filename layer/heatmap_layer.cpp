@@ -27,9 +27,9 @@ std::vector<std::pair<QString, QString>> heatmap_layer::clone_pair_size::details
 {
 	return
 	{
-		{"#Clone Pair", QString::number(this->min_)},
-		{"Max #Clone Pair", QString::number(this->max_)},
-		{"Sum #Clone Pair", QString::number(this->sum_)}
+		{"#Clone Pair", QString::number(this->sum_)},
+		{"Min #Clone Pair", QString::number(this->min_)},
+		{"Max #Clone Pair", QString::number(this->max_)}
 	};
 }
 
