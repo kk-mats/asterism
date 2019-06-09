@@ -35,7 +35,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::open_project() noexcept
 {
-	if(auto filepath=QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("Asterism Project (*.jcln)")); !filepath.isEmpty())
+	if(auto filepath=to_canonical_file_path(QFileDialog::getOpenFileName(this, tr("Open Project"), "", tr("Asterism Project (*.jcln)"))); !filepath.isEmpty())
 	{
 		if(auto results=clone_io::read_jcln(filepath); results)
 		{
@@ -55,6 +55,14 @@ void MainWindow::open_file() noexcept
 	if(const auto filepath=to_canonical_file_path(QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("NiCAD (*.xml);; CCVolti(*.csv);; CCFinderSW (*.json)"))); !filepath.isEmpty())
 	{
 		this->load_file(filepath);
+	}
+}
+
+void MainWindow::save_project() noexcept
+{
+	if(const auto filepath=QFileDialog::getSaveFileName(this, tr("Save Project"), "", tr("Asterism Project(*.jcln)")); !filepath.isEmpty())
+	{
+		clone_io::write_jcln(filepath, this->results_);
 	}
 }
 
@@ -159,6 +167,11 @@ void MainWindow::create_actions() noexcept
 	this->open_file_act_->setStatusTip(tr("Open file"));
 	connect(this->open_file_act_, &QAction::triggered, this, &MainWindow::open_file);
 
+	this->save_project_act_=new QAction(tr("&Save"), this);
+	this->save_project_act_->setShortcut(QKeySequence::Save);
+	this->save_project_act_->setStatusTip(tr("Save project"));
+	connect(this->save_project_act_, &QAction::triggered, this, &MainWindow::save_project);
+
 	//this->fuse_results_act_=new QAction(tr("&Fuse Results"), this);
 	//connect(this->fuse_results_act_, &QAction::triggered, this, &MainWindow::fuse_results);
 
@@ -205,6 +218,7 @@ void MainWindow::create_menus() noexcept
 	this->file_menu_->addAction(this->open_project_act_);
 	this->file_menu_->addAction(this->open_file_act_);
 	this->file_menu_->addSeparator();
+	this->file_menu_->addAction(this->save_project_act_);
 	this->export_menu_=this->file_menu_->addMenu(tr("Export"));
 	//this->export_menu_->addAction(this->fuse_results_act_);
 	this->export_menu_->addAction(this->export_current_scatter_plot_act_);

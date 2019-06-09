@@ -32,6 +32,7 @@ public:
 private slots:
 	void open_project() noexcept;
 	void open_file() noexcept;
+	void save_project() noexcept;
 	void fuse_results() noexcept;
 	void export_current_scatter_plot() noexcept;
 
@@ -63,6 +64,7 @@ private:
 	QMenu *file_menu_;
 	QAction *open_project_act_;
 	QAction *open_file_act_;
+	QAction *save_project_act_;
 	
 	// File.Export
 	QMenu *export_menu_;
