@@ -36,6 +36,11 @@ std::shared_ptr<detection_result> clone_io::read_nicad(const QString &file, dete
 	return nicad::read(file, results);
 }
 
+bool clone_io::write_jcln(const QString &file, const detection_results &results) noexcept
+{
+	return jcln::write(results, file);
+}
+
 bool clone_io::write_csv(const QString &file, const detection_result &result, const QString &project_root) noexcept
 {
 	return csv::write(result, project_root, file);

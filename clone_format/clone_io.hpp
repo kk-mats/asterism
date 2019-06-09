@@ -22,6 +22,7 @@ public:
 	static std::shared_ptr<detection_result> read_ccfindersw(const QString &file, detection_results &results) noexcept;
 	static std::shared_ptr<detection_result> read_nicad(const QString &file, detection_results &results) noexcept;
 
+	static bool write_jcln(const QString &file, const detection_results &results) noexcept;
 	static bool write_csv(const QString &file, const detection_result &result, const QString &project_root) noexcept;
 };
 
