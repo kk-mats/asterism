@@ -41,6 +41,11 @@ fragment clone_pair::fragment2() const noexcept
 	return this->fragments_.second;
 }
 
+fragment clone_pair::fragment_of(const fragment_order order) const noexcept
+{
+	return order==fragment_order::first ? this->fragments_.first : this->fragments_.second;
+}
+
 unsigned int clone_pair::similarity() const noexcept
 {
 	return this->similairty_;

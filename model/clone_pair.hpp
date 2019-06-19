@@ -9,6 +9,11 @@ namespace asterism
 class clone_pair final
 {
 public:
+	enum class fragment_order
+	{
+		first, second
+	};
+
 	clone_pair() noexcept;
 	clone_pair(const fragment &fragment1, const fragment &fragment2, const unsigned int similarity) noexcept;
 	clone_pair(fragment &&fragment1, fragment &&fragment2, const unsigned int similarity) noexcept;
@@ -20,6 +25,8 @@ public:
 
 	fragment fragment1() const noexcept;
 	fragment fragment2() const noexcept;
+	fragment fragment_of(const fragment_order order) const noexcept;
+
 	unsigned int similarity() const noexcept;
 
 	friend uint qHash(const clone_pair &key, uint seed) noexcept;
