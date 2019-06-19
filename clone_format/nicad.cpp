@@ -124,7 +124,7 @@ std::optional<fragment> nicad::reader::read_fragment() noexcept
 		return std::nullopt;
 	}
 
-	return std::make_optional<fragment>(this->results_.emplace(attributes.value(FILE).toString()), startline, endline);
+	return std::make_optional<fragment>(this->results_.emplace(to_canonical_file_path(attributes.value(FILE).toString())), startline, endline);
 }
 
 }

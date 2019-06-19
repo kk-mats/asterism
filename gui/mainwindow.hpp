@@ -59,6 +59,9 @@ private:
 	grid_properties_widget *grid_properties_widget_=new grid_properties_widget(this);
 	QDockWidget *grid_properties_dock_=new QDockWidget(tr("Grid Properties"), this);
 
+	grid_property_widget *grid_property_widget_=new grid_property_widget(this);
+	QDockWidget *grid_property_dock_=new QDockWidget(tr("Grid Property"), this);
+
 	invoker_display_widget *invoker_display_dialog_=new invoker_display_widget;
 
 	QMenu *file_menu_;

@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Generated Files">
-      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
@@ -147,10 +143,10 @@
     <ClCompile Include="clone_format\ccfinderx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gui\tools\invoker_cui_display.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="clone_format\ccvolti.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\tools\invoker_cui_display.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -227,9 +223,6 @@
     <QtMoc Include="gui\tools\invoke_nicad_dialog.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <ClInclude Include="gui\tools\invoker.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="clone_format\jcln.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -304,6 +297,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="gui\tools\invoker_cui_display.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\tools\invoker.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
