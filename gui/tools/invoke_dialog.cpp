@@ -81,6 +81,8 @@ invoke_dialog::invoke_dialog(const QString &target, QWidget *parent) noexcept
 	connect(this->button_box_, &QDialogButtonBox::rejected, this, &QDialog::reject);
 	connect(this->button_box_, &QDialogButtonBox::accepted, this, &invoke_dialog::dispatch_invoker);
 	connect(this->button_box_, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	
+	this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 invoke_dialog::~invoke_dialog() noexcept
