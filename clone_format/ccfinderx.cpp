@@ -19,8 +19,7 @@ std::shared_ptr<detection_result> ccfinderx::read(const QString &path, detection
 
 ccfinderx::reader::reader(QFile &file) noexcept
 	: is_(&file)
-{
-}
+{}
 
 std::shared_ptr<detection_result> ccfinderx::reader::read(detection_results &results) noexcept
 {
