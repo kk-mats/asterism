@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(this->layer_detail_widget_, &layer_detail_widget::result_name_input, this->layer_list_widget_, &layer_list_widget::change_result_name);
 	connect(this->layer_list_widget_, &layer_list_widget::result_name_changed, this->layer_detail_widget_, &layer_detail_widget::change_result_name);
 	connect(this->layer_list_widget_, &layer_list_widget::result_name_changed, this->layer_widget_, &layer_widget::result_name_changed);
-	connect(this->layer_widget_, &layer_widget::current_grid_changed, this->grid_properties_widget_, &grid_properties_widget::change_current_grid);
+	//connect(this->layer_widget_, &layer_widget::current_grid_changed, this->grid_properties_widget_, &grid_properties_widget::change_current_grid);
 	connect(this->layer_widget_, &layer_widget::current_grid_changed, this->grid_property_widget_, &grid_property_widget::change_current_grid);
 	connect(this->layer_widget_, &layer_widget::method_changed, this->layer_detail_widget_, &layer_detail_widget::change_method);
 	
@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+	this->grid_property_widget_->~grid_property_widget();
 }
 
 
@@ -153,8 +154,8 @@ void MainWindow::initialize_docks() noexcept
 	this->addDockWidget(Qt::LeftDockWidgetArea, this->layer_list_dock_, Qt::Vertical);
 	this->layer_detail_dock_->setWidget(this->layer_detail_widget_);
 	this->addDockWidget(Qt::LeftDockWidgetArea, this->layer_detail_dock_, Qt::Vertical);
-	this->grid_properties_dock_->setWidget(this->grid_properties_widget_);
-	this->addDockWidget(Qt::BottomDockWidgetArea, this->grid_properties_dock_, Qt::Horizontal);
+	//this->grid_properties_dock_->setWidget(this->grid_properties_widget_);
+	//this->addDockWidget(Qt::BottomDockWidgetArea, this->grid_properties_dock_, Qt::Horizontal);
 	this->grid_property_dock_->setWidget(this->grid_property_widget_);
 	this->addDockWidget(Qt::BottomDockWidgetArea, this->grid_property_dock_, Qt::Horizontal);
 }
@@ -214,6 +215,19 @@ void MainWindow::create_actions() noexcept
 
 
 	connect(this->invoker_display_dialog_, &invoker_display_widget::finished_clone_file, [this](const auto &filepath) mutable { this->load_file(filepath); });
+
+
+	this->show_results_list_act_=new QAction(tr("Detection Results"));
+	this->show_results_list_act_->setStatusTip(tr("Show Detection Results Dock"));
+	connect(this->show_results_list_act_, &QAction::triggered, [&]() { this->layer_list_dock_->setVisible(true); });
+
+	this->show_result_detail_act_=new QAction(tr("Result Detail"));
+	this->show_result_detail_act_->setStatusTip(tr("Show Result Detail Dock"));
+	connect(this->show_result_detail_act_, &QAction::triggered, [&]() { this->layer_detail_dock_->setVisible(true); });
+
+	this->show_grid_property_act_=new QAction(tr("Grid Property"));
+	this->show_grid_property_act_->setStatusTip(tr("Show Grid Property Dock"));
+	connect(this->show_grid_property_act_, &QAction::triggered, [&]() { this->grid_property_dock_->setVisible(true); });
 }
 
 void MainWindow::create_menus() noexcept
@@ -239,6 +253,11 @@ void MainWindow::create_menus() noexcept
 	this->invoke_external_tool_menu_->addAction(this->invoke_from_a_setting_file_act_);
 
 	this->tools_->addAction(this->options_act_);
+
+	this->view_=this->menuBar()->addMenu(tr("View"));
+	this->view_->addAction(this->show_results_list_act_);
+	this->view_->addAction(this->show_result_detail_act_);
+	this->view_->addAction(this->show_grid_property_act_);
 }
 
 void MainWindow::update() noexcept
@@ -272,5 +291,6 @@ void MainWindow::show_invoke_dialog(invoke_dialog *d) noexcept
 		this->invoker_display_dialog_->show();
 	}
 }
+
 
 }

@@ -3,7 +3,7 @@
 namespace asterism
 {
 
-QWidget* grid_properties_delegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const noexcept
+QWidget *grid_properties_delegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const noexcept
 {
 	if(grid_properties_model::is_base_selector(index) && index.model()->data(index, Qt::UserRole).canConvert<QPair<int, int>>())
 	{
@@ -48,7 +48,7 @@ void grid_properties_delegate::setModelData(QWidget *editor, QAbstractItemModel 
 	QItemDelegate::setModelData(editor, model, index);
 }
 
-void grid_properties_delegate::updateEditorGeometry(QWidget * editor, const QStyleOptionViewItem &option, const QModelIndex & index) const noexcept
+void grid_properties_delegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const noexcept
 {
 	if(grid_properties_model::is_base_selector(index))
 	{
@@ -59,7 +59,7 @@ void grid_properties_delegate::updateEditorGeometry(QWidget * editor, const QSty
 
 }
 
-void grid_properties_model::bind(const std::shared_ptr<matching_table>& matching_table) noexcept
+void grid_properties_model::bind(const std::shared_ptr<matching_table> &matching_table) noexcept
 {
 	matching_table_=matching_table;
 }
@@ -70,7 +70,7 @@ int grid_properties_model::rowCount(const QModelIndex &parent) const noexcept
 }
 
 int grid_properties_model::columnCount(const QModelIndex &parent) const noexcept
-{ 
+{
 	return std::max(1, this->horizontal_header.size());
 }
 
@@ -184,7 +184,7 @@ QVariant grid_properties_model::headerData(int section, Qt::Orientation orientat
 	return QVariant();
 }
 
-Qt::ItemFlags grid_properties_model::flags(const QModelIndex & index) const noexcept
+Qt::ItemFlags grid_properties_model::flags(const QModelIndex &index) const noexcept
 {
 	if(index.row()==0 && index.column()==0)
 	{
@@ -243,7 +243,7 @@ bool grid_properties_model::change_current_index(const int index) noexcept
 	return false;
 }
 
-bool grid_properties_model::equals_to_base(const std::shared_ptr<clone_pair>& p, const int row) const noexcept
+bool grid_properties_model::equals_to_base(const std::shared_ptr<clone_pair> &p, const int row) const noexcept
 {
 	if(0<=this->current_ && this->current_<this->base_.size())
 	{
@@ -424,6 +424,11 @@ void grid_property_table_model::change_base(const int index) noexcept
 	this->endResetModel();
 }
 
+std::vector<response> grid_property_table_model::responses() const noexcept
+{
+	return this->responses_;
+}
+
 
 bool grid_property_table_model::equals_to_base(const std::shared_ptr<clone_pair> &p, const int row) const noexcept
 {
@@ -450,6 +455,11 @@ void grid_property_table_widget::change_current_grid(const shared_vector<clone_p
 	this->model_->change_current_grid(base, primitive);
 }
 
+std::vector<response> grid_property_table_widget::responses() const noexcept
+{
+	return this->model_->responses();
+}
+
 void grid_property_table_widget::change_base(const int index) noexcept
 {
 	this->model_->change_base(index);
@@ -470,6 +480,12 @@ grid_property_widget::grid_property_widget(QWidget *parent) noexcept
 	this->setLayout(layout);
 
 	connect(this->base_selector_, qOverload<int>(&QComboBox::currentIndexChanged), this->grid_property_table_, &grid_property_table_widget::change_base);
+	connect(this->view_button_, &QPushButton::clicked, [&](bool)
+		{
+			this->clone_viewer_dialog_->show();
+			this->clone_viewer_dialog_->activateWindow();
+		}
+	);
 }
 
 void grid_property_widget::change_current_grid(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive) noexcept
@@ -477,11 +493,12 @@ void grid_property_widget::change_current_grid(const std::shared_ptr<file> &file
 	const auto base=(*primitive->clone_pair_layer())[grid_2d_coordinate::to_linear(file1->id(), file2->id())];
 	this->grid_property_table_->change_current_grid(base, primitive);
 	this->base_selector_->clear();
+	this->base_selector_->setDisabled(base.size()==0);
 	for(int i=0; i<base.size(); ++i)
 	{
 		this->base_selector_->addItem(QString("[%1]").arg(i), i);
 	}
+	this->clone_viewer_dialog_->change_current_grid(file1, file2);
 }
-
 
 }

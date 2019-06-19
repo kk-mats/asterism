@@ -56,8 +56,8 @@ private:
 	layer_detail_widget *layer_detail_widget_=new layer_detail_widget(this);
 	QDockWidget *layer_detail_dock_=new QDockWidget(tr("Details"), this);
 
-	grid_properties_widget *grid_properties_widget_=new grid_properties_widget(this);
-	QDockWidget *grid_properties_dock_=new QDockWidget(tr("Grid Properties"), this);
+	//grid_properties_widget *grid_properties_widget_=new grid_properties_widget(this);
+	//QDockWidget *grid_properties_dock_=new QDockWidget(tr("Grid Properties"), this);
 
 	grid_property_widget *grid_property_widget_=new grid_property_widget(this);
 	QDockWidget *grid_property_dock_=new QDockWidget(tr("Grid Property"), this);
@@ -85,6 +85,12 @@ private:
 	QAction *invoke_ccfindersw_act_;
 	QAction *invoke_from_a_setting_file_act_;
 	QAction *options_act_;
+
+	// View
+	QMenu *view_;
+	QAction *show_results_list_act_;
+	QAction *show_result_detail_act_;
+	QAction *show_grid_property_act_;
 	   
 	void load_file(const QString &filepath) noexcept;
 

@@ -13,6 +13,7 @@
 
 #include "core/matching_table.hpp"
 #include "model/detection_result.hpp"
+#include "clone_viewer_widget.hpp"
 
 namespace asterism
 {
@@ -110,6 +111,7 @@ public:
 	
 	void change_current_grid(const shared_vector<clone_pair> &base, const std::shared_ptr<detection_result> &primitive) noexcept;
 	void change_base(const int index) noexcept;
+	std::vector<response> responses() const noexcept;
 
 private:
 	const QStringList vertical_header={"ID", "F1.Begin", "F1.End", "F2.Begin", "F2.End", "Similarity"};
@@ -132,6 +134,7 @@ class grid_property_table_widget final
 public:
 	explicit grid_property_table_widget(QWidget *parent=nullptr) noexcept;
 	void change_current_grid(const shared_vector<clone_pair> &base, const std::shared_ptr<detection_result> &primitive) noexcept;
+	std::vector<response> responses() const noexcept;
 
 public slots:
 	void change_base(const int index) noexcept;
@@ -149,11 +152,12 @@ public:
 
 public slots:
 	void change_current_grid(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const std::shared_ptr<detection_result> &primitive) noexcept;
-
+	
 private:
 	QComboBox *base_selector_=new QComboBox(this);
 	QPushButton *view_button_=new QPushButton(tr("View fragments"), this);
 	grid_property_table_widget *grid_property_table_=new grid_property_table_widget(this);
+	clone_viewer_widget *clone_viewer_dialog_=new clone_viewer_widget;
 };
 
 }
