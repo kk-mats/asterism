@@ -55,11 +55,11 @@ result_environment::result_environment() noexcept
 {}
 
 result_environment::result_environment(const QString &clone_detector_name, const QString &source, const QString &name) noexcept
-	: clone_detector_(clone_detector_t::from_string(clone_detector_name)), source_(to_canonical_file_path(source)), name_(name)
+	: clone_detector_(clone_detector_t::from_string(clone_detector_name)), source_(source), name_(name)
 {}
 
 result_environment::result_environment(const clone_detector_t &clone_detector, const QString &source) noexcept
-	: clone_detector_(clone_detector), source_(to_canonical_file_path(source))
+	: clone_detector_(clone_detector), source_(source)
 {
 	this->name_=this->source_;
 }
