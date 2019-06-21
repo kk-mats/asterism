@@ -41,7 +41,8 @@ private slots:
 private:
 	const clone_pair::fragment_order order_;
 	QWidget *line_number_area_;
-	QVector<QTextBlock> base_first_blocks_;
+	QVector<QPair<QTextBlock, QTextBlock>> base_first_blocks_;
+	int current_index_=0;
 
 	int char_width() const noexcept;
 	void scroll_to_base(const int index);

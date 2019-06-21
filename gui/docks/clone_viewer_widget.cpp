@@ -93,13 +93,14 @@ void fragment_view::change_file(const std::shared_ptr<file> &file, const shared_
 		int line_number=base[i]->fragment_of(this->order_).begin()-1;
 		const int end=base[i]->fragment_of(this->order_).end()-1;
 		auto block=this->document()->findBlockByLineNumber(line_number);
-		this->base_first_blocks_[i]=block;
+		this->base_first_blocks_[i].first=block;
 		while(block.isValid() && line_number<=end)
 		{
 			QTextCursor(block).setBlockFormat(format);
 			block=block.next();
 			++line_number;
 		}
+		this->base_first_blocks_[i].second=block;
 	}
 }
 
@@ -153,7 +154,23 @@ int fragment_view::char_width() const noexcept
 
 void fragment_view::scroll_to_base(const int index)
 {
-	this->setTextCursor(QTextCursor(this->base_first_blocks_[index]));
+	this->setTextCursor(QTextCursor(this->base_first_blocks_[index].first));
+
+	auto format=QTextBlockFormat();
+	format.setBackground(QBrush(Qt::lightGray));
+	for(auto b=this->base_first_blocks_[this->current_index_].first; b!=this->base_first_blocks_[this->current_index_].second; b=b.next())
+	{
+		QTextCursor(b).setBlockFormat(format);
+	}
+
+	format.setBackground(QBrush(QColor(193, 217, 255)));
+
+	for(auto b=this->base_first_blocks_[index].first; b!=this->base_first_blocks_[index].second; b=b.next())
+	{
+		QTextCursor(b).setBlockFormat(format);
+	}
+
+	this->current_index_=index;
 }
 
 
