@@ -479,11 +479,18 @@ grid_property_widget::grid_property_widget(QWidget *parent) noexcept
 
 	this->setLayout(layout);
 
-	connect(this->base_selector_, qOverload<int>(&QComboBox::currentIndexChanged), this->grid_property_table_, &grid_property_table_widget::change_base);
+	this->base_selector_->setDisabled(true);
+
+	connect(this->base_selector_, qOverload<int>(&QComboBox::currentIndexChanged), [&](const int index)
+		{
+			this->grid_property_table_->change_base(index);
+			this->clone_viewer_window_->set_responses(index, this->grid_property_table_->responses());
+		}
+	);
 	connect(this->view_button_, &QPushButton::clicked, [&](bool)
 		{
-			this->clone_viewer_dialog_->show();
-			this->clone_viewer_dialog_->activateWindow();
+			this->clone_viewer_window_->show();
+			this->clone_viewer_window_->activateWindow();
 		}
 	);
 }
@@ -492,13 +499,13 @@ void grid_property_widget::change_current_grid(const std::shared_ptr<file> &file
 {
 	const auto base=(*primitive->clone_pair_layer())[grid_2d_coordinate::to_linear(file1->id(), file2->id())];
 	this->grid_property_table_->change_current_grid(base, primitive);
+	this->clone_viewer_window_->change_current_grid(file1, file2, base);
 	this->base_selector_->clear();
 	this->base_selector_->setDisabled(base.size()==0);
 	for(int i=0; i<base.size(); ++i)
 	{
 		this->base_selector_->addItem(QString("[%1]").arg(i), i);
 	}
-	this->clone_viewer_dialog_->change_current_grid(file1, file2);
 }
 
 }

@@ -3,8 +3,8 @@
 namespace asterism
 {
 
-fragment_view::fragment_view(QWidget *parent) noexcept
-	: QPlainTextEdit(parent)
+fragment_view::fragment_view(const clone_pair::fragment_order order, QWidget *parent) noexcept
+	: QPlainTextEdit(parent), order_(order)
 {
 	this->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
 	this->line_number_area_=new line_number_area(this);
@@ -21,7 +21,6 @@ fragment_view::fragment_view(QWidget *parent) noexcept
 void fragment_view::line_number_area_paint_event(QPaintEvent *e) noexcept
 {
 	QPainter painter(this->line_number_area_);
-	painter.fillRect(e->rect(), Qt::lightGray);
 
 	auto block=this->firstVisibleBlock();
 	int block_number=block.blockNumber();
@@ -33,7 +32,7 @@ void fragment_view::line_number_area_paint_event(QPaintEvent *e) noexcept
 		if(block.isVisible() && bottom>=e->rect().top())
 		{
 			auto number=QString::number(block_number+1);
-			painter.setPen(Qt::black);
+			painter.setPen(Qt::darkBlue);
 			painter.drawText(0, top, this->line_number_area_->width()-this->char_width(), this->fontMetrics().height(), Qt::AlignRight, number);
 		}
 		block=block.next();
@@ -57,9 +56,9 @@ int fragment_view::line_number_area_width() noexcept
 	return space;
 }
 
-void fragment_view::change_file(const std::shared_ptr<file> &f, const clone_pair::fragment_order order) noexcept
+void fragment_view::change_file(const std::shared_ptr<file> &file, const shared_vector<clone_pair> &base) noexcept
 {
-	QFile ff(f->canonical_file_path());
+	QFile ff(file->canonical_file_path());
 
 	if(this->documentTitle()==ff.fileName())
 	{
@@ -73,12 +72,45 @@ void fragment_view::change_file(const std::shared_ptr<file> &f, const clone_pair
 	}
 
 	this->setDocumentTitle(ff.fileName());
-	this->setPlainText(QTextStream(&ff).readAll());
-	this->order_=order;
+	QTextStream in(&ff);
+	in.setCodec("UTF-8");
+	this->setPlainText(in.readAll());
+
+	auto format=QTextBlockFormat();
+	format.setBackground(QBrush(Qt::lightGray));
+
+	this->base_first_blocks_.clear();
+
+	if(base.empty())
+	{
+		return;
+	}
+
+	this->base_first_blocks_.resize(base.size());
+
+	for(int i=0; i<base.size(); ++i)
+	{
+		int line_number=base[i]->fragment_of(this->order_).begin()-1;
+		const int end=base[i]->fragment_of(this->order_).end()-1;
+		auto block=this->document()->findBlockByLineNumber(line_number);
+		this->base_first_blocks_[i]=block;
+		while(block.isValid() && line_number<=end)
+		{
+			QTextCursor(block).setBlockFormat(format);
+			block=block.next();
+			++line_number;
+		}
+	}
 }
 
-void fragment_view::set_responses(const std::vector<response> &responses) noexcept
+void fragment_view::set_responses(const int index, const std::vector<response> &responses) noexcept
 {
+	if(responses.empty())
+	{
+		return;
+	}
+
+	this->scroll_to_base(index);
 }
 
 void fragment_view::resizeEvent(QResizeEvent *e)
@@ -119,6 +151,11 @@ int fragment_view::char_width() const noexcept
 	return this->fontMetrics().horizontalAdvance(QLatin1Char('9'));
 }
 
+void fragment_view::scroll_to_base(const int index)
+{
+	this->setTextCursor(QTextCursor(this->base_first_blocks_[index]));
+}
+
 
 line_number_area::line_number_area(fragment_view *view) noexcept
 	: QWidget(view), view_(view)
@@ -146,11 +183,17 @@ clone_viewer_widget::clone_viewer_widget(QWidget *parent) noexcept
 	this->setAttribute(Qt::WA_QuitOnClose, false);
 }
 
-void clone_viewer_widget::change_current_grid(const std::shared_ptr<file> &f1, const std::shared_ptr<file> &f2) noexcept
+void clone_viewer_widget::change_current_grid(const std::shared_ptr<file> &file1, const std::shared_ptr<file> &file2, const shared_vector<clone_pair> &base) noexcept
 {
-	this->f1_view_->change_file(f1, clone_pair::fragment_order::first);
-	this->f2_view_->change_file(f2, clone_pair::fragment_order::second);
+	this->f1_view_->change_file(file1, base);
+	this->f2_view_->change_file(file2, base);
 	this->setWindowTitle("Clone View");
+}
+
+void clone_viewer_widget::set_responses(const int index, const std::vector<response> &responses) noexcept
+{
+	this->f1_view_->set_responses(index, responses);
+	this->f2_view_->set_responses(index, responses);
 }
 
 }

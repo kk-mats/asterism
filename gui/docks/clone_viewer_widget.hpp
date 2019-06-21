@@ -9,6 +9,7 @@
 #include <QDialog>
 #include <QFontDatabase>
 #include <QBoxLayout>
+#include <QScrollBar>
 
 #include "core/matching_table.hpp"
 
@@ -21,13 +22,13 @@ class fragment_view final
 {
 	Q_OBJECT
 public:
-	explicit fragment_view(QWidget *parent=nullptr) noexcept;
+	explicit fragment_view(const clone_pair::fragment_order order, QWidget *parent=nullptr) noexcept;
 
 	void line_number_area_paint_event(QPaintEvent *e) noexcept;
 	int line_number_area_width() noexcept;
 
-	void change_file(const std::shared_ptr<file> &f, const clone_pair::fragment_order order) noexcept;
-	void set_responses(const std::vector<response> &responses) noexcept;
+	void change_file(const std::shared_ptr<file> &f, const shared_vector<clone_pair> &base) noexcept;
+	void set_responses(const int index, const std::vector<response> &responses) noexcept;
 
 protected:
 	void resizeEvent(QResizeEvent *e) override;
@@ -38,10 +39,12 @@ private slots:
 	void update_linenumber_area(const QRect &rect, int dy) noexcept;
 
 private:
+	const clone_pair::fragment_order order_;
 	QWidget *line_number_area_;
-	clone_pair::fragment_order order_;
+	QVector<QTextBlock> base_first_blocks_;
 
 	int char_width() const noexcept;
+	void scroll_to_base(const int index);
 };
 
 
@@ -68,14 +71,14 @@ class clone_viewer_widget final
 	Q_OBJECT
 public:
 	explicit clone_viewer_widget(QWidget *parent=nullptr) noexcept;
-	void destroy();
+	void set_responses(const int index, const std::vector<response> &responses) noexcept;
 
 public slots:
-	void change_current_grid(const std::shared_ptr<file> &f1, const std::shared_ptr<file> &f2) noexcept;
+	void change_current_grid(const std::shared_ptr<file> &f1, const std::shared_ptr<file> &f2, const shared_vector<clone_pair> &base) noexcept;
 
 private:
-	fragment_view *f1_view_=new fragment_view(this);
-	fragment_view *f2_view_=new fragment_view(this);
+	fragment_view *f1_view_=new fragment_view(clone_pair::fragment_order::first, this);
+	fragment_view *f2_view_=new fragment_view(clone_pair::fragment_order::second, this);
 };
 
 

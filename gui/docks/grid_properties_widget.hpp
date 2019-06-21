@@ -143,6 +143,7 @@ private:
 	grid_property_table_model *model_=new grid_property_table_model(this);
 };
 
+
 class grid_property_widget final
 	: public QWidget
 {
@@ -157,7 +158,7 @@ private:
 	QComboBox *base_selector_=new QComboBox(this);
 	QPushButton *view_button_=new QPushButton(tr("View fragments"), this);
 	grid_property_table_widget *grid_property_table_=new grid_property_table_widget(this);
-	clone_viewer_widget *clone_viewer_dialog_=new clone_viewer_widget;
+	clone_viewer_widget *clone_viewer_window_=new clone_viewer_widget;
 };
 
 }
