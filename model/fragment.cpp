@@ -81,6 +81,11 @@ int fragment::length() const noexcept
 	return this->end_-this->begin_;
 }
 
+uint qHash(const fragment &key, uint seed) noexcept
+{
+	return qHash(key.file_ptr(), seed)+key.begin();
+}
+
 float overlap(const fragment &f1, const fragment &f2) noexcept
 {
 	return f1.is_overlapped(f2) ? float(f1&f2)/(f1|f2) : 0;

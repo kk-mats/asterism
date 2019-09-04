@@ -38,11 +38,29 @@ private:
 	uint32_t begin_, end_;
 };
 
+uint qHash(const fragment &key, uint seed) noexcept;
+
 float overlap(const fragment &f1, const fragment &f2) noexcept;
 float contained(const fragment &f1, const fragment &f2) noexcept;
 bool covers(const fragment &f1, const fragment &f2, const float t) noexcept;
 
 QDebug operator <<(QDebug logger, const fragment &fragment) noexcept;
+}
+
+namespace std
+{
+
+template<>
+struct hash<asterism::fragment>
+{
+	size_t operator()(const asterism::fragment &key) const;
+};
+
+inline size_t hash<asterism::fragment>::operator()(const asterism::fragment &key) const
+{
+	return key.begin()+key.end();
+}
+
 }
 
 Q_DECLARE_METATYPE(asterism::fragment)
