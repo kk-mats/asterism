@@ -15,9 +15,9 @@ layer_widget::layer_widget(const detection_results *results, QWidget *parent) no
 	this->grid_size_selector_->setMaximum(64);
 	this->grid_size_selector_->setValue(16);
 
-	auto *colorize_method_label=new QLabel(tr("Colorize Method: "), this);
+	auto *colorization_method_label=new QLabel(tr("Colorization Method: "), this);
 	auto *method_selector_layout=new QHBoxLayout;
-	method_selector_layout->addWidget(colorize_method_label);
+	method_selector_layout->addWidget(colorization_method_label);
 	method_selector_layout->addWidget(this->method_selector_);
 
 	auto *grid_size_label_=new QLabel(tr("Grid Size: "), this);
