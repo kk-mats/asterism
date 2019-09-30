@@ -195,7 +195,7 @@
     <ClCompile Include="layer\color_selector.cpp" />
     <ClCompile Include="clone_format\csv.cpp" />
     <ClCompile Include="gui\central\current_grid_detail_widget.cpp" />
-    <ClCompile Include="model\clone_set.cpp" />
+    <ClCompile Include="model\clone_class.cpp" />
     <ClCompile Include="model\detection_result.cpp" />
     <ClCompile Include="core\detection_results.cpp" />
     <ClCompile Include="gui\tools\external_tools_settings_dialog.cpp" />
@@ -250,7 +250,7 @@
     <ClInclude Include="clone_format\csv.hpp" />
     <QtMoc Include="gui\central\current_grid_detail_widget.hpp">
     </QtMoc>
-    <ClInclude Include="model\clone_set.hpp" />
+    <ClInclude Include="model\clone_class.hpp" />
     <ClInclude Include="model\detection_result.hpp" />
     <ClInclude Include="core\detection_results.hpp" />
     <ClInclude Include="gui\docks.hpp" />

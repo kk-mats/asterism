@@ -159,7 +159,7 @@
     <ClCompile Include="core\statistics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="model\clone_set.cpp">
+    <ClCompile Include="model\clone_class.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -293,7 +293,7 @@
     <ClInclude Include="core\statistics.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="model\clone_set.hpp">
+    <ClInclude Include="model\clone_class.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
